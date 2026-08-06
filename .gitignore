@@ -1,0 +1,18 @@
+# Environment
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+
+# OS
+.DS_Store
+
+# Generated reports (we'll add sample ones manually later)
+reports/*.json
+!reports/.gitkeep
+
+# IDE
+.vscode/
+.idea/
