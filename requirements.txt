@@ -7,3 +7,4 @@ openai
 python-dotenv
 requests
 pydantic
+tavily-python

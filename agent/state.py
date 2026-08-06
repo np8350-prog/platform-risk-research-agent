@@ -9,6 +9,30 @@ this agent's output could slot into Groundwork later with no rework.
 
 from typing import Literal, Optional
 from pydantic import BaseModel, Field
+from typing import TypedDict, Annotated
+import operator
+
+
+class GraphState(TypedDict):
+    # ---- Input, set once at the start ----
+    vendor_name: str
+    use_case: str            # what the buyer wants to use this platform for
+    buyer_context: str        # e.g. "fintech company handling customer PII"
+
+    # ---- Accumulated during the ReAct loop ----
+    # operator.add means each node APPENDS to this list instead of
+    # overwriting it, so research findings pile up across tool calls.
+    research_notes: Annotated[list[str], operator.add]
+    tool_calls_made: Annotated[list[str], operator.add]
+
+    # ---- Set once retrieval (RAG) has run ----
+    framework_context: str    # relevant excerpts from your book / ControlGap
+
+    # ---- Set once the agent decides it has enough signal ----
+    ready_to_report: bool
+
+    # ---- Final output, set by the last node ----
+    report: dict   # will hold a PlatformRiskReport, dumped to dict
 
 
 VerdictTone = Literal["clear", "warn", "risk"]
