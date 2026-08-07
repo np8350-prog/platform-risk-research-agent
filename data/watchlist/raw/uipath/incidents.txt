@@ -1,0 +1,6 @@
+•	December 2020 Data Exposure: 
+	◦	Details: A backup file containing limited personal details of users registered on the UiPath Academy learning platform (on or before March 17, 2020) was accidentally exposed online.  
+	◦	Exposed Data: Real names, email addresses, usernames, company names, location data, and certification details. Passwords, financial details, and core product code/customer data were not exposed.  
+	◦	Source: Vendor disclosure emailed to affected customers and reported by cybersecurity media (Security Affairs, ZDNet).  
+	•	Service Failures / Outages: UiPath Automation Cloud periodically records minor regional micro-outages (tracked on status.uipath.com), but there are no recorded instances of sustained, global multi-day outages impacting enterprise core operations. 
+	•	Lawsuits: Standard shareholder securities class actions were filed following post-IPO stock price adjustments in 2021–2022. There are no public lawsuits on record regarding customer data misuse, privacy violations, or major security breaches.

@@ -1,0 +1,6 @@
+•	Integration Methods: Integrates via OAuth 2.0 (Client Credentials grant type) and server-to-server API Keys for Enterprise API access, alongside pre-built connectors for financial/ERP systems (NetSuite, Coupa, SAP), HRIS tools, and Identity Providers (Okta, Azure AD/Entra ID).  
+	•	Data Export & Lock-in Risk: 
+	◦	Data Export: Contract data, application catalogs, and report dashboards can be exported in standard formats (CSV, JSON, PDF).  
+	◦	Lock-in Risk: Moderate to High. While raw contract files can be exported, switching vendors requires disconnecting and re-establishing all API permissions across financial and identity systems, re-building taxonomy mappings, and re-setting contract renewal notification triggers in a new platform. 
+	•	Known Integration Failures / Breaking Changes: Legacy API tokens were deprecated in favor of Zylo Enterprise API. Users occasionally report manual effort required when financial line-item descriptions fail to map automatically to known SaaS vendors.  
+	•	Underlying Dependencies: Heavily dependent on AWS cloud infrastructure, third-party AI models (Anthropic Claude) for automated contract parsing, and the availability of continuous API streams from third-party SaaS providers (SSO, ERP, and expense management tools).

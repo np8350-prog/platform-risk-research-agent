@@ -1,0 +1,22 @@
+1. Data Breaches & Infrastructure Leaks
+	•	Status: No customer data breaches reported. 
+	•	Details: As of August 2026, there are no documented instances of unauthorized intrusions into Cohere's production infrastructure resulting in customer PII, corporate databases, or private API keys being exfiltrated. 
+	•	How Known: Industry threat reports, security disclosure databases, and vendor privacy trackers. 
+2. Major Outages & Service Failures
+	•	Status: High Uptime (~99.9%+ availability). 
+	•	Notable Incidents: 
+	◦	July 23, 2026: Cohere reported a 50-minute "Dashboard Login Service Disruption" that temporarily prevented developers from accessing administrative settings and generating API keys. Core inference API endpoints remained largely functional.  
+	◦	Historical Pattern: Automated status monitors track an average of 1–3 minor incidents per quarter (mostly localized latency spikes or dashboard login delays), with a median resolution time under 60 minutes.  
+	•	How Known: Official vendor status updates (status.cohere.com) and third-party availability tracking platforms (IsDown, Statuspy). 
+3. Public Security Incidents & Vulnerability Disclosures
+Terrarium Sandbox Remote Code Execution (CVE-2026-5752)
+	•	Date: Disclosed April 2026. 
+	•	Incident: Security researchers discovered a critical vulnerability (CVSS score 9.3) in Terrarium, Cohere's open-source Python sandbox used to execute untrusted code. The flaw stemmed from a JavaScript prototype chain traversal within the Pyodide WebAssembly runtime environment.  
+	•	Impact: Attackers could break out of the execution sandbox without prior user privileges, allowing arbitrary system command execution with root privileges on host servers.  
+	•	How Known: Public CVE records and cybersecurity news coverage (The Hacker News).  
+4. Lawsuits Related to Data Handling, Copyright & Security
+Publishers Class Action Copyright Lawsuit (Advance Local Media v. Cohere)
+	•	Date: Filed February 2025 in U.S. District Court for the Southern District of New York (SDNY); ongoing through 2026. 
+	•	Allegations: A coalition of 14 major media publishers—including Condé Nast (The New Yorker, Vogue), The Atlantic, Forbes, and Vox Media—sued Cohere for systematic copyright and trademark infringement. The complaint alleges that Cohere unlawfully scraped over 4,000 copyrighted articles (allegedly bypassing paywalls and robots.txt scraper restrictions) to train its Command model family and power its real-time Retrieval-Augmented Generation (RAG) search features without paying licensing fees.  
+	•	Cohere’s Position: Cohere publicly rejected the lawsuit as "frivolous and misguided," asserting that its model training processes constitute transformative fair use and comply with intellectual property standards. 
+	•	How Known: SDNY court filings and legal press (BakerHostetler Case Tracker, ComplexDiscovery).

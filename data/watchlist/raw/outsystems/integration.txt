@@ -1,0 +1,22 @@
+failures / breaking changes
+I found:
+	•	normal platform upgrade concerns
+	•	community discussions about security configuration mistakes
+	•	concerns about platform dependency
+I did not find a major public breaking-change event that caused widespread customer migration.
+
+Dependency risks
+OutSystems depends on:
+	•	cloud infrastructure providers such as AWS (OutSystems("https://www.outsystems.com/-/media/files/legal/list-of-sub-processors.pdf?utm_source=chatgpt.com"))
+	•	customer enterprise systems
+	•	its own proprietary runtime/platform
+AI features may introduce additional dependencies depending on the AI services configured.
+
+Lock-in assessment
+Area|Risk|
+Data lock-in|Low–Medium|
+Application lock-in|High|
+Workflow/business logic lock-in|High|
+Infrastructure dependency|Medium|
+Migration complexity|Medium–High|
+Overall conclusion: OutSystems is a mature enterprise low-code platform with strong enterprise adoption and compliance posture. The main strategic risk is platform dependency: once an organization builds hundreds of mission-critical applications inside OutSystems, replacing it becomes a significant modernization project rather than a simple vendor switch.

@@ -1,0 +1,13 @@
+confidence_stability: limited
+source_type_stability: self-reported
+confidence_incidents: limited
+source_type_incidents: verified (bug bounty writeup, security consultant reports)
+confidence_community: limited
+source_type_community: named rating (G2 4.9/5, small sample of 16 reviews)
+confidence_compliance: limited
+source_type_compliance: self-reported (source explicitly states all compliance info is Dust's own claims, independent verification not accessible)
+confidence_data_handling: limited
+source_type_data_handling: self-reported (privacy analysis flags concerns - Trust Score 46/100 per Nerq)
+confidence_integration: limited
+source_type_integration: self-reported (technical docs)
+last_updated: 2026-08-07

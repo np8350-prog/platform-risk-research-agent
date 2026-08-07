@@ -1,0 +1,25 @@
+Data collected
+	•	Customer account information.
+	•	User identity and authentication data.
+	•	Compliance evidence.
+	•	Audit artifacts.
+	•	Security telemetry from connected SaaS applications.
+	•	Configuration and metadata from integrations.
+	•	Website analytics for visitors. (Drata("https://drata.com/legal?utm_source=chatgpt.com"))
+Hosting
+	•	Uses Amazon Web Services (AWS) infrastructure.
+	•	Public documentation references AWS as core infrastructure. (Drata Help Center("https://help.drata.com/en/articles/9792194-what-is-a-subprocessor?utm_source=chatgpt.com"))
+Data retention
+	•	Privacy documentation explains retention is based on legal obligations, contractual requirements, and business needs.
+	•	No simple published fixed retention schedule was found. (Drata("https://drata.com/legal?utm_source=chatgpt.com"))
+Training AI models
+	•	No public statement was found indicating Drata uses customer compliance data to train foundation AI models.
+	•	If they do or do not, this is not clearly stated in publicly available privacy documentation.
+Subprocessors Drata publishes an authorized subprocessors list and Data Processing Addendum. Examples include:
+	•	AWS
+	•	Cloudflare
+	•	Stripe
+	•	Salesforce
+	•	Okta
+	•	Other operational SaaS providers depending on service. (Drata("https://drata.com/legal?utm_source=chatgpt.com"))
+Overall, Drata's documentation is reasonably transparent regarding subprocessors and GDPR commitments, though some operational details (such as exact retention periods) are not explicitly defined.

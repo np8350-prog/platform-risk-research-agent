@@ -1,0 +1,37 @@
+Overview
+Anthropic (legally Anthropic, PBC) is an artificial intelligence research and public benefit corporation headquartered in San Francisco, California. It is best known for its frontier LLM assistant family, Claude.
+
+1. Founding Year & Operational Duration
+	•	Founding Date: January 26, 2021.  
+	•	Founders: Founded by seven former OpenAI employees, led by siblings Dario Amodei (CEO) and Daniela Amodei (President) alongside Jared Kaplan, Jack Clark, Chris Olah, Ben Mann, and Sam McCandlish.  
+	•	Operational Duration: Anthropic has been operating for ~5.5 years.  
+2. Major Funding Rounds & Valuation
+Anthropic is one of the most heavily capitalized private technology companies in history. Key funding milestones include:
+
+	•	Series A (May 2021): $124 million led by Jaan Tallinn, with participation from Dustin Moskovitz and Eric Schmidt.  
+	•	Series B (April 2022): $580 million led by Sam Bankman-Fried and FTX executives (these shares were later liquidated/repurchased through bankruptcy court proceedings).  
+	•	Series C (May 2023): $450 million led by Spark Capital, with Google, Salesforce Ventures, and Zoom.  
+	•	Amazon Strategic Partnership (2023–2024): Amazon initially committed $1.25 billion in September 2023, completed a second $2.75 billion tranche in March 2024, and added an additional $4 billion in late 2024, bringing Amazon's total strategic commitment to $8 billion.  
+	•	Google Strategic Investment (2023–2024): Google invested over $2 billion across convertible notes and direct equity.  
+	•	Series E & Series F (2025): Raised multiple tranches including a $13 billion Series F in late 2025 led by ICONIQ and Lightspeed Venture Partners at a $183 billion post-money valuation.  
+	•	Series G (February 2026): $30 billion round led by Coatue, GIC, MGX, Founders Fund, Microsoft, Nvidia, and Sequoia Capital at a post-money valuation of $380 billion.  
+3. Team Size & Growth
+	•	Current Team Size: Estimated between 3,000 and 3,800+ employees globally.  
+	•	Historical Growth: 
+	◦	2021: ~7 employees  
+	◦	2023: ~240–500 employees  
+	◦	2024: ~1,000+ employees  
+	◦	2025–2026: ~3,000–3,800+ employees  
+	•	Distribution: ~73% of workforce is based in the United States (primarily San Francisco), with expanding operations in the UK, India, Ireland, and Japan.  
+4. Layoffs, Leadership Departures & Shutdown Rumors
+	•	Layoffs: None reported. The company has been aggressively hiring rather than downsizing, expanding its workforce by over 600% between 2023 and 2026.  
+	•	Leadership Changes: 
+	◦	Dario Amodei (CEO) and Daniela Amodei (President) remain at the helm of the company.  
+	◦	Mike Krieger (former Instagram co-founder who joined as Chief Product Officer in 2024) transitioned to lead a specialized research division called "Labs".  
+	◦	Co-founder Jack Clark launched the Anthropic Institute think tank to study long-term AI governance.  
+	◦	The company continues to recruit high-profile researchers from competitors (e.g., Nobel laureate John Jumper joined Anthropic from Google DeepMind).  
+	•	Shutdown Rumors: None. 
+5. Signs of Financial Distress or Acquisition
+	•	Financial Distress: None. The company possesses tens of billions in cash reserves, institutional debt/credit facilities, and backings from major tech hyperscalers. Annual recurring revenue (ARR) has grown significantly into the multi-billion-dollar range.  
+	•	Acquisition Status: Anthropic is not being acquired. It operates as an independent Delaware Public Benefit Corporation (PBC) governed by a Long-Term Benefit Trust to safeguard its safety mandate. Amazon and Google hold non-controlling minority stakes.  
+	•	IPO Outlook: Rather than an acquisition target, financial reports indicate Anthropic submitted a confidential draft S-1 filing to the SEC to explore an Initial Public Offering (IPO).

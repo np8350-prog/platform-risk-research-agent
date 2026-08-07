@@ -1,0 +1,59 @@
+OpenAI company overview
+Founding year and operating history
+	•	Founded: December 2015.
+	•	Headquarters: San Francisco, California, USA.
+	•	Mission: To ensure artificial general intelligence (AGI) benefits all of humanity.
+	•	Time in operation: Approximately 10 years (2015–2026). (OpenAI("https://openai.com/our-structure/?stream=top&utm_source=chatgpt.com"))
+Funding rounds (major publicly known rounds)
+Date|Amount|Key investors|Notes|
+2019|$1B|Microsoft|Strategic investment and cloud partnership.|
+2021|Undisclosed|Microsoft|Additional investment tied to Azure partnership.|
+Jan 2023|~$10B|Microsoft|Expanded multiyear partnership.|
+Feb 2026|$110B|Amazon, NVIDIA, SoftBank|One of the largest private funding rounds ever announced. (OpenAI("https://openai.com/index/scaling-ai-for-everyone/?utm_source=chatgpt.com"))|
+Mar 2026|$122B committed capital|Multiple investors (company announcement)|Company announced closing a new funding round at an $852B post-money valuation. (OpenAI("https://openai.com/index/accelerating-the-next-phase-ai/?utm_source=chatgpt.com"))|
+Note: Various private financing transactions, debt facilities, and secondary transactions have also been reported by industry databases, but not every investment has been independently confirmed by OpenAI. (Owler("https://www.owler.com/company/openai/funding?utm_source=chatgpt.com"))
+
+Team size
+The exact employee count is not published by OpenAI.
+Recent reporting estimates:
+	•	Approximately 4,500 employees (mid-2026). (The Information("https://www.theinformation.com/org-charts/openai?utm_source=chatgpt.com"))
+Because OpenAI is private, this figure should be treated as an estimate rather than an official headcount.
+
+Layoffs, leadership departures, or shutdown rumors
+Layoffs
+	•	No major company-wide layoffs have been publicly announced as of the latest available information.
+	•	OpenAI has generally been expanding hiring rather than reducing headcount.
+Leadership departures
+OpenAI has experienced several high-profile executive and research departures over the past few years, including:
+	•	Mira Murati (former CTO)
+	•	Ilya Sutskever (co-founder and former Chief Scientist)
+	•	Jan Leike (former safety leader)
+	•	John Schulman (co-founder)
+	•	Several senior safety and alignment researchers
+More recently, OpenAI has continued reorganizing its research and safety organization, with additional leadership changes reported. (The Information("https://www.theinformation.com/org-charts/openai?utm_source=chatgpt.com"))
+Shutdown rumors
+	•	There are no credible reports indicating OpenAI is shutting down.
+	•	Despite intense competition and high operating costs, the company continues to release new products, expand infrastructure, and raise significant capital. (OpenAI("https://openai.com/index/openai-launches-the-deployment-company/?utm_source=chatgpt.com"))
+
+Financial distress or acquisition signs
+Financial distress
+There are no reliable indications that OpenAI is in imminent financial distress.
+However:
+	•	The company is widely reported to spend very large amounts on AI infrastructure, GPUs, research, and data centers.
+	•	It has historically operated with substantial losses while pursuing rapid growth, which is common among frontier AI companies.
+	•	The scale of its recent funding rounds suggests investors continue to support its long-term strategy. (OpenAI("https://openai.com/index/scaling-ai-for-everyone/?utm_source=chatgpt.com"))
+Acquisition
+	•	No credible evidence suggests OpenAI is being acquired.
+	•	Instead, OpenAI has made acquisitions itself (for example, to strengthen deployment capabilities) and continues to operate independently under its public benefit corporation structure controlled by the OpenAI Foundation. (OpenAI("https://openai.com/index/openai-launches-the-deployment-company/?utm_source=chatgpt.com"))
+
+Summary
+Topic|Status|
+Founded|2015|
+Years operating|~10 years|
+Employee count|~4,500 (estimated)|
+Major funding|Hundreds of billions of dollars raised across recent rounds, including $110B and $122B announcements in 2026|
+Mass layoffs|No confirmed company-wide layoffs|
+Leadership departures|Yes, several high-profile executives and researchers have left over the past few years|
+Shutdown risk|No credible evidence|
+Financial distress|High spending, but no reliable evidence of imminent distress|
+Acquisition|No credible acquisition reports; OpenAI remains independent|

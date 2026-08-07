@@ -1,0 +1,22 @@
+1. Founding Year & Operational Duration
+	•	Founding Date: 2019. 
+	•	Founders: Founded in Toronto, Canada by Aidan Gomez (CEO, co-author of the landmark 2017 Transformer paper "Attention Is All You Need"), Ivan Zhang, and Nick Frosst (former Google Brain researcher). 
+	•	Operational Duration: Cohere has been operating for ~7 years. 
+2. Major Funding Rounds & Valuation
+Cohere has raised over $1.6 billion in institutional capital, positioning itself as a primary enterprise-focused alternative to OpenAI and Anthropic:
+	•	Early Funding (2021–2022): Raised $40 million Series A led by Index Ventures (2021), followed by a $125 million Series B in 2022 led by Tiger Global.
+	•	Series C (June 2023): Raised $270 million at a $2.2 billion valuation, led by Inovia Capital, with participation from Nvidia, Oracle, Salesforce Ventures, and Index Ventures.
+	•	Series D (August–September 2025): Raised $600 million ($500M initial + $100M extension) at a $7 billion valuation. Key investors included Radical Ventures, Inovia Capital, Nvidia, AMD, Salesforce Ventures, Cisco Investments, PSP Investments, and the Business Development Bank of Canada (BDC). 
+	•	Series E Commitments (April 2026): European retail giant Schwarz Group committed €500 million (~$600 million) in structured financing as lead investor for Cohere's Series E round to power sovereign cloud infrastructure. 
+3. Team Size & Geographic Distribution
+	•	Current Team Size: Estimated between 800 and 1,000 employees globally.
+	•	Historical Growth: Workforce grew from ~300 in early 2024 to ~560 in late 2023, reaching nearly 1,000 by 2026. 
+	•	Geographic Hubs: Dual headquarters in Toronto and San Francisco, with regional offices in London, New York, Montreal, Paris, Palo Alto, and Seoul. Approximately 37% of staff is based in Canada, 30% in the U.S., and 14% in the UK. 
+4. Layoffs, Leadership Departures & Shutdown Rumors
+	•	Layoffs: In July 2024, Cohere conducted a minor targeted layoff of ~20 employees (~5% of its workforce at the time) to streamline operations following its Series D funding. No broad or mass layoffs have occurred since. 
+	•	Leadership Stability: Core founders (Aidan Gomez, Ivan Zhang, Nick Frosst) remain in executive leadership. Key executive hires include Joëlle Pineau (Chief AI Officer), Phil Blunsom (Chief Scientist), Martin Kon (President & COO, former YouTube CFO), and Francois Chadwick (CFO). 
+	•	Shutdown Rumors: None.
+5. Financial Health, Mergers & IPO Outlook
+	•	Financial Position: Strong. Cohere generated $240 million in Annual Recurring Revenue (ARR) in 2025 (up 287% YoY from $62 million in 2024), exceeding internal targets. 
+	•	Acquisition Status: Cohere is not being acquired. Instead, it has acted as a buyer, acquiring Canadian AI startups (Otto, Reliant AI) and merging with German AI startup Aleph Alpha in April 2026 to expand its sovereign enterprise footprint across Europe. 
+	•	IPO Outlook: Financial reports indicate Cohere is actively preparing for an Initial Public Offering (IPO) targeted for late 2026.

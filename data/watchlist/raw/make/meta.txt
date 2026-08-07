@@ -1,0 +1,13 @@
+confidence_stability: limited
+source_type_stability: self-reported (acquired by Celonis, financials tied to parent)
+confidence_incidents: limited
+source_type_incidents: verified (status monitor tracked incidents)
+confidence_community: limited
+source_type_community: named ratings (G2, Capterra, GetApp)
+confidence_compliance: limited
+source_type_compliance: self-reported (SOC2/ISO27001/GDPR all vendor's own claim, explicitly stated)
+confidence_data_handling: limited
+source_type_data_handling: self-reported
+confidence_integration: limited
+source_type_integration: self-reported (technical docs)
+last_updated: 2026-08-07

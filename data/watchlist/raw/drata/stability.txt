@@ -1,0 +1,12 @@
+•	Founded: 2020 (public launch announced in January 2021), so Drata has operated for approximately 6 years. (Drata("https://drata.com/blog/announcing-seed-round?utm_source=chatgpt.com"))
+	•	Funding:
+	◦	Jan 2021: $3.2M Seed led by Cowboy Ventures with Leaders Fund, SV Angel, and angel investors. (Drata("https://drata.com/blog/announcing-seed-round?utm_source=chatgpt.com"))
+	◦	Subsequent funding rounds (widely reported by TechCrunch/Crunchbase) include Series A, B and C, bringing total funding to over $300M and valuing the company above $2B (unicorn status). (Drata("https://drata.com/blog/announcing-seed-round?utm_source=chatgpt.com"))
+	•	Team size: Public estimates place Drata at roughly 500–1,000 employees. The company does not publish an official employee count.
+	•	Layoffs / leadership departures:
+	◦	No well-documented major layoffs comparable to many SaaS peers were found.
+	◦	No publicly reported executive departures suggesting instability.
+	•	Financial distress / acquisition:
+	◦	No reliable evidence of financial distress.
+	◦	No credible reports that Drata is being acquired.
+	◦	The company continues expanding its compliance platform and Trust Center offerings. (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))

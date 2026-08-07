@@ -1,0 +1,13 @@
+confidence_stability: limited
+source_type_stability: self-reported
+confidence_incidents: limited
+source_type_incidents: self-reported (search found no incidents; explicitly disclosed as a search result, not a guarantee)
+confidence_community: inferred
+source_type_community: aggregated sentiment, no named rating
+confidence_compliance: strong
+source_type_compliance: verified (SOC2 Type II independent audit reports downloadable; GDPR/CCPA vendor claim; ISO27001 not certified)
+confidence_data_handling: limited
+source_type_data_handling: self-reported (customer data confirmed to flow to Anthropic for processing)
+confidence_integration: limited
+source_type_integration: self-reported (technical docs)
+last_updated: 2026-08-07

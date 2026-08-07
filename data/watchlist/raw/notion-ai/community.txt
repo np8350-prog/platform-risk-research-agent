@@ -1,0 +1,12 @@
+Signal
+User sentiment is mixed, balancing high utility praise with significant concerns over security transparency and pricing.
+Common Complaints
+	•	Security & Liability: Users on Reddit criticize the lack of legal consequences for Notion in data loss scenarios, citing policy language that limits liability for unauthorized disclosure. 
+	•	AI Reliability: Frustration exists regarding Q&A search reliability and the perceived value proposition of Notion AI relative to its cost.
+	•	Privacy Controls: Concerns persist about the vagueness of data usage policies, with some users feeling there are insufficient opt-out mechanisms for enterprise data usage in certain contexts. 
+Common Praise
+	•	Feature Utility: Strong positive feedback for Meeting Notes and AI autofill capabilities. 
+	•	Work Culture: High employee satisfaction (4.3/5 Glassdoor) suggests a stable internal environment, which often correlates with product consistency.
+Sentiment Trends
+	•	Churn Indicators: While no mass exodus is confirmed, discussions on alternatives are driven by security concerns and the Notion Mail shutdown. 
+	•	General Impression: The community views Notion as a powerful but "black box" tool where convenience trades off against granular security control.

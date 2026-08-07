@@ -1,0 +1,27 @@
+Data breaches
+Confirmed public customer data breach: I did not find a publicly disclosed breach involving OutSystems customer data.
+I found no reliable evidence of:
+	•	customer database theft
+	•	ransomware attack
+	•	unauthorized exposure of hosted application data
+	•	major security compromise of OutSystems Cloud
+This does not prove no incidents ever occurred; it means no confirmed public incident was found.
+
+Major outages / service failures
+OutSystems has experienced service incidents.
+Examples:
+	•	July 2026: OutSystems reported an incident affecting Personal Editions on ODC in several regions, where environments failed to wake up correctly. OutSystems published investigation updates and resolution status through its status page. (OutSystems Status("https://status.outsystems.com/?utm_source=chatgpt.com"))
+OutSystems maintains a public status page with historical incidents. (OutSystems Status("https://status.outsystems.com/?utm_source=chatgpt.com"))
+
+Public security incidents / researchers
+I found community discussions about application security risks when developers configure OutSystems applications incorrectly, especially:
+	•	broken access control
+	•	relying only on UI role visibility instead of server-side authorization
+These are application-development risks rather than evidence of an OutSystems platform breach. (Reddit("https://www.reddit.com/r/OutSystems/comments/1rn61gj/ossec_series_1_broken_access_control_in/?utm_source=chatgpt.com"))
+I found no major public researcher disclosure showing OutSystems' own infrastructure was compromised.
+
+Lawsuits related to security/data handling
+I found no significant publicly reported lawsuits against OutSystems specifically alleging:
+	•	customer data mishandling
+	•	security negligence
+	•	breach notification failures

@@ -1,0 +1,5 @@
+•	SOC 2 Status: Compliant (Supports SOC 2 Type I and Type II audits).  
+	•	GDPR Claims: Compliant.  
+	•	ISO 27001 Status: Compliant.  
+	•	Other Certifications: ISO 42001:2023 (AI Management System), HIPAA compliant, PCI DSS readiness templates.  
+	•	Self-Claim vs. Independent Confirmation: These compliance statuses are claims made directly on Sprinto's official Trust Center (trust.sprinto.com). However, Sprinto provides downloadable third-party SOC 2 Type II audit reports and ISO certificates through their Trust Center access request portal under NDA, providing standard independent confirmation.

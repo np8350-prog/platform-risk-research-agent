@@ -1,0 +1,13 @@
+confidence_stability: limited
+source_type_stability: self-reported
+confidence_incidents: limited
+source_type_incidents: self-reported (search found no incidents; explicitly disclosed as a search result, not a guarantee)
+confidence_community: inferred
+source_type_community: aggregated sentiment, no named rating
+confidence_compliance: limited
+source_type_compliance: self-reported (all certs listed as vendor claim in Trust Center; independent audit not confirmed in source)
+confidence_data_handling: limited
+source_type_data_handling: self-reported
+confidence_integration: limited
+source_type_integration: self-reported (technical docs)
+last_updated: 2026-08-07

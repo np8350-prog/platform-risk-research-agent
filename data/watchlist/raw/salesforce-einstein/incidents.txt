@@ -1,0 +1,6 @@
+•	Data Breaches: 
+	◦	Hanna Andersson / Salesforce Commerce Cloud (2019–2020): A malware infiltration on the Salesforce e-commerce platform exposed payment card details and PII for thousands of retail customers. (Source: Public legal filings and state Attorney General notifications).  
+	◦	Farmers Insurance / Salesforce Vendor Incident (2025): Proposed class-action lawsuit alleging that compromised OAuth tokens and credential phishing targeted Salesforce databases, exposing PII for over 1 million policyholders. (Source: Federal court class-action filings and news reports).  
+	•	Major Outages: Salesforce core services experience occasional global disruptions (e.g., major permission script outage in 2019, multi-hour core availability degradation in October 2023). Outages are documented on Salesforce's public status dashboard (status.salesforce.com). 
+	•	Public Security Incidents: Instances of misconfigured Community/Experience Cloud permissions exposed internal records publicly in past years, prompting Salesforce to enforce stricter default guest user access rules and mandatory Multi-Factor Authentication (MFA). 
+	•	Lawsuits: Multiple class-action lawsuits regarding customer data protection and breach notifications, notably Jadin v. Hanna Andersson & Salesforce (2020) and Scott v. Salesforce (2025). (Source: Court records).

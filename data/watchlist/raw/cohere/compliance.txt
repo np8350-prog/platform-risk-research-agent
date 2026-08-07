@@ -1,0 +1,28 @@
+1. SOC 2 Status
+	•	Status: SOC 2 Type II (covering the Trust Services Criteria of Security, Confidentiality, and Availability).  
+	•	Vendor Claim vs. Independent Confirmation: 
+	◦	Vendor Claim: Cohere lists SOC 2 Type II compliance on its website ([cohere.com/security](https://cohere.com/security)) and Trust Center (trustcenter.cohere.com). 
+	◦	Independent Confirmation: Independently confirmed via third-party audit. SOC 2 Type II compliance is validated through an annual independent audit by a licensed CPA firm. The full audit report is available for download directly from Cohere's Trust Portal under a mutual NDA.  
+2. ISO 27001 Status
+	•	Status: ISO 27001 (Information Security Management System) certified.  
+	•	Vendor Claim vs. Independent Confirmation: 
+	◦	Vendor Claim: Published on Cohere’s Trust Center.  
+	◦	Independent Confirmation: Independently confirmed. ISO certification requires formal audits and issuance of an official certificate by an accredited, independent third-party registrar. Cohere provides access to the official third-party ISO 27001 certificate in its document library.  
+3. GDPR Compliance
+	•	Status: GDPR compliant with a standardized multi-jurisdictional Data Processing Addendum (DPA), Standard Contractual Clauses (SCCs), and EU intra-region data routing options.  
+	•	Vendor Claim vs. Independent Confirmation: 
+	◦	Vendor Claim: Vendor self-claim / contractual representation. Cohere self-asserts GDPR compliance in its terms, privacy policies, and DPA.  
+	◦	Independent Confirmation: Not independently certifiable. There is no single, universally recognized global "GDPR certification body." While Cohere uses compliance automation platforms (Secureframe) for internal GDPR training and offers contractual DPAs and Transfer Impact Assessments (TIAs), GDPR compliance remains a vendor-backed contractual commitment rather than an external accredited seal.  
+4. Other Relevant Certifications & Frameworks
+ISO 42001 (Artificial Intelligence Management System)
+	•	Status: ISO 42001 certified.  
+	•	Vendor Claim vs. Independent Confirmation: Independently confirmed. Cohere hosts its official third-party ISO 42001 accreditation certificate on its Trust Portal. 
+HIPAA (Health Insurance Portability and Accountability Act)
+	•	Status: HIPAA Compliant with Business Associate Agreement (BAA) execution available for custom enterprise model engagements.  
+	•	Vendor Claim vs. Independent Confirmation: Vendor claim & contractual BAA offering. Cohere self-asserts HIPAA readiness and offers signed BAAs for qualifying enterprise clients. (Third-party HIPAA assessment reports are made available under NDA via their Trust Center).  
+UK Cyber Essentials
+	•	Status: Certified under the UK Government-backed cybersecurity standard.  
+	•	Vendor Claim vs. Independent Confirmation: Independently confirmed. Official certificates are issued for Cohere Inc. and Cohere UK, LTD through UK accredited bodies. 
+PCI DSS (Payment Card Industry Data Security Standard)
+	•	Status: Not PCI DSS certified for core API prompt processing. 
+	•	Vendor Claim vs. Independent Confirmation: Third-party security reviews confirm that while Cohere’s underlying cloud data center providers (Google Cloud / AWS) hold PCI DSS and HITRUST certifications, Cohere itself does not claim PCI DSS attestation for user prompt payloads.

@@ -1,0 +1,5 @@
+•	Data Collected & Stored: System configurations, cloud environment logs, IAM/directory metadata, employee HR compliance records, policy documentation, and compliance evidence from connected integrations.  
+	•	Hosting Region & Cloud Provider: Solely hosted on Amazon Web Services (AWS). Primary storage regions are us-west-1 (California) and eu-central-1 (Frankfurt, Germany), with us-east-1 (Virginia) used as a secondary disaster recovery location.  
+	•	Data Retention Policy: Defined as contract-based in their Privacy Policy and DPAs; data is retained for the active subscription term plus standard post-termination deletion windows (30–90 days). 
+	•	AI Model Training: Sprinto explicitly discloses on their AI Trust Center that they do NOT train models on customer data.  
+	•	Subprocessors: Uses AWS for cloud hosting and core infrastructure (RDS, KMS, GuardDuty, CloudTrail), alongside specialized SaaS subprocessors for support and transactional notifications. A full live list is available on [trust.sprinto.com/subprocessors](https://trust.sprinto.com/subprocessors).

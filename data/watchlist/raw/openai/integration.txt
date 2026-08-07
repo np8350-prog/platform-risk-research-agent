@@ -1,0 +1,127 @@
+1. Integration options
+OpenAI supports several integration methods, making adoption relatively straightforward.
+APIs
+	•	REST API
+	•	Realtime API
+	•	Responses API
+	•	Embeddings API
+	•	Image, audio, and speech APIs
+	•	Fine-tuning APIs (for supported models)
+Official SDKs
+OpenAI maintains official SDKs for:
+	•	Python
+	•	JavaScript/TypeScript
+	•	Java
+	•	Go
+	•	.NET
+There are also community SDKs for many other languages. OpenAI documents backward compatibility for its v1 REST API and recommends pinning model versions because model behavior can change over time. (OpenAI Platform("https://platform.openai.com/docs/api-reference/backward-compatibility?lang=ruby&utm_source=chatgpt.com"))
+No-code / low-code integrations
+OpenAI integrates with numerous third-party automation platforms, including:
+	•	Microsoft Power Automate
+	•	Zapier
+	•	Make
+	•	Pipedream
+	•	LangChain
+	•	LlamaIndex
+	•	Microsoft Copilot ecosystem
+	•	Various CRM and productivity tools
+These are generally maintained by OpenAI or third-party partners rather than being part of the core API.
+
+2. How easy is it to export data and leave?
+The answer depends on which OpenAI product you're using.
+API customers
+API customers generally experience low lock-in regarding stored data:
+	•	prompts and outputs are under the application's control
+	•	applications usually store conversations in their own database
+	•	the API itself is stateless for most endpoints
+If an application already owns its conversation history, switching to another LLM provider is technically feasible.
+
+ChatGPT consumer
+Users can export personal ChatGPT data through the account export feature.
+However:
+	•	exported conversations are delivered as archives
+	•	recreating workflows in another platform is largely manual
+
+ChatGPT Business
+This is currently a notable pain point.
+Multiple users report that:
+	•	there is no built-in workspace export
+	•	administrators cannot easily export organization-wide chat history
+	•	compliance APIs are reserved for Enterprise
+These reports indicate a higher risk of platform lock-in for Business workspaces, although they are based on user reports rather than official policy. (Reddit("https://www.reddit.com/r/OpenAI/comments/1rh4y4a/chatgpt_business_no_export_data_is_there_any/?utm_source=chatgpt.com"))
+
+3. Integration failures and breaking changes
+Several recurring themes appear.
+Model behavior changes
+Probably the most common complaint.
+Although the API remains compatible, OpenAI explicitly notes that:
+	•	newer model snapshots may produce different outputs
+	•	prompts that worked previously may require adjustment
+OpenAI recommends using pinned model versions and maintaining evaluation suites for production systems. (OpenAI Platform("https://platform.openai.com/docs/api-reference/backward-compatibility?lang=ruby&utm_source=chatgpt.com"))
+
+SDK breaking changes
+OpenAI documents breaking SDK releases.
+Examples include:
+	•	migration guides
+	•	parameter changes
+	•	renamed interfaces
+	•	restructuring of request objects
+For example, the Go SDK contains an explicit migration guide describing breaking API changes introduced to improve ergonomics. (GitHub("https://github.com/openai/openai-go/blob/main/MIGRATION.md?utm_source=chatgpt.com"))
+Likewise, the Agents SDK documentation states that minor version increments can include breaking public-interface changes while the SDK is still evolving. (OpenAI GitHub("https://openai.github.io/openai-agents-python/release/?utm_source=chatgpt.com"))
+
+API migrations
+OpenAI has periodically retired older APIs.
+A recent example is the transition from the Assistants API to the newer Responses API, which prompted community-developed migration tools because some developers found the migration effort significant. (Reddit("https://www.reddit.com/r/SideProject/comments/1vf9ehm/i_built_a_tool_to_migrate_openai_assistants/?utm_source=chatgpt.com"))
+
+4. Dependencies on other services
+OpenAI is not entirely vertically integrated.
+Public documentation identifies several infrastructure dependencies.
+Microsoft Azure
+Azure is one of OpenAI's principal cloud infrastructure partners.
+It provides:
+	•	compute
+	•	networking
+	•	storage
+	•	AI infrastructure
+
+CoreWeave
+OpenAI also relies on CoreWeave for GPU infrastructure and large-scale compute.
+
+Cloudflare
+Cloudflare is used for services such as content delivery and edge networking.
+These dependencies are disclosed in OpenAI's public subprocessor documentation and infrastructure materials. (OpenAI Platform("https://platform.openai.com/docs/models/default-usage-policies-by-endpoint?utm_source=chatgpt.com"))
+
+5. What makes switching away costly?
+The answer varies by use case.
+Low switching costs
+Organizations using OpenAI purely through the REST API with:
+	•	abstracted model interfaces
+	•	provider-agnostic orchestration
+	•	their own prompt management
+	•	self-managed conversation storage
+can often replace OpenAI with another compatible provider relatively quickly.
+
+Moderate switching costs
+Migration effort increases when applications rely heavily on:
+	•	OpenAI-specific APIs (Responses API, Realtime API, Agents SDK)
+	•	function-calling semantics unique to OpenAI
+	•	structured outputs optimized for OpenAI
+	•	embeddings generated by OpenAI (which typically need to be regenerated when changing embedding models)
+
+High switching costs
+Lock-in risk is highest for organizations that:
+	•	build workflows directly inside ChatGPT workspaces
+	•	depend on Custom GPTs
+	•	use proprietary OpenAI agent tooling
+	•	rely on Enterprise governance features
+	•	store significant institutional knowledge inside ChatGPT rather than external systems
+Migrating these workflows can require redesign, manual export (where available), and reimplementation on another platform.
+
+Overall assessment
+Area|Assessment|
+Integration options|Excellent — mature APIs, official SDKs, and broad ecosystem support|
+API portability|Good — REST-based architecture makes provider replacement technically achievable if applications are designed for it|
+Data export|Mixed — consumer exports exist, but Business users have reported limitations; Enterprise offers more robust compliance/export capabilities (Reddit("https://www.reddit.com/r/OpenAI/comments/1rh4y4a/chatgpt_business_no_export_data_is_there_any/?utm_source=chatgpt.com"))|
+Breaking changes|Moderate risk — OpenAI strives for API stability but regularly introduces model updates, SDK changes, and platform migrations that can require developer work (OpenAI Platform("https://platform.openai.com/docs/api-reference/backward-compatibility?lang=ruby&utm_source=chatgpt.com"))|
+Infrastructure dependency|Moderate — OpenAI depends on providers such as Microsoft Azure, CoreWeave, and Cloudflare for core infrastructure rather than operating entirely independently (OpenAI Platform("https://platform.openai.com/docs/models/default-usage-policies-by-endpoint?utm_source=chatgpt.com"))|
+Overall vendor lock-in|Moderate — API users who abstract their integrations face relatively low switching costs, while organizations deeply invested in ChatGPT workspaces, Custom GPTs, or OpenAI-specific platform features may encounter substantially higher migration effort.|

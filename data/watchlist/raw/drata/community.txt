@@ -1,0 +1,19 @@
+General sentiment across Reddit, G2, review sites and industry discussions:
+Common praise
+	•	Strong automation for continuous compliance evidence collection.
+	•	Significantly reduces manual SOC 2 audit work.
+	•	Large integration ecosystem.
+	•	Modern user interface compared with older governance/compliance tools.
+	•	Frequently viewed as a leading competitor to Vanta. (Reddit("https://www.reddit.com/r/BlackberryAI/comments/1ryu65o/drata/?utm_source=chatgpt.com"))
+Common complaints
+	•	Premium pricing, especially for startups.
+	•	Some customers mention implementation can be time-consuming depending on environment complexity.
+	•	Certain integrations require additional configuration or maintenance.
+	•	Feature expansion sometimes increases product complexity.
+Recurring frustrations
+	•	Additional compliance frameworks and advanced capabilities may require higher pricing tiers.
+	•	Audit preparation still requires human involvement despite automation.
+Users leaving for competitors
+	•	Some discussions compare Drata with Vanta, Secureframe and Thoropass primarily based on pricing or preferred workflow.
+	•	No widespread pattern suggesting customers are abandoning Drata because of reliability issues.
+	•	Recent Reddit discussion following another vendor's controversy actually showed positive sentiment toward Drata rather than migration away from it. (Reddit("https://www.reddit.com/r/BlackberryAI/comments/1ryu65o/drata/?utm_source=chatgpt.com"))

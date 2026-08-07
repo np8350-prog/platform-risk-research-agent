@@ -1,0 +1,18 @@
+practices differ sharply between Enterprise and non-Enterprise tiers, particularly regarding AI data retention. 
+
+Data Collection and Hosting
+	•	Scope: Collects all pages, databases, and workspace content. Notion holds encryption keys (no default end-to-end encryption). 
+	•	Infrastructure: Data hosted on AWS, Cloudflare, and Google Cloud.   Notion Mail specifically utilized AWS us-west-2. 
+	•	Subprocessors: Data is shared with AWS, Anthropic, OpenAI, Runlayer, Stripe, and Cloudflare. 
+AI Data Retention Policy
+Plan Tier|LLM Data Retention|Training Usage|
+Enterprise|0 Days (Zero Retention API)|No (Contractually prohibited)|
+Free / Plus / Business|Up to 30 Days|No (By default)|
+Embeddings|Deleted within 60 days of page/workspace deletion|N/A|
+
+	•	Model Training: Notion states it does not use customer data to train models by default.   Contractual agreements with subprocessors prohibit this. However, some analyses describe the documentation as "vague," and one source claimed "no opt-out mechanisms" in specific enterprise contexts, suggesting potential ambiguity.
+	•	Encryption: Data is encrypted in transit (TLS 1.2+). 
+Limitations & Unknowns
+	•	HIPAA Verification: Critical conflict exists between vendor claims (HIPAA compliant for Enterprise) and third-party audits (No BAA). Independent verification is required before handling Protected Health Information (PHI). 
+	•	Financial Distress Indicators: While valuation is high, specific 2026 financial health metrics (revenue, burn rate) are not public. Layoff rumors on forums remain anecdotal without official confirmation.
+	•	API Vulnerability Remediation: Reports indicate the unauthenticated API leak was still active as of April 2026; current remediation status beyond "exploring fixes" is unconfirmed.

@@ -1,0 +1,178 @@
+Retool customer data handling review
+This review is based primarily on Retool's own Trust Center, privacy/security documentation, DPA, and product documentation. Retool provides reasonably detailed enterprise security documentation, but some operational details (especially exact retention periods and complete data flows) are not publicly specified. (Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))
+
+1. What data Retool collects and stores
+Data Retool stores directly
+Retool states that when customers connect Retool to their own databases or APIs, Retool generally does not store the underlying customer data from those systems.
+Instead, Retool stores things such as:
+	•	user metadata
+	•	application definitions/structures
+	•	encrypted credentials for connected data sources
+	•	configuration information
+	•	account and workspace information
+Queries to external data sources are proxied through Retool's backend. (Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))
+Examples of data Retool may store:
+Account and user information
+	•	name
+	•	email address
+	•	organization/workspace information
+	•	user roles and permissions
+	•	authentication information
+Application metadata
+	•	Retool app configurations
+	•	components
+	•	workflows
+	•	queries
+	•	scripts
+	•	resource definitions
+Security-related data
+	•	audit logs (depending on plan)
+	•	access information
+	•	authentication events
+	•	permissions data
+Connected data credentials
+Retool stores encrypted credentials required to connect to external systems.
+(Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))
+
+Customer business data
+This depends heavily on how Retool is deployed.
+Typical Retool Cloud usage
+If a Retool app queries:
+	•	PostgreSQL
+	•	Snowflake
+	•	Salesforce
+	•	REST APIs
+	•	internal databases
+Retool says it generally passes requests through rather than storing the full dataset.
+However:
+	•	query results may temporarily exist in memory
+	•	caching features may store results temporarily
+	•	Retool Database stores data inside Retool-managed infrastructure
+(Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))
+
+2. Where data is hosted
+Cloud provider
+Retool Cloud is hosted on:
+	•	Amazon Web Services (AWS)
+Retool states that Retool Cloud is built on AWS infrastructure. (Retool("https://retool.com/partners/aws?utm_source=chatgpt.com"))
+For Retool Database specifically:
+	•	customer data is stored in AWS
+	•	Retool Database uses managed PostgreSQL infrastructure through external vendors
+(Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))
+
+Hosting regions
+Retool does not publicly provide a complete global architecture map.
+Publicly available information indicates:
+	•	AWS infrastructure is used
+	•	enterprise customers can choose deployment models
+	•	self-hosted deployments allow customers to keep Retool inside their own infrastructure/VPC
+(Retool("https://retool.com/govern-enterprise-apps/self-hosted?utm_source=chatgpt.com"))
+For regulated environments, Retool offers:
+Self-hosted deployment
+Customers can deploy Retool:
+	•	inside their own AWS account
+	•	behind their own VPN
+	•	inside their own VPC
+This gives customers control over:
+	•	data residency
+	•	networking
+	•	infrastructure boundaries
+(Retool("https://retool.com/govern-enterprise-apps/self-hosted?utm_source=chatgpt.com"))
+
+Data residency clarity
+Retool is relatively clear about infrastructure choice but less specific publicly about:
+	•	exact default storage regions
+	•	geographic replication
+	•	backup locations
+If a customer requires strict EU-only residency or country-specific storage guarantees, they would likely need confirmation through Retool Enterprise agreements.
+
+3. Data retention policy
+Published retention policy
+Retool does not appear to publish a single comprehensive public retention schedule covering every data category.
+The available documentation describes:
+	•	deletion processes
+	•	customer-controlled data sources
+	•	caching behavior
+	•	subprocessors
+but does not provide a public table such as:
+Data type|Retention period|
+Logs|X days|
+Backups|X days|
+User data|X days|
+(Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))
+
+Specific retention details available
+Query/workflow caching
+If enabled:
+	•	Retool may temporarily cache query results
+	•	customers can disable caching
+	•	customers can invalidate cached data
+(Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))
+
+Customer deletion requests
+Retool's DPA describes obligations around deletion and processing of personal data after termination or request, subject to legal obligations. (Retool("https://retool.com/dpa.pdf?utm_source=chatgpt.com"))
+
+Assessment
+Retention transparency: Medium
+Retool provides enough information for enterprise security review, but the public documentation is less granular than some larger SaaS vendors.
+
+4. Does Retool use customer data to train AI models?
+Short answer: Retool states that customer data is not used broadly for AI training.
+Retool's AI features are designed to connect to customer data sources and use them to build applications/workflows, but Retool does not state that customer business data is used to train general Retool AI models.
+(Retool("https://retool.com/integrations/retool-ai?utm_source=chatgpt.com"))
+
+Important distinction
+Retool AI can connect with external AI providers, including:
+	•	OpenAI
+	•	Anthropic
+	•	Amazon Bedrock
+Depending on configuration, data may be processed by those model providers.
+(Retool("https://retool.com/integrations/retool-ai?utm_source=chatgpt.com"))
+For example:
+	•	If a customer configures Retool AI with OpenAI models, OpenAI's data-processing terms may apply.
+	•	If using Amazon Bedrock, AWS AI service terms may apply.
+(Retool("https://retool.com/integrations/retool-ai?utm_source=chatgpt.com"))
+
+Assessment
+Question|Answer|
+Does Retool use customer apps/data to train Retool models?|No public evidence found|
+Does Retool AI send data to external AI providers?|Yes, depending on configuration|
+Is AI data handling configuration-dependent?|Yes|
+
+5. Subprocessors and third parties
+Retool maintains subprocessors for providing the service.
+Its DPA states that Retool may engage:
+	•	affiliates
+	•	third-party subprocessors
+and requires subprocessors to have contractual data protection obligations. (Retool("https://retool.com/dpa.pdf?utm_source=chatgpt.com"))
+Known infrastructure-related providers include:
+Provider|Purpose|
+AWS|Cloud infrastructure|
+Managed database/infrastructure vendors|Hosting components|
+AI providers (depending on customer configuration)|AI model processing|
+(Retool("https://retool.com/integrations/retool-ai?utm_source=chatgpt.com"))
+
+Overall assessment
+Area|Assessment|
+Data minimization|Good — Retool often avoids storing connected business data|
+Hosting transparency|Good — AWS disclosed, self-hosting available|
+Data residency clarity|Medium — details require enterprise discussion|
+Retention transparency|Medium — some controls documented, full schedule not public|
+AI data handling|Good but configuration-dependent|
+Subprocessor transparency|Good — DPA and trust documentation available|
+Key risks to evaluate before adopting Retool
+	1	Connected-system exposure
+	◦	Retool often acts as a gateway into internal databases and APIs.
+	◦	Access controls and permissions become critical.
+	2	AI configuration risk
+	◦	AI features may involve third-party model providers depending on setup.
+	3	Retention ambiguity
+	◦	Enterprise customers should request exact retention periods for:
+	▪	logs
+	▪	backups
+	▪	audit data
+	▪	cached query results
+	4	Deployment choice matters
+	◦	Retool Cloud = easier operations.
+	◦	Self-hosted Retool = more control over sensitive data and residency.
+Overall, Retool has a relatively mature enterprise data posture, but organizations with strict regulatory requirements should request the SOC 2 report, DPA, subprocessor list, and exact hosting-region commitments before deployment. (Retool("https://try.retool.com/resource/trust-guide?utm_source=chatgpt.com"))

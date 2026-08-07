@@ -1,0 +1,11 @@
+Certification|Status|Evidence|
+SOC 2|SOC 2 Type II|Listed in Drata Trust Center (vendor claim). (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+SOC 3|Available|Vendor Trust Center. (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+GDPR|Claims GDPR compliance and publishes GDPR documentation and DPA|Vendor claim. (Drata("https://drata.com/legal?utm_source=chatgpt.com"))|
+ISO 27001|ISO/IEC 27001:2022|Listed in Trust Center (vendor claim). (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+ISO 27017|Certified|Vendor claim. (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+ISO 27018|Certified|Vendor claim. (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+ISO 42001|Certified|Vendor claim. (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+HIPAA|Supports HIPAA compliance and lists HIPAA in Trust Center|Vendor claim. (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+CCPA|Supported|Vendor claim. (Drata("https://trust.drata.com/?utm_source=chatgpt.com"))|
+Note: These certifications and compliance claims are published by Drata itself through its Trust Center. Independent audit reports (e.g., SOC reports or ISO certificates) are typically shared only under NDA with customers.

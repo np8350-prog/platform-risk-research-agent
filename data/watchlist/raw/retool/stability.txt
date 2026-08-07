@@ -1,0 +1,64 @@
+Retool company overview
+Founding year and operating history
+	•	Founded: 2017
+	•	Founder & CEO: David Hsu
+	•	Headquarters: San Francisco, California, USA
+	•	Y Combinator: Winter 2017 batch
+	•	Time in operation: Approximately 9 years (2017–2026).
+
+Funding rounds
+Retool has taken an unconventional fundraising approach by raising relatively small rounds at increasing valuations.
+Date|Round|Amount|Lead / Notable investors|
+Oct 2020|Series B|$50M|Sequoia Capital (lead), founders of GitHub, Stripe, Plaid, Segment, PagerDuty, Gusto, Y Combinator affiliates|
+Dec 2021|Series C|$20M|Existing investors including Sequoia Capital, Elad Gil, Nat Friedman, Daniel Gross, Patrick & John Collison|
+Jul 2022|Series C2|$45M|Existing investors including Sequoia, Elad Gil, Nat Friedman, Daniel Gross, Patrick & John Collison|
+Total publicly reported funding: approximately $140 million, according to CB Insights.
+
+Team size
+There is no official employee count published by Retool.
+Recent estimates include:
+	•	~300 employees (Y Combinator company profile).
+Because Retool is privately held, this should be treated as an estimate rather than an official figure.
+
+Layoffs, leadership departures, or shutdown rumors
+Layoffs
+As of the latest available public information:
+	•	No confirmed company-wide layoffs have been announced by Retool.
+	•	I did not find credible reporting of broad workforce reductions similar to those seen at many SaaS companies.
+Leadership departures
+	•	I found no widely reported departures involving the CEO or other key executives.
+	•	David Hsu continues to serve as CEO according to the company's current materials.
+Shutdown rumors
+I found no credible reports suggesting Retool is shutting down or winding down operations.
+On the contrary, the company continues to announce:
+	•	new AI products,
+	•	AWS partnerships,
+	•	enterprise platform releases,
+	•	hiring.
+
+Financial distress or acquisition
+Financial distress
+I found no reliable evidence that Retool is experiencing financial distress.
+Recent public signals include:
+	•	continued product launches,
+	•	strategic collaboration with AWS,
+	•	enterprise AI initiatives,
+	•	ongoing hiring,
+	•	active press releases through 2026.
+Like many private SaaS companies, Retool operates in a competitive market affected by AI disruption, but there are no credible reports indicating insolvency, fundraising difficulties, or emergency restructuring.
+Acquisition
+I found no credible reports that Retool is being acquired or is actively seeking a buyer.
+Retool remains an independent private company.
+
+Summary
+Topic|Status|
+Founded|2017|
+Years operating|~9 years|
+Team size|~300 employees (estimated)|
+Public funding|~$140M across multiple rounds|
+Major investors|Sequoia Capital, Elad Gil, Nat Friedman, Daniel Gross, Patrick & John Collison, other prominent technology founders|
+Company-wide layoffs|No confirmed reports found|
+Executive departures|No major publicly reported departures found|
+Shutdown rumors|No credible evidence|
+Financial distress|No reliable evidence|
+Acquisition|No credible acquisition reports|

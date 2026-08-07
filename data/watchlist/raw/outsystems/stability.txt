@@ -1,0 +1,16 @@
+OutSystems overview
+	•	Founded: 2001 by Paulo Rosado in Lisbon, Portugal. The company has operated for approximately 25 years (2001–2026). (Wikipedia("https://en.wikipedia.org/wiki/OutSystems?utm_source=chatgpt.com"))
+	•	Funding rounds (publicly known):
+	◦	2018: Raised $360M from KKR and Goldman Sachs (reported as a major growth investment). (Wikipedia("https://en.wikipedia.org/wiki/OutSystems?utm_source=chatgpt.com"))
+	◦	2021: Raised $150M at a reported $9.5B valuation, led by Abdiel Capital and Tiger Global. (Wikipedia("https://en.wikipedia.org/wiki/OutSystems?utm_source=chatgpt.com"))
+	◦	2022: Reported investment from KKR of approximately €231.8M ($228M). Forbes reported this implied a valuation reduction from the prior $9.5B level to roughly $4.3B. (Forbes("https://www.forbes.com/sites/kenrickcai/2023/01/11/outsystems-cloud-startup-valuation-slashed-in-half-after-2022-funding-round/?utm_source=chatgpt.com"))
+	•	Team size: I did not find a current official employee count published by OutSystems. Public estimates vary, but I could not verify a reliable current number.
+	•	Layoffs / leadership departures:
+	◦	I found community discussion suggesting OutSystems had layoffs and a hiring freeze around 2023–2024, but I did not find a formal company announcement confirming the scale. (Reddit("https://www.reddit.com/r/devpt/comments/1ksw3r8?utm_source=chatgpt.com"))
+	◦	OutSystems changed CEO leadership from founder Paulo Rosado to Woodson Martin (reported publicly). (TechRadar("https://www.techradar.com/pro/the-ai-revolution-is-oversold-says-outsystems-ceo-as-it-launches-new-agentic-ai-platform?utm_source=chatgpt.com"))
+	•	Shutdown rumors: I found no credible reports that OutSystems is shutting down.
+	•	Financial distress / acquisition risk:
+	◦	There is no evidence of insolvency or imminent failure.
+	◦	There was evidence of a valuation reset after the 2022 financing round, which indicates investor repricing rather than necessarily financial distress. (Forbes("https://www.forbes.com/sites/kenrickcai/2023/01/11/outsystems-cloud-startup-valuation-slashed-in-half-after-2022-funding-round/?utm_source=chatgpt.com"))
+	◦	I found no credible acquisition announcement.
+Assessment: OutSystems appears financially stable as a long-running enterprise software vendor. The main concern is not survival risk but market pressure: competition in low-code, AI-assisted development, and enterprise software modernization.

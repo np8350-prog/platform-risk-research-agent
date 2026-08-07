@@ -1,0 +1,18 @@
+Notion has experienced specific security vulnerabilities and a denied breach allegation, alongside historical infrastructure issues. 
+
+Data Breaches and Vulnerabilities
+Incident|Date Identified|Details|Source Status|
+Unauthenticated API Leak|2022 (Active as of Apr 2026)|Exposed names, emails, and profile images of contributors on public pages via unauthenticated API.|Security Researchers|
+Alleged 110M Record Breach|2026|Threat actor claimed dataset of 110M records. 
+
+ Notion investigated and declared claims fabricated; no evidence of unauthorized access. 
+|Vendor Disclosure / News|
+AI Prompt Injection|Recent|AI agents vulnerable to data exfiltration via malicious PDFs/prompt injection. 
+|Security Researchers|
+
+	•	Resolution Status: Notion acknowledged the API metadata leak and is exploring fixes like email proxying. Security updates were implemented to detect AI injection patterns. 
+Service Outages
+	•	DNS Outage (2021): A significant outage exposed centralized reliability risks. 
+	•	Current Status: As of August 2026, status pages report systems are fully operational with no active major incidents. 
+Lawsuits
+	•	No specific filed lawsuits related to data handling or security were identified in the provided research context.

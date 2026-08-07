@@ -1,0 +1,27 @@
+An overview of Cohere's data governance, privacy rules, retention schedules, and cloud infrastructure details how customer data is processed:
+
+1. What Data They Collect & Store
+	•	Prompts & Model Outputs: User text queries, embeddings, context documents, tool calls, and generated completions. 
+	•	Uploaded Datasets: Custom fine-tuning datasets and RAG context files uploaded via the Cohere Datasets API. 
+	•	Account & Billing Data: Name, business email, payment details (processed via Stripe), and enterprise workspace metadata.  
+	•	Technical Telemetry & Log Files: IP addresses, API key identifiers, latency metrics, browser/device signatures, and error/diagnostic logs.  
+2. Where Data is Hosted (Region & Cloud Provider)
+	•	First-Party Hosting: Cohere’s primary first-party API infrastructure is hosted on Google Cloud Platform (GCP) servers located in the US-Central region.  
+	•	Data Isolation Options (VPC / On-Premise): 
+	◦	Managed Cloud Partners: Cohere models (Command R/R+, Rerank, Embed) can be deployed directly within a customer's own cloud environment via AWS Bedrock, Google Cloud Vertex AI, or Microsoft Azure. This allows enterprise teams to lock data strictly to their preferred geographic region (e.g., Frankfurt, Dublin, Tokyo).  
+	◦	Ephemeral Processing: For first-party API deployments, Cohere offers an "ephemeral" configuration mode where customer data transits strictly in-memory during inference and is purged immediately without being written to disk.  
+3. Data Retention Policy
+	•	Standard API Prompts & Generations: Logged prompts and outputs are automatically deleted after 30 days by default. Data may be retained longer only if flagged for abuse/security violations or required under custom enterprise legal contracts.  
+	•	Datasets API Storage: Fine-tuning files and evaluation datasets uploaded to Cohere’s Datasets API are automatically purged after 30 days (or can be manually deleted earlier via API/Dashboard controls).  
+	•	Ephemeral Mode: 0-day retention (purged immediately post-processing).  
+4. Use of Customer Data for Model Training
+	•	Commercial & API Customers: No. Cohere explicitly commits in its Data Usage Policy and enterprise contracts not to use customer prompts, generated completions, fine-tuning datasets, or API payloads to train its foundation models.  
+	•	Cloud Hyperscaler Deployments: When accessed through AWS Bedrock or GCP Vertex AI, native cloud platform guarantees strictly enforce that zero customer data is used for model training.  
+5. Subprocessors & Third-Party Sharing
+Cohere publishes its subprocessor directory transparently on its Trust Portal ([trustcenter.cohere.com/subprocessors](https://trustcenter.cohere.com/subprocessors)). Key third parties include:
+Category|Subprocessor(s)|Primary Purpose / Location|
+Cloud Infrastructure|Google Cloud Platform (GCP)|Core model hosting, storage, and compute (USA)|
+Customer Support|Salesforce, Forethought|Enterprise support ticketing and user communications (USA)|
+Security & Compliance|Wiz|Cloud infrastructure security monitoring (USA)|
+Engineering & Observability|Sentry, New Relic, Segment, LaunchDarkly|Platform error tracking, performance monitoring, and feature flagging (USA)|
+App Delivery & Hosting|Vercel, Retool|Web application hosting and internal platform delivery (USA)|

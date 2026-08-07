@@ -1,0 +1,5 @@
+•	SOC 2: Type II certified for UiPath cloud offerings. (Independently audited by an independent CPA firm; reports available to enterprise clients under NDA).  
+	•	ISO/IEC 27001: ISO 27001:2013 certified (along with ISO 27017 and ISO 27018 guidelines). (Independently audited by ANAB/UKAS accredited auditors).  
+	•	GDPR: Compliant across global operations. Acts as Data Processor for cloud products and Data Controller for customer account data. (Vendor policy commitment backed by standard Data Processing Agreements).  
+	•	HIPAA: Supports HIPAA compliance by entering into Business Associate Agreements (BAAs) with covered entities. (Vendor offering/contractual mechanism).  
+	•	Other Certifications: Australian IRAP assessed for SaaS/PaaS government infrastructure; HIPAA-compliant options; FedRAMP Moderate authorization in process/offered for dedicated U.S. Public Sector instances.

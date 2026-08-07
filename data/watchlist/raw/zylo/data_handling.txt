@@ -1,0 +1,8 @@
+•	Data Collected & Stored: SaaS application inventory metadata, accounting/financial transaction logs, contract terms and renewal dates, employee user accounts, single sign-on (SSO) usage activity, and API connection credentials.  
+	•	Hosting Region & Cloud Provider: Solely hosted on Amazon Web Services (AWS) infrastructure in the United States, utilizing logically separated production environments. 
+	•	Data Retention Policy: Retains customer data for the duration of the active subscription contract. Upon contract termination or verifiable user deletion requests, data is removed according to standard post-termination schedules. 
+	•	AI Model Training: Zylo explicitly states in its AI system development policies that customer project data and prompts are transmitted to AI providers (e.g., Anthropic) for execution, but raw, identifiable customer data is not used to train general-purpose AI models that benefit other clients.  
+	•	Subprocessors: Publicly disclosed at trust.zylo.com. Key subprocessors include: 
+	◦	Infrastructure & Security: Amazon Web Services (AWS), Datadog, CrowdStrike, LaunchDarkly  
+	◦	AI & Data Analytics: Anthropic (Claude), Databricks, Sisense, Mixpanel  
+	◦	Support & Communication: Salesforce, Zendesk, SendGrid, Atlassian, Slack

@@ -1,0 +1,84 @@
+Here's a summary of OpenAI's publicly stated compliance posture, with a distinction between vendor claims and independent confirmation.
+Compliance area|Status|Evidence type|
+SOC 2|SOC 2 Type II|Independently confirmed (third-party audit), reported by OpenAI|
+GDPR|Supports customers' GDPR compliance; offers DPA|Vendor claim|
+ISO 27001|ISO/IEC 27001:2022 certified|Certification claimed by OpenAI; certification itself is issued by an accredited certification body|
+ISO 27017|Certified|Certification claimed by OpenAI|
+ISO 27018|Certified|Certification claimed by OpenAI|
+ISO 27701|Certified|Certification claimed by OpenAI|
+ISO 42001|Certified|Certification claimed by OpenAI|
+HIPAA|HIPAA-eligible offerings with Business Associate Agreement (BAA)|Vendor claim|
+PCI DSS|PCI DSS compliant for delegated payment-processing components|Vendor claim|
+CSA STAR Level 1|Listed|Vendor self-assessment/registration|
+SOC 2
+Status: SOC 2 Type II
+OpenAI states that the infrastructure supporting the API and business ChatGPT offerings has undergone an independent SOC 2 Type II examination covering:
+	•	Security
+	•	Availability
+	•	Confidentiality
+	•	Privacy
+A SOC 2 Type II report is performed by an independent CPA firm and evaluates the effectiveness of controls over a period of time, making it stronger evidence than a Type I report. OpenAI does not publicly identify the auditing firm on its main security page, but the examination itself is described as independent. (OpenAI("https://openai.com/security-and-privacy/?utm_source=chatgpt.com"))
+Evidence classification:
+	•	✅ Independent third-party audit (reported by the vendor)
+
+GDPR
+OpenAI does not claim to be "GDPR certified" (there is no general GDPR certification).
+Instead, OpenAI states that it:
+	•	supports customers' compliance with GDPR
+	•	offers a Data Processing Addendum (DPA)
+	•	provides privacy controls
+	•	offers enterprise data-handling features intended to help organizations meet GDPR obligations
+This is an important distinction:
+	•	OpenAI claims its services support GDPR compliance
+	•	It does not claim an independent certification that "OpenAI is GDPR compliant," because GDPR is a legal framework rather than a certification standard. (OpenAI("https://openai.com/security-and-privacy/?utm_source=chatgpt.com"))
+Evidence classification:
+	•	⚠️ Vendor claim
+
+ISO 27001
+Status: ISO/IEC 27001:2022 certified
+OpenAI states it maintains ISO/IEC 27001:2022 certification for the information security management systems supporting:
+	•	OpenAI API
+	•	ChatGPT Enterprise
+	•	ChatGPT Edu
+It also lists additional ISO certifications:
+	•	ISO 27017 (cloud security)
+	•	ISO 27018 (protection of personal data in public clouds)
+	•	ISO 27701 (privacy information management)
+ISO certifications are issued by accredited certification bodies, although OpenAI's public pages do not identify the specific certifying organization. (OpenAI("https://openai.com/security-and-privacy/?utm_source=chatgpt.com"))
+Evidence classification:
+	•	✅ Certification (vendor reports holding the certification)
+
+Other relevant certifications and compliance programs
+ISO 42001
+OpenAI states it maintains ISO/IEC 42001:2023, an AI management system standard covering its consumer and business AI products. This is a relatively new international standard for AI management systems. (OpenAI("https://openai.com/security-and-privacy/?utm_source=chatgpt.com"))
+Evidence classification:
+	•	Certification claimed by the vendor
+
+HIPAA
+OpenAI does not state that every product is HIPAA compliant.
+Instead, it offers HIPAA-eligible products and will execute a Business Associate Agreement (BAA) for specific offerings, including certain healthcare-focused ChatGPT products and API configurations. Organizations remain responsible for configuring and using those services appropriately to satisfy HIPAA requirements. (OpenAI Help Center("https://help.openai.com/en/articles/20001069-chatgpt-healthcare-and-regulated-workspace-functionality?utm_source=chatgpt.com"))
+Evidence classification:
+	•	⚠️ Vendor claim
+
+PCI DSS
+OpenAI states it maintains PCI DSS compliance for the ChatGPT components involved in delegated payment processing. The scope is limited to those payment-processing components rather than the entire platform. (OpenAI("https://openai.com/security-and-privacy/?utm_source=chatgpt.com"))
+Evidence classification:
+	•	⚠️ Vendor claim
+
+CSA STAR
+OpenAI lists CSA STAR Level 1 for its API platform and ChatGPT business services.
+CSA STAR Level 1 is based on a self-assessment published in the Cloud Security Alliance STAR registry; it is not equivalent to an independently audited STAR Level 2 certification. (OpenAI("https://openai.com/security-and-privacy/?utm_source=chatgpt.com"))
+Evidence classification:
+	•	Vendor self-assessment / registry listing
+Summary
+Standard|Status|Independent?|
+SOC 2|Type II|Yes (independent audit)|
+GDPR|Supports customer GDPR compliance; DPA available|No (vendor claim)|
+ISO 27001|Certified|Certification reported by vendor (issued by an accredited certification body)|
+ISO 27017|Certified|Same as above|
+ISO 27018|Certified|Same as above|
+ISO 27701|Certified|Same as above|
+ISO 42001|Certified|Same as above|
+HIPAA|HIPAA-eligible products with BAA|No (vendor claim)|
+PCI DSS|Payment-processing components compliant|No (vendor claim)|
+CSA STAR Level 1|Registered|No (self-assessment)|

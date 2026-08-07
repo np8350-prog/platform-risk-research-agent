@@ -1,0 +1,9 @@
+•	Common Complaints: 
+	◦	High Cost & Pricing Complexity: Frequently cited as the primary drawback. Robot licenses ($10k+ per unattended robot) and Orchestrator licensing make scaling prohibitive for SMBs and mid-market teams.  
+	◦	Brittle UI Automations: Users frequently report that target website UI changes or third-party software updates break UI-based automation flows.  
+	◦	IDE & Studio Lag: Developers report IDE lag when working with very large XAML workflows or complex project trees. 
+	•	Common Praise: 
+	◦	Enterprise Market Leader: Praised for having the most robust Orchestrator platform, superior selector capabilities, advanced error-handling, and computer vision tools.  
+	◦	Development Speed: Experienced developers highlight that complex automation logic can be built 2–3x faster in UiPath Studio compared to competing tools like Power Automate. 
+	•	Competitor Churn: There is a noticeable pattern of smaller or mid-market organizations moving to Microsoft Power Automate due to lower pricing, transparent licensing, and native Microsoft 365 integration. However, large enterprises continue to retain UiPath for mission-critical, large-scale orchestrations. 
+	•	Note: Findings are based on aggregated developer consensus across Reddit (r/UiPath, r/PowerAutomate), Hacker News, and G2 reviews.

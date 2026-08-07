@@ -1,0 +1,10 @@
+•	Common Complaints: 
+	◦	UI/UX Complexity: Users on Reddit note "sharp edges" in the interface, such as hidden task dependencies, rigid task-assignment workflows, and pop-up modals that create navigation friction.  
+	◦	Setup Friction: Onboarding can occasionally feel hand-holdy or confusing without clear self-service documentation.  
+	◦	Sales & Billing: Some users report opaque pricing structures or rigid renewal/contract terms.  
+	•	Common Praise / Strengths: 
+	◦	Automated Evidence Collection: High praise for deep continuous monitoring and automatic evidence pull across cloud environments (AWS, GCP, GitHub, Okta, HRIS).  
+	◦	Customer Support: Dedicated, responsive account managers and compliance experts who guide teams step-by-step through audit readiness.  
+	•	Recurring Frustrations: Multi-account cloud provider role setup and version-control branch protection rules can require troubleshooting to maintain clean evidence links. 
+	•	Signs of Leaving for Competitors: Some users evaluate or migrate to competitors (such as Vanta, Drata, Scrut, or Comp AI) due to UI preferences, pricing considerations, or specific automation needs.  
+	•	Source Note: Based on specific community reviews and discussion threads on G2, Reddit (r/cybersecurity, r/ScoutForge), and industry compliance forums.

@@ -1,0 +1,111 @@
+Below is a summary of OpenAI's published data-handling practices. Where information differs between consumer and business products, I've separated them.
+Topic|Summary|
+Data collected|Account information, prompts, outputs, uploaded files/images, usage data, device/browser information, IP address, diagnostics, payment/account metadata (where applicable)|
+Hosting|OpenAI infrastructure plus cloud providers including Microsoft Azure and CoreWeave; processing locations vary by product and region|
+Data retention|Published, but differs by product. Enterprise/API customers can configure retention (including Zero Data Retention in qualifying cases). Consumer products have different defaults.|
+Training|Consumer: may be used by default (with opt-out options). Business/API: not used by default unless customer explicitly opts in.|
+Subprocessors|Public list available, including Microsoft, CoreWeave, Cloudflare, and others.|
+
+1. What data OpenAI collects and stores
+According to OpenAI's Privacy Policy and Help Center, the company may collect:
+Account data
+	•	Name
+	•	Email address
+	•	Account identifiers
+	•	Authentication information
+	•	Billing/payment information (if subscribed)
+User content
+	•	Prompts
+	•	Model responses
+	•	Uploaded documents
+	•	Images
+	•	Audio
+	•	Files attached to conversations
+Technical information
+	•	IP address
+	•	Browser type
+	•	Device information
+	•	Operating system
+	•	Log information
+	•	Cookies
+	•	Usage analytics
+	•	Feature usage
+	•	Diagnostics
+Metadata
+	•	Conversation timestamps
+	•	Session information
+	•	Performance telemetry
+	•	Crash logs
+OpenAI also states that a limited number of authorized employees or trusted service providers may access content when necessary for abuse investigations, customer support, legal obligations, or (for consumer services, where applicable) model improvement. (OpenAI Help Center("https://help.openai.com/en/articles/7039943-data-usage-for-consumer-services-faq.?utm_source=chatgpt.com"))
+
+2. Where data is hosted
+OpenAI does not publish a single statement such as "all customer data is stored in X country."
+Instead, its published documentation shows customer data may be processed through infrastructure operated by multiple providers.
+Known infrastructure providers include:
+	•	Microsoft Azure
+	•	CoreWeave
+	•	Cloudflare
+For business products, OpenAI publishes regional processing locations that include countries such as:
+	•	United States
+	•	Germany
+	•	France
+	•	Netherlands
+	•	Ireland
+	•	United Kingdom
+	•	Norway
+	•	Sweden
+	•	Spain
+	•	Singapore
+	•	Japan
+	•	Australia
+	•	Canada
+	•	Brazil
+	•	and others
+Cloudflare processing is generally described as occurring at the data center closest to the end user for content delivery. (OpenAI("https://openai.com/policies/sub-processor-list/?utm_source=chatgpt.com"))
+Important note: OpenAI does not guarantee that all customer data remains exclusively within a chosen country or region unless a specific enterprise offering provides that capability.
+
+3. Data retention policy
+OpenAI publishes retention policies, but they differ substantially by product.
+Consumer ChatGPT
+OpenAI states:
+	•	chats remain until deleted by the user (subject to policy)
+	•	deleted chats are generally retained for up to 30 days before permanent deletion, unless legal or security obligations require longer retention
+	•	temporary chats have separate retention behavior
+A notable exception occurred during ongoing litigation with The New York Times, where a court ordered OpenAI to preserve certain deleted chat data beyond the normal retention period for affected consumer tiers while the order remains in effect. (OpenAI Help Center("https://help.openai.com/en/articles/7039943-data-usage-for-consumer-services-faq.?utm_source=chatgpt.com"))
+
+API and Enterprise
+Business offerings have much stronger controls.
+OpenAI states:
+	•	customers control retention settings for qualifying services
+	•	qualifying organizations can request Zero Data Retention (ZDR) for supported API use cases
+	•	Enterprise, Business, Edu, and Healthcare offerings include configurable retention options depending on the product. (OpenAI("https://openai.com/business-data/?utm_source=chatgpt.com"))
+
+4. Does OpenAI use customer data to train models?
+This depends on the product.
+Consumer ChatGPT
+By default:
+	•	OpenAI may use prompts, responses, uploaded files, and other submitted content to improve its models.
+Users can opt out through settings or the privacy portal for supported consumer services. (OpenAI Help Center("https://help.openai.com/en/articles/7039943-data-usage-for-consumer-services-faq.?utm_source=chatgpt.com"))
+
+Business products (API, ChatGPT Enterprise, Business, Edu, Healthcare)
+OpenAI states:
+	•	No, by default.
+Inputs and outputs are not used for model training unless the customer explicitly opts in (for example, through specific API feedback or sharing mechanisms). (OpenAI("https://openai.com/business-data/?utm_source=chatgpt.com"))
+
+5. Subprocessors and third parties
+OpenAI maintains a public subprocessor list.
+Examples include:
+Company|Purpose|
+Microsoft|Cloud infrastructure|
+CoreWeave|Cloud infrastructure / GPU compute|
+Cloudflare|Content delivery network and web hosting|
+Other listed vendors|Customer support, infrastructure management, moderation, hosting, and related operational services|
+OpenAI states that these subprocessors process customer data only for defined service functions and maintains a publicly updated list. (OpenAI("https://openai.com/policies/sub-processor-list/?utm_source=chatgpt.com"))
+
+Areas where the policy is less specific
+Some aspects are intentionally broad or not fully specified in public documentation:
+	•	OpenAI does not publish a complete data-flow architecture showing exactly where every category of customer data resides at all times.
+	•	The company does not specify a single storage region for all users; storage and processing depend on product, infrastructure provider, and geography.
+	•	Consumer-service documentation explains what categories of data are collected but is less granular about retention periods for every individual data type (for example, telemetry versus uploaded files).
+	•	Public documentation identifies subprocessors and their processing locations but does not describe every internal transfer path between OpenAI and those providers.
+Overall, OpenAI provides more detailed controls and documentation for its business offerings than for its consumer ChatGPT service.

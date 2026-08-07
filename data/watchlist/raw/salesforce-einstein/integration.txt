@@ -1,0 +1,5 @@
+•	Integration Methods: Integrates natively via Apex, Flow Builder, Agentforce Studio, MuleSoft, Data Cloud APIs, REST/SOAP endpoints, and the Models/Prompt API.  
+	•	Data Export & Exit: Raw customer data (CRM records) can be exported easily via Salesforce Bulk APIs, Data Loader, or zero-copy Data Cloud shares (Snowflake, Databricks). However, prompt templates, agent action logic, custom guardrail rules, and Flow configurations are non-exportable and proprietary. 
+	•	Known Integration Issues: Seasonal platform updates (3x per year) can occasionally introduce breaking changes or subtle shifts in prompt grounding / agent output behaviors. 
+	•	External Dependencies: Heavily dependent on AWS underlying infrastructure (Hyperforce) and foundation model providers (OpenAI, Anthropic, Bedrock) routed through the Einstein Trust Layer.  
+	•	Lock-in Risk: Extremely High. While underlying data remains accessible, business logic, prompt grounding, automated agent workflows, and CRM orchestration are deeply coupled to the Salesforce ecosystem, making migration to a competing platform long and expensive.

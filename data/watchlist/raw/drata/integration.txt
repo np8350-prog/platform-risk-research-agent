@@ -1,0 +1,8 @@
+failures
+	•	No widespread reports of breaking API changes or major integration failures were identified.
+	•	User feedback occasionally mentions individual integrations requiring manual configuration or troubleshooting, but not systemic failures.
+Dependencies Drata relies on multiple third-party services, including:
+	•	AWS (cloud infrastructure)
+	•	Numerous SaaS APIs (Google Workspace, Microsoft 365, GitHub, Okta, AWS, Azure, GCP, etc.)
+	•	Customer environments for continuous monitoring
+No evidence was found that the platform fundamentally depends on OpenAI for its core compliance automation.

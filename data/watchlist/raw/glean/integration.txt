@@ -1,0 +1,16 @@
+lock-in|Medium|
+Enterprise adoption switching cost|High|
+
+Final assessment
+Glean is a financially strong, rapidly growing enterprise AI company with no major publicly disclosed security incidents.
+Strengths:
+	•	strong enterprise search positioning
+	•	impressive funding trajectory
+	•	enterprise integrations
+	•	permission-aware AI architecture
+Risks:
+	•	expensive enterprise pricing
+	•	dependence on quality of company knowledge sources
+	•	unclear public retention/hosting details
+	•	moderate-to-high migration effort after deep adoption
+The biggest lock-in factor is not the data itself; it is the enterprise knowledge graph, integrations, permissions model, and employee workflows built around Glean.

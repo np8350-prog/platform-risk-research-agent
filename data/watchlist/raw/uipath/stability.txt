@@ -1,0 +1,9 @@
+•	Founding & History: Founded in 2005 in Bucharest, Romania (originally named DeskOver, renamed UiPath in 2015). It has been operating for over 20 years. 
+	•	Funding & Valuation: Raised over $2 billion across funding rounds prior to going public. Key venture investors included Accel, CapitalG, Sequoia Capital, Coatue, and Tiger Global. UiPath completed its IPO on the New York Stock Exchange (NYSE: PATH) in April 2021, raising approximately $1.34 billion. 
+	•	Team Size: Approximately 3,800 to 4,000 employees globally. 
+	•	Layoffs & Restructuring: 
+	◦	October 2019: Laid off ~400 employees (approx. 11% of workforce) during operational restructuring.  
+	◦	Mid-2022: Reduced headcount by ~5%. 
+	◦	July 2024: Announced a 10% reduction of its global workforce (approx. 420 employees) to improve operational efficiency and reallocate resources toward AI development.  
+	•	Leadership Departures: In May 2024, CEO Rob Enslin unexpectedly resigned after less than four months as sole CEO. Co-founder and former CEO Daniel Dines returned as sole CEO.  
+	•	Financial Health: Financially solvent and publicly traded with substantial cash reserves, though its stock price has experienced significant post-IPO volatility due to lowered revenue guidance and sales structure transitions. There are no signs of financial distress or imminent acquisition.

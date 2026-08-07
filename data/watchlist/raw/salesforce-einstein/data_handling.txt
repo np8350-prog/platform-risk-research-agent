@@ -1,0 +1,5 @@
+•	Data Collected & Stored: Collects CRM metadata, prompt history, user queries, action audit logs, and dynamic context pulled from CRM objects (Accounts, Contacts, Cases). 
+	•	Data Hosting: Hosted on Salesforce Hyperforce, which runs on public cloud infrastructure (primarily AWS and GCP) across distinct geographic regions (US, EU, APAC) allowing local data residency. 
+	•	Data Retention Policy: The Einstein Trust Layer enforces a strict Zero Data Retention (ZDR) policy with external third-party LLM vendors (such as OpenAI, Anthropic, and Amazon Bedrock). Third-party models process prompts in memory and do not retain customer data post-generation.  
+	•	Model Training: Salesforce contractually guarantees that customer data is NEVER used to train base LLMs (neither Salesforce's shared base models nor third-party LLMs). 
+	•	Subprocessors: AWS, Google Cloud Platform, OpenAI, Anthropic, and MuleSoft. (Detailed in Salesforce’s official public Subprocessor List).

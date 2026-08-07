@@ -1,0 +1,210 @@
+Retool integration and vendor lock-in risk assessment
+This review focuses on how Retool connects to systems, how portable applications/data are, and what could make migration expensive. Sources include Retool documentation, Retool community discussions, and user reports. (Retool("https://retool.com/integrations/rest-api?utm_source=chatgpt.com"))
+Executive summary
+Overall lock-in risk: Moderate
+Retool is less locked-in than many SaaS platforms because:
+	•	your core business data usually remains in your own databases/APIs
+	•	Retool supports Git-based workflows
+	•	self-hosting is available
+However, lock-in increases when teams build:
+	•	complex internal applications
+	•	Retool Workflows automations
+	•	Retool Database-backed apps
+	•	permission models tied deeply to Retool
+	•	AI workflows using Retool-specific features
+The main switching cost is usually rebuilding application logic and UI, not exporting raw data.
+
+1. How Retool integrates
+Database connectors
+Retool's primary integration model is connecting directly to existing systems.
+Supported resources include:
+	•	PostgreSQL
+	•	MySQL
+	•	MongoDB
+	•	Snowflake
+	•	BigQuery
+	•	REST APIs
+	•	GraphQL APIs
+	•	Salesforce
+	•	Slack
+	•	Stripe
+	•	AWS services
+	•	many other SaaS systems
+Retool acts as a low-code application layer on top of existing infrastructure.
+(Retool("https://retool.com/integrations/rest-api?utm_source=chatgpt.com"))
+
+REST/API integrations
+Retool supports generic REST API connections:
+	•	GET
+	•	POST
+	•	PUT
+	•	PATCH
+	•	DELETE
+	•	authentication through:
+	◦	API keys
+	◦	OAuth 2.0
+	◦	bearer tokens
+	◦	custom headers
+This reduces lock-in because many integrations are standard HTTP calls rather than proprietary connectors. (Retool("https://retool.com/integrations/rest-api?utm_source=chatgpt.com"))
+
+Retool API
+Retool provides its own API for:
+	•	managing users
+	•	managing resources
+	•	triggering workflows
+	•	automating administration tasks
+This is useful operationally but also creates some Retool-specific dependencies. (Retool("https://retool.com/integrations/retool-api?utm_source=chatgpt.com"))
+
+Git/source control integration
+Retool supports Git-based source control:
+	•	GitHub integration
+	•	pull-request workflows
+	•	environment promotion
+	•	version control
+This is one of the strongest anti-lock-in features because applications can be managed through a development workflow rather than existing only inside Retool's UI. (Retool("https://retool.com/integrations/github?utm_source=chatgpt.com"))
+
+Self-hosting
+Retool offers self-hosted deployments:
+	•	customer's own infrastructure
+	•	own VPC
+	•	AWS
+	•	Azure
+	•	Kubernetes deployments
+This reduces regulatory and infrastructure dependency risk.
+(Retool("https://retool.com/govern-enterprise-apps/self-hosted?utm_source=chatgpt.com"))
+
+2. How easy is it to export data and leave?
+Application data
+Low lock-in
+If your architecture looks like:
+Retool → PostgreSQL / API → Your database
+leaving is relatively manageable.
+Your important assets remain:
+	•	database schemas
+	•	business data
+	•	APIs
+	•	authentication systems
+You would mainly need to rebuild the front end.
+
+Retool applications
+Higher lock-in
+Retool applications contain:
+	•	components
+	•	event handlers
+	•	queries
+	•	JavaScript logic
+	•	workflows
+	•	permissions
+	•	resource configurations
+These are designed around Retool's runtime.
+There is no simple "export Retool app → React application" migration path.
+A replacement usually means:
+	•	redesign UI
+	•	rewrite business logic
+	•	reconnect integrations
+	•	rebuild workflows
+
+Retool Database
+Higher risk exists if customers use Retool Database as the application backend.
+Leaving requires migrating:
+	•	tables
+	•	schemas
+	•	workflows
+	•	queries
+	•	permissions
+This is more work than simply replacing the UI layer.
+
+3. Known integration failures or breaking changes
+Git/source control changes
+Some users have reported issues around changes to Retool's Git Sync/source control functionality.
+Example:
+	•	users reported older Git Sync behavior becoming unavailable or requiring migration to newer source-control functionality
+	•	Retool staff confirmed older functionality was being deprecated in favor of newer systems
+(Retool Forum("https://community.retool.com/t/anyone-find-that-their-git-sync-functionality-is-broken-in-2-72-28/55676?utm_source=chatgpt.com"))
+Impact: Mostly operational friction, but it demonstrates that Retool-specific workflows can change.
+
+Breaking changes
+Retool users have historically reported:
+	•	app behavior changing after platform updates
+	•	query/component regressions
+	•	unexpected changes in production apps
+A Retool community discussion specifically requested fewer breaking changes after users experienced production-impacting issues. Retool's CEO acknowledged the concern and said the company was addressing change management. (Retool Forum("https://community.retool.com/t/please-slow-down-reduce-breaking-changes/5909?utm_source=chatgpt.com"))
+
+Self-hosted changes
+A recent example:
+Retool changed availability of self-hosted deployments for new customers, moving self-hosting toward Enterprise plans.
+Users expressed frustration because self-hosting was viewed as a way to reduce vendor dependence.
+(Reddit("https://www.reddit.com/r/Retool/comments/1rghfvk/changes_around_selfhosted/?utm_source=chatgpt.com"))
+Lock-in implication:
+Customers depending on self-hosted deployment should carefully review licensing terms before committing.
+
+4. Dependency on other services
+AWS
+Retool relies heavily on AWS infrastructure.
+Known dependencies include:
+	•	AWS cloud infrastructure
+	•	AWS deployment options for self-hosted environments
+(Retool("https://retool.com/govern-enterprise-apps/self-hosted?utm_source=chatgpt.com"))
+
+AI providers
+Retool AI can connect to external AI providers, depending on configuration.
+Potential dependencies include:
+	•	OpenAI
+	•	Anthropic
+	•	Amazon Bedrock
+This means AI workflows may have a second layer of vendor dependency:
+Your app
+   ↓
+Retool
+   ↓
+AI provider
+Switching may require changing:
+	•	prompts
+	•	model settings
+	•	API formats
+	•	evaluation criteria
+
+Internal identity/security dependency
+Retool can become part of an organization's access-control layer through:
+	•	users
+	•	groups
+	•	permissions
+	•	SSO
+	•	audit controls
+This can increase migration effort.
+A Retool community architecture discussion specifically highlighted concerns around avoiding dependence on Retool-managed authentication/session layers. (Retool Forum("https://community.retool.com/t/retool-due-diligence-vendor-lock-in-and-licensing/64711?utm_source=chatgpt.com"))
+
+5. What would make switching away costly?
+Low-cost scenarios
+Switching is easier if:
+✅ Retool is only the UI layer ✅ Data stays in your database ✅ APIs are documented ✅ Git/source control is used ✅ Authentication remains external
+Estimated migration effort:
+	•	weeks for simple apps
+	•	manageable for small teams
+
+High-cost scenarios
+Switching becomes expensive if:
+❌ Hundreds of internal apps exist ❌ Business logic lives inside Retool Workflows ❌ Retool Database is the system of record ❌ Permissions are deeply configured in Retool ❌ Teams without engineers depend on Retool exclusively
+Potential migration:
+	•	months
+	•	significant engineering effort
+	•	rebuilding internal processes
+
+Overall lock-in score
+Area|Risk|
+Database lock-in|Low–Medium|
+API integration lock-in|Low|
+UI/application lock-in|Medium–High|
+Workflow automation lock-in|Medium–High|
+AI workflow lock-in|Medium|
+Data export risk|Low–Medium|
+Infrastructure dependency|Medium|
+Enterprise governance dependency|Medium|
+Final assessment
+Retool has a better portability story than many low-code platforms because it encourages connection to external databases, supports Git workflows, and offers self-hosting.
+The biggest lock-in risk is not your data — it is the application layer:
+	•	screens
+	•	workflows
+	•	permissions
+	•	business logic
+A company that uses Retool as a rapid front-end builder can leave relatively easily. A company that makes Retool the operating system for hundreds of internal processes may face a substantial migration project.

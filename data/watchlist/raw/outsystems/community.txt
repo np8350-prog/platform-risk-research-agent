@@ -1,0 +1,9 @@
+discussions show customers are actively asking about AI training-data handling, indicating this is an area where customers seek more clarity. (Reddit("https://www.reddit.com/r/OutSystems/comments/1thlz8o/outsystems_teams_when_ai_enters_the_project_where/?utm_source=chatgpt.com"))
+
+Subprocessors / third parties
+OutSystems publishes a subprocessors list.
+Known categories include:
+	•	cloud infrastructure providers
+	•	support/service providers
+	•	affiliates
+AWS is identified as a major cloud services provider. (OutSystems("https://www.outsystems.com/-/media/files/legal/list-of-sub-processors.pdf?utm_source=chatgpt.com"))

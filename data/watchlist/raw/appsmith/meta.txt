@@ -1,0 +1,13 @@
+confidence_stability: limited
+source_type_stability: self-reported (layoffs corroborated by press)
+confidence_incidents: limited
+source_type_incidents: verified (CVE numbers, GitHub issues)
+confidence_community: limited
+source_type_community: named platform (G2 rating), rest inferred
+confidence_compliance: strong
+source_type_compliance: verified (SOC2 Type II independently confirmed; GDPR/HIPAA/ISO27001 self-declared or unconfirmed)
+confidence_data_handling: limited
+source_type_data_handling: self-reported
+confidence_integration: limited
+source_type_integration: self-reported (technical docs, GitHub issues)
+last_updated: 2026-08-07

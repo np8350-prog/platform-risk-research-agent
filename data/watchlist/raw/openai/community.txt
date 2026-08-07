@@ -1,0 +1,104 @@
+This summary reflects overall community sentiment, not statistically representative survey data. It is based on recurring themes across Reddit, Hacker News, X (Twitter), developer discussions, and public review sites where available. Where possible, I've distinguished between broad impressions and specific, well-supported discussions.
+Common complaints
+1. Reliability and model consistency (very common)
+This is one of the most frequent complaints across Reddit and developer communities.
+Users commonly report:
+	•	responses varying significantly between sessions
+	•	perceived "model regressions" after updates
+	•	changes in behavior without much advance notice
+	•	prompt engineering becoming necessary for tasks that previously "just worked"
+A recurring frustration is that users invest time learning a model's behavior only to have that behavior change after an update. (Hacker News("https://news.ycombinator.com/item?id=45651469&utm_source=chatgpt.com"))
+
+2. Product changes without enough user control
+Many users criticize OpenAI for:
+	•	retiring older models
+	•	changing defaults
+	•	removing capabilities
+	•	forcing migration before users are ready
+This became especially visible during discussions around GPT model retirements and interface changes. Some business users argued that workflows built around previous models became harder to maintain. (TechCrunch("https://techcrunch.com/2026/02/06/the-backlash-over-openais-decision-to-retire-gpt-4o-shows-how-dangerous-ai-companions-can-be/?utm_source=chatgpt.com"))
+
+3. Rate limits and pricing
+Common complaints include:
+	•	API costs for production workloads
+	•	message limits on paid plans
+	•	uncertainty over which model provides the best value
+	•	enterprise pricing viewed as difficult to predict
+These complaints appear regularly on Reddit and Hacker News, though they vary by user type (casual users vs. developers).
+
+4. Developer experience
+Developers frequently mention:
+	•	documentation changing quickly
+	•	API behavior evolving rapidly
+	•	feature deprecations
+	•	UI limitations in ChatGPT for coding workflows
+Some Hacker News discussions praise the models while criticizing aspects of the platform and developer tooling. (Hacker News("https://news.ycombinator.com/item?id=45651469&utm_source=chatgpt.com"))
+
+5. Customer support
+Support receives mixed reviews.
+Recurring complaints include:
+	•	slow responses
+	•	difficulty resolving billing issues
+	•	limited direct support for non-enterprise users
+These themes appear regularly in Reddit discussions, though they are less systematically documented than technical complaints.
+
+Common praise
+Model quality
+Across nearly every platform, users consistently praise:
+	•	reasoning ability
+	•	writing quality
+	•	coding assistance
+	•	broad knowledge
+	•	speed of iteration
+Even many critical users describe GPT models as among the strongest available. (Hacker News("https://news.ycombinator.com/item?id=45651469&utm_source=chatgpt.com"))
+
+Ecosystem
+Users often mention the strength of:
+	•	ChatGPT
+	•	API platform
+	•	multimodal capabilities
+	•	custom GPTs
+	•	integrations
+Many developers appreciate having one provider offering text, images, speech, and developer APIs within a single ecosystem.
+
+Innovation speed
+A common positive theme is that OpenAI ships new capabilities rapidly.
+Even users frustrated by frequent changes often acknowledge that OpenAI introduces new features faster than many competitors.
+
+Recurring frustration patterns
+The following themes appear repeatedly across Reddit and Hacker News:
+	•	frequent model changes
+	•	uncertainty about which model to use
+	•	removed or altered features
+	•	inconsistent outputs after updates
+	•	lack of transparency around model behavior changes
+	•	message limits on paid plans
+	•	outages during peak usage
+	•	concern that product decisions prioritize rapid iteration over workflow stability
+These are recurring patterns, not isolated complaints. (GummySearch("https://gummysearch.com/r/OpenAI/?utm_source=chatgpt.com"))
+
+Are users leaving for competitors?
+Yes—but the picture is mixed.
+There are many posts from users saying they switched or were considering switching.
+The competitors most commonly mentioned are:
+	•	Anthropic Claude
+	•	Google Gemini
+	•	xAI Grok (less frequently)
+	•	open-weight/open-source models for some developer workflows
+Reasons cited include:
+	•	preference for Claude in long-form coding and software development
+	•	perceived improvements in Gemini for multimodal tasks
+	•	dissatisfaction with OpenAI model changes
+	•	pricing or usage limits
+However, many discussions also acknowledge that users continue using multiple AI systems rather than abandoning OpenAI entirely. Multi-model workflows appear increasingly common. (Reddit("https://www.reddit.com/r/OpenAI/comments/1u7iuf4/competition_is_about_to_get_real_openai_better/?utm_source=chatgpt.com"))
+One representative Reddit discussion captures concern about OpenAI's frequent product changes:
+These quotes illustrate genuine user opinions but should not be interpreted as representative of the entire customer base.
+Overall impression
+Topic|Overall community sentiment|
+Model quality|Very positive|
+Innovation speed|Strongly positive|
+Reliability|Mixed; recurring complaints about consistency and outages|
+Developer experience|Positive overall, but frequent complaints about changing APIs and workflows|
+Pricing|Mixed; enterprise users generally more satisfied than individual developers|
+Customer support|Mixed to negative for self-service users|
+Trust in product roadmap|Mixed; many users appreciate rapid innovation, while others dislike frequent changes|
+Switching to competitors|Yes, but usually partial rather than complete; many users report using Claude, Gemini, or other models alongside ChatGPT rather than replacing it outright. (Hacker News("https://news.ycombinator.com/item?id=45651469&utm_source=chatgpt.com"))|

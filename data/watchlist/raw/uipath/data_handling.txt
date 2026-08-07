@@ -1,0 +1,5 @@
+•	Data Collected & Stored: User profile data, active execution metrics, error logs, and operational data processed by cloud workflows.  
+	•	Hosting Locations: Primary cloud hosting is on Microsoft Azure (with select AWS infrastructure). Regions include US, EU, Canada, Japan, Australia, and Singapore. On-premises deployments are fully supported via the UiPath Automation Suite for zero-cloud exposure.  
+	•	Retention Policy: Customer data in cloud tenants is maintained for the length of the contract. Data deletion forms exist for account/tenant deletion, and data is purged within 30 to 90 days following contract termination according to their DPA.  
+	•	AI Model Training: UiPath explicitly states in its trust documentation that customer proprietary data or confidential content processed by cloud services is not used to train core vendor AI/LLM models without explicit customer permission. 
+	•	Subprocessors: Publicly maintains a subprocessor registry (including Microsoft Azure, AWS, Salesforce, and OneTrust) bound by standard DPAs.

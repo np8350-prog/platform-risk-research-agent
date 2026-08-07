@@ -1,0 +1,41 @@
+SOC 2
+Status: SOC 2 Type II
+Glean states that it maintains enterprise security certifications including SOC 2. (Glean("https://www.glean.com/about?utm_source=chatgpt.com"))
+Evidence type:
+	•	Vendor claim.
+	•	SOC 2 Type II itself requires independent audit evidence, but the public information reviewed does not identify the auditing firm.
+
+GDPR
+Status: GDPR support/compliance claims.
+Glean provides privacy and enterprise security documentation intended to support GDPR obligations.
+Evidence type:
+	•	Vendor claim.
+GDPR is a regulation, not a certification.
+
+ISO 27001
+Status: I did not find a publicly confirmed ISO 27001 certification.
+I found security/compliance claims but not a verified ISO certificate listing.
+Evidence type:
+	•	Not publicly confirmed.
+
+HIPAA
+I found no public statement confirming HIPAA certification.
+Healthcare organizations should verify:
+	•	BAA availability
+	•	deployment model
+	•	data-processing terms
+Evidence type:
+	•	Not confirmed.
+
+PCI DSS
+No public PCI DSS certification found.
+Evidence type:
+	•	Not confirmed.
+
+Other security controls
+Glean emphasizes:
+	•	enterprise permissions
+	•	encryption
+	•	access controls
+	•	security reviews
+Its security positioning is based more on enterprise governance than a large published certification portfolio.

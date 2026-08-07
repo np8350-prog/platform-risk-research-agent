@@ -1,0 +1,15 @@
+Posture
+Notion maintains major industry certifications, though HIPAA compliance status shows conflicting third-party verification. 
+
+Certification|Status|Verification Source|Notes|
+SOC 2|Type II|Vendor Claim / Third-Party Summary|Available via Trust Center (often under NDA). 
+|
+ISO 27001|Certified|Vendor Claim|Specifically ISO 27001:2022 cited in some reports. 
+|
+GDPR|Compliant|Vendor Claim|Offers Data Processing Agreements (DPA). 
+|
+HIPAA|Claimed (Enterprise)|Conflicting|Vendor claims BAA available for Enterprise; one third-party audit states "No BAA". 
+|
+PCI DSS|Not Specified|N/A|No explicit mention in provided context.|
+
+	•	Verification Note: Most certifications are vendor-claimed via their Trust Center. Independent audit reports are typically not public. The discrepancy in HIPAA status requires direct confirmation with Notion sales/engineering for Enterprise deployments.

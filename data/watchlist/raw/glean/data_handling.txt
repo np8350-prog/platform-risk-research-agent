@@ -1,0 +1,56 @@
+What data Glean collects and stores
+Glean's product requires indexing enterprise information.
+Potentially processed data includes:
+Account/user data
+	•	name
+	•	email
+	•	organization identity
+	•	user permissions
+	•	authentication information
+Enterprise content
+Depending on integrations:
+	•	documents
+	•	emails
+	•	Slack messages
+	•	knowledge-base content
+	•	files
+	•	metadata
+	•	permissions information
+The key function of Glean is building a searchable enterprise knowledge index.
+
+Where data is hosted
+Public information indicates:
+	•	Glean operates cloud infrastructure for its SaaS platform.
+	•	Exact cloud provider and regional hosting details are not fully visible publicly.
+I did not find a complete public architecture document specifying:
+	•	AWS/Azure/GCP usage
+	•	exact storage regions
+	•	backup locations
+Assessment: Hosting transparency is more limited publicly than some enterprise SaaS vendors.
+
+Data retention
+I did not find a detailed public retention schedule covering:
+	•	indexed documents
+	•	logs
+	•	backups
+	•	analytics data
+Enterprise customers likely receive more detail through contracts/security review.
+Assessment: Retention policy: not fully public.
+
+Does Glean use customer data to train AI models?
+Glean states that customer data is used to provide enterprise AI functionality and integrates with models including OpenAI/Azure OpenAI. (Glean("https://www.glean.com/website-terms?utm_source=chatgpt.com"))
+Glean's terms state that when using Azure OpenAI/OpenAI through Glean's service:
+	•	customer data is transmitted only when generative AI features are explicitly used
+	•	negotiated zero-day retention applies for those services. (Glean("https://www.glean.com/website-terms?utm_source=chatgpt.com"))
+I found no evidence that Glean uses customer enterprise data to train general-purpose models.
+Assessment:
+	•	Customer data used for retrieval/answer generation: Yes.
+	•	Customer data used for general model training: No evidence found.
+
+Subprocessors / third parties
+Known categories:
+	•	cloud infrastructure providers
+	•	AI model providers
+	•	enterprise integration providers
+Glean may use:
+	•	OpenAI/Azure OpenAI for AI functionality depending on configuration. (Glean("https://www.glean.com/website-terms?utm_source=chatgpt.com"))

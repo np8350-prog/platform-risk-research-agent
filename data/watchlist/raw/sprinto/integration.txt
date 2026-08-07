@@ -1,0 +1,6 @@
+•	Integration Methods: Connects via native API connectors (OAuth 2.0, API keys, SAML/OIDC) to 100+ to 200+ platforms across Cloud Infrastructure, Identity Providers, Code Repositories, HRIS, and Ticketing systems.  
+	•	Data Export & Lock-in Risk: 
+	◦	Data Export: Customers can export policy documents, risk registers, and evidence records in standard formats (CSV, JSON, PDF).  
+	◦	Lock-in Risk: Moderate to High. While raw files export easily, switching vendors requires re-mapping controls, re-authenticating all API connections, and establishing continuous evidence collection pipelines from scratch in a new platform before an upcoming audit. 
+	•	Known Integration Failures: Users report occasional misconfigurations with multi-account AWS IAM roles or GitHub branch protection schemas breaking evidence-linking logic until manual adjustments are made. 
+	•	Underlying Dependencies: Heavily dependent on AWS native security and database services (AWS RDS AES-256 encryption, AWS KMS, GuardDuty, CloudWatch) and the continuous availability of third-party SaaS APIs.

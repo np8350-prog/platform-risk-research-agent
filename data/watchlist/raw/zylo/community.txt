@@ -1,0 +1,11 @@
+•	Common Complaints: 
+	◦	Onboarding Lead Time: Users on G2 and procurement forums note that onboarding and full data mapping can take anywhere from a few months up to a year for complex enterprise environments, sometimes requiring paid concierge/managed services to clean historical contract data. 
+	◦	Strict Contract Renewal Terms: Multiple user reviews cite rigid contractual cancellation terms, specifically pointing out strict 90-day written notice requirements prior to contract renewal.  
+	◦	Granular Cost Allocation Limitations: Some users report difficulty allocating license costs per department natively for internal finance chargebacks without manual workarounds.  
+	•	Common Praise / Strengths: 
+	◦	Centralized Visibility: High praise for consolidating SaaS spend, vendor contracts, and renewal timelines out of disjointed spreadsheets into a single unified dashboard.  
+	◦	AI Contract Ingestion: Appreciation for AI-driven contract parsing and concierge document ingestion that reduces manual data entry.  
+	◦	Benchmarking Data: Positive feedback on pricing benchmark metrics (leveraging $34B+ in analyzed SaaS spend) during vendor contract negotiations.  
+	•	Recurring Frustrations: Strict written termination notice windows and initial data ingestion overhead.  
+	•	Signs of Leaving for Competitors: Some users evaluate or migrate to alternative platforms (such as Zluri, CloudEagle, Tropic, or LeanIX) due to onboarding complexity, interface preferences, or lower pricing tiers. 
+	•	Source Note: Based on verified user reviews on G2, Reddit, and procurement/SaaS management community discussions.

@@ -1,0 +1,9 @@
+•	Common Complaints: 
+	◦	Pricing & Credit Consumption: Heavy criticism on Reddit (r/salesforce) and tech forums regarding Agentforce and Einstein pricing. The combination of flat conversation rates ($2/conversation) and Flex Credit usage-based billing for individual actions makes cost estimation difficult and budget burn high compared to direct LLM API usage.  
+	◦	Setup Complexity: Requires significant configuration in Salesforce Data Cloud and Flow Builder; out-of-the-box accuracy without heavy data preparation can be inconsistent. 
+	◦	Customizability: Developers note that prompt tuning and guardrails are less granular than custom-built RAG stacks. 
+	•	Common Praise: 
+	◦	Native CRM Integration: Strong praise for native context grounding within the Salesforce UI, eliminating the need to write custom ETL pipelines to feed CRM context to LLMs. 
+	◦	Time-to-Market: Admins appreciate point-and-click deployment using Agentforce Studio, Flow triggers, and pre-built prompt templates.  
+	•	Recurring Patterns: Many enterprise data science teams report running proof-of-concepts on Salesforce Einstein/Agentforce, but evaluating custom internal tools (e.g., Azure OpenAI + custom vector database) to save costs for high-volume repetitive workflows. 
+	•	Basis: Based on ongoing technical discussions and sentiment analysis across Reddit (r/salesforce), Hacker News, and G2 review boards.

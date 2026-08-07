@@ -1,0 +1,37 @@
+Data breaches
+Confirmed customer data breach
+No publicly confirmed Glean customer data breach found.
+I found no reliable public disclosure of:
+	•	stolen customer databases
+	•	ransomware attacks
+	•	unauthorized exposure of indexed enterprise content
+	•	credential compromise caused by Glean
+No vendor breach notification or major cybersecurity news report was found.
+Evidence type: No confirmed incident found.
+
+Major outages / service failures
+I found no major publicly reported outage causing significant customer impact.
+Glean does not appear to maintain a highly public incident history comparable to consumer SaaS platforms.
+Potential reliability concerns discussed publicly are generally related to:
+	•	connector synchronization
+	•	indexing delays
+	•	enterprise permissions configuration
+rather than platform-wide failures.
+Evidence type: No major public incident identified.
+
+Security incidents / researchers
+Enterprise data access concerns
+Because Glean indexes sensitive company knowledge, security discussions focus on:
+	•	permission inheritance
+	•	access controls
+	•	preventing overexposure of internal documents
+These are architecture risks, not reported breaches.
+Glean markets itself around permission-aware search, meaning access controls from connected systems are intended to be respected. (Glean("https://www.glean.com/platform/api?utm_source=chatgpt.com"))
+
+Lawsuits related to data handling/security
+I found:
+	•	No major publicly reported lawsuits involving Glean alleging:
+	◦	customer data misuse
+	◦	privacy violations
+	◦	security negligence
+	◦	breach response failures

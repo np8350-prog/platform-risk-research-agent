@@ -1,0 +1,24 @@
+Glean company overview
+	•	Founded: 2019 by Arvind Jain and a team of former Google search engineers. (Glean("https://www.glean.com/about?utm_source=chatgpt.com"))
+	•	Operating history: Approximately 7 years (2019–2026).
+	•	Business: Enterprise AI search and knowledge assistant platform. Glean connects company data sources and applications to provide AI-powered workplace search, answers, and agents. (Glean("https://www.glean.com/about?utm_source=chatgpt.com"))
+Funding rounds
+Publicly reported funding:
+Date|Round|Amount|Investors|
+2022|Series B|~$100M|Sequoia Capital and others|
+Feb 2024|Series D|$200M|Kleiner Perkins, Lightspeed Venture Partners (co-leads)|
+Sep 2024|Series E|>$260M|Altimeter, DST Global and others|
+Reported valuation:
+	•	Feb 2024: approximately $2.2B valuation. (Reuters("https://www.reuters.com/technology/us-enterprise-ai-search-startup-glean-raises-200-million-plans-hiring-spree-2024-02-27/?utm_source=chatgpt.com"))
+	•	Sep 2024: approximately $4.6B valuation after Series E. (Reuters("https://www.reuters.com/technology/ai-search-startup-glean-announces-new-funding-46-bln-valuation-2024-09-10/?utm_source=chatgpt.com"))
+Team size
+	•	Glean announced plans in 2024 to double its workforce to around 700 employees after its $200M raise. (Reuters("https://www.reuters.com/technology/us-enterprise-ai-search-startup-glean-raises-200-million-plans-hiring-spree-2024-02-27/?utm_source=chatgpt.com"))
+	•	I did not find a current official headcount.
+Layoffs / leadership departures
+	•	I found no confirmed company-wide layoffs announced publicly.
+	•	I found no major executive departures involving the founder/CEO.
+	•	Founder and CEO Arvind Jain remains publicly associated with the company. (Glean("https://www.glean.com/about?utm_source=chatgpt.com"))
+Shutdown rumors / financial distress
+	•	No credible reports of shutdown, insolvency, restructuring, or acquisition.
+	•	Funding momentum and valuation growth indicate continued investor confidence. (Reuters("https://www.reuters.com/technology/us-enterprise-ai-search-startup-glean-raises-200-million-plans-hiring-spree-2024-02-27/?utm_source=chatgpt.com"))
+Assessment: Glean appears financially strong for an AI enterprise software company. The main risks are typical of high-growth AI startups: high valuation expectations, competitive pressure, and the need to convert enterprise adoption into durable revenue.

@@ -1,0 +1,41 @@
+SOC 2
+Status: I did not find a public SOC 2 Type I/Type II statement.
+OutSystems publishes extensive compliance documentation but its public Trust Center emphasizes ISO certifications and other frameworks rather than clearly listing SOC 2. (OutSystems("https://security.outsystems.com/?utm_source=chatgpt.com"))
+Evidence type: ❓ Not publicly confirmed.
+
+GDPR
+Status: Supported.
+OutSystems states that it acts as a data processor for customer applications and provides GDPR-related controls and commitments. (OutSystems("https://www.outsystems.com/low-code-platform/security/gdpr?utm_source=chatgpt.com"))
+Evidence type: ⚠️ Vendor claim/documentation.
+GDPR itself is not a certification.
+
+ISO 27001
+Status: Certified.
+OutSystems lists:
+	•	ISO/IEC 27001
+	•	ISO/IEC 27017
+	•	ISO/IEC 27018
+through its Trust Center. (OutSystems("https://security.outsystems.com/?utm_source=chatgpt.com"))
+Evidence type: ✅ Certification-based claim. ISO certifications require external certification audits, although customers should request the certificate details.
+
+Other relevant certifications/frameworks
+OutSystems lists:
+	•	ISO 9001:2015
+	•	ISO 22301
+	•	ISO 27017
+	•	ISO 27018
+	•	TISAX
+	•	Cyber Essentials
+	•	DORA-related compliance information
+through its Trust Center. (OutSystems("https://security.outsystems.com/?utm_source=chatgpt.com"))
+
+HIPAA
+I did not find a public HIPAA certification statement.
+Healthcare customers should verify:
+	•	BAA availability
+	•	deployment model
+	•	hosting region
+	•	data-processing terms
+
+PCI DSS
+I did not find a public PCI DSS certification.

@@ -1,0 +1,27 @@
+Data collected and stored
+OutSystems processes data required to operate its platform, including:
+	•	customer account information
+	•	user information
+	•	application metadata
+	•	application runtime data (depending on deployment)
+	•	logs and operational telemetry
+	•	support-related information
+OutSystems acts as a processor when customers run applications containing personal data. (OutSystems("https://www.outsystems.com/low-code-platform/security/gdpr?utm_source=chatgpt.com"))
+
+Hosting and infrastructure
+Known infrastructure:
+	•	AWS is a leading cloud provider for OutSystems Cloud. (OutSystems("https://www.outsystems.com/-/media/files/legal/list-of-sub-processors.pdf?utm_source=chatgpt.com"))
+OutSystems states customers can choose AWS data location options. (OutSystems("https://www.outsystems.com/-/media/files/legal/list-of-sub-processors.pdf?utm_source=chatgpt.com"))
+Self-managed/private deployment options provide additional control over infrastructure.
+
+Data retention
+OutSystems publishes contractual privacy/security documentation, but I did not find a simple public retention table covering:
+	•	logs
+	•	backups
+	•	application data
+	•	support data
+Assessment: Retention details appear to require reviewing contractual documents/DPA.
+
+Customer data used for AI training
+I did not find evidence that OutSystems uses customer application data to train general AI models.
+OutSystems has AI features (such as Mentor), but public documentation does not indicate customer data is automatically used for model training.

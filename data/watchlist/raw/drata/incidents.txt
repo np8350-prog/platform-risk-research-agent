@@ -1,0 +1,6 @@
+Based on available public information:
+	•	Public customer data breaches: No confirmed publicly disclosed breach affecting Drata's own platform or customer data was found.
+	•	Major service outages: No widely reported prolonged outages or major service failures were identified.
+	•	Public security incidents: No significant publicly reported compromise of Drata itself by security researchers or major news outlets was found.
+	•	Security-related lawsuits: No notable lawsuits specifically involving customer data handling or security practices were found.
+Because no verified incidents were identified, there is no evidence to infer an absence of incidents beyond publicly disclosed information.

@@ -1,0 +1,6 @@
+•	SOC 2 Status: SOC 2 Type II certified covering security, availability, and confidentiality across Einstein Platform, Agentforce, and Data Cloud. (Independently confirmed via third-party AICPA audit reports available on the Salesforce Compliance portal).  
+	•	ISO 27001 Status: ISO 27001 certified across Agentforce, Einstein, Data Cloud, and Hyperforce infrastructure. (Independently confirmed via accredited ISO registrar certification).  
+	•	GDPR Compliance: Vendor claims full GDPR compliance, supported by EU Data Boundary options, data masking, and EU-hosted Hyperforce instances. (Vendor claim backed by independent BCR/EU Cloud Code of Conduct certifications).  
+	•	Other Certifications: 
+	◦	HIPAA: Compliant via signed Business Associate Agreements (BAA) for eligible Salesforce and Einstein services. (Vendor contractual commitment verified via audit documentation). 
+	◦	PCI DSS & FedRAMP: Maintained across core platform services; FedRAMP High and DoD IL5 authorizations apply to Salesforce Government Cloud instances. (Independently confirmed via FedRAMP Marketplace).

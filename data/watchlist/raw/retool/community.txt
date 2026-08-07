@@ -1,0 +1,37 @@
+members often point new users to the official docs.
+
+Recurring frustration patterns
+Across platforms, several themes appear repeatedly:
+	•	pricing increases as organizations scale
+	•	uncertainty around enterprise licensing
+	•	applications becoming harder to maintain as they grow
+	•	debugging complex state interactions
+	•	desire for more reusable architecture patterns
+	•	proprietary nature of the platform
+	•	occasional cloud reliability issues
+These patterns appear consistently across multiple community sources rather than being isolated complaints.
+
+Are users leaving for competitors?
+Yes—but mostly for architectural or cost reasons.
+The most commonly mentioned alternatives are:
+	•	Appsmith
+	•	Budibase
+	•	ToolJet
+	•	Microsoft Power Apps
+	•	Internal custom React applications
+Reasons users cite for considering a switch include:
+	•	lower cost
+	•	open-source options
+	•	avoiding vendor lock-in
+	•	greater customization
+	•	self-hosting requirements
+However, many discussions conclude that while these alternatives reduce licensing costs or increase flexibility, they often require more engineering effort than Retool.
+The general sentiment is:
+"Retool is expensive, but it saves enough developer time that many organizations still choose it."
+This appears frequently in Reddit and Hacker News discussions.
+One representative Reddit thread reflects both enthusiasm and concern:
+These quotes illustrate common viewpoints but should not be interpreted as representative of all Retool users.
+Overall impression
+Topic|Overall community sentiment|
+Ease of building internal tools|Excellent|
+Developer productivity|Very positive|

@@ -1,0 +1,5 @@
+Notion integrates via a REST API (JSON-based) and no-code connectors (Zapier, Make), but presents significant vendor lock-in risks.
+	•	Export Difficulty: Native exports (Markdown/CSV) break relations (exported as IDs), lose formula logic, and flatten visual layouts.   There is no bulk "download all" API endpoint; engineers must script recursive JSON extraction.
+	•	Dependencies: Notion AI relies heavily on third-party models (OpenAI, Anthropic); the June 2026 Anthropic outage caused a 12-hour service blackout, highlighting supply-chain fragility. 
+	•	Breaking Changes: The March 2026 API update introduced breaking changes to block operations and archive semantics.   Rate limits are strict (3 requests/second), often causing silent failures in automations if not handled with exponential backoff. 
+	•	Migration Cost: Switching is costly due to the need for custom scripts to reconstruct database relationships and the inability to export version history or comments easily.

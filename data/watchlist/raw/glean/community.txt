@@ -1,0 +1,22 @@
+General sentiment
+Overall impression: positive but enterprise-focused.
+Glean has fewer public developer discussions than consumer AI tools because it primarily sells to large organizations.
+
+Common praise
+1. Strong enterprise search experience
+Users commonly praise:
+	•	finding information across many company systems
+	•	replacing fragmented internal search
+	•	reducing time spent searching documentation
+G2 reviewers mention:
+	•	easy UI
+	•	fast answers
+	•	Slack integration
+	•	useful organization-wide knowledge discovery. (G2("https://www.g2.com/products/glean-technologies-glean/reviews?utm_source=chatgpt.com"))
+
+2. Good AI assistant experience
+Positive themes:
+	•	answers grounded in company data
+	•	useful summaries
+	•	onboarding assistance
+	•	employee self-service
