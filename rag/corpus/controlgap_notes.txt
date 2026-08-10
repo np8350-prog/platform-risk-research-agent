@@ -1,0 +1,125 @@
+CONTROLGAP — Governance and Risk Evaluation Framework
+Source: Nelly Pourmehr, ControlGap pre-mortem tool.
+
+Core question: what actually fails when an AI system fails? Not the
+model. Not the interface. The system around it, and specifically,
+where control, trust, and responsibility break down at scale.
+
+FOUR FAILURE MODES TO EVALUATE IN ANY AI SYSTEM OR VENDOR
+
+1. SILENT FAILURE
+The system is wrong and the user does not know. No alert fires, no
+flag appears, the output looks exactly like a correct output. This is
+the most dangerous failure type in any vendor evaluation: does the
+platform have any mechanism for surfacing when its own output should
+not be trusted, or does a wrong answer look identical to a right one?
+
+2. OVERTRUST FROM REPEATED ACCURACY
+Users who have seen a system be correct multiple times stop checking
+it. They lose their defensive posture exactly when an edge case
+arrives. For a vendor evaluation: does the platform's design encourage
+or discourage this drift, and does the vendor acknowledge it anywhere
+in their documentation?
+
+3. MISINTERPRETATION OF OUTPUT
+A system outputs something technically correct that the user reads
+incorrectly, a probability read as certainty, a suggestion followed as
+a directive, a confidence score ignored or buried in the UI. This
+matters most in vendor evaluation when the platform is embedded inside
+someone else's workflow, since the misinterpretation risk transfers to
+the buyer's own users.
+
+4. FEEDBACK LOOP COLLAPSE
+A system that learns from user behavior can drift silently if that
+behavior is systematically biased, users accept more than they reject,
+they don't report failures, positive outcomes get read as confirmation
+even when unrelated. Relevant to any vendor whose platform improves
+itself on customer usage data.
+
+RISK LAYER STRUCTURE (applied to vendor/platform evaluation)
+
+Hidden risks: risks that only become visible when reasoning about the
+interaction between the vendor's system behavior and the buyer's user
+behavior at scale, not risks a standard vendor security review would
+surface on its own.
+
+Long-term risks: risks that compound over time rather than trigger
+once. Every long-term risk needs a named compounding factor, the
+specific mechanism that makes it worse with continued use, not just a
+static probability.
+
+Responsibility gaps: the precise moment accountability transfers from
+the vendor's system to the buyer's own team, and whether that transfer
+is visible to the buyer when it happens. Vendors rarely state this
+explicitly; it has to be inferred from the product's design and terms
+of service.
+
+Second-order effects: what accumulates after repeated use over time,
+not what happens in a single incident. For a buyer evaluating a
+vendor, this means asking what happens to their own business,
+reputation, or compliance posture after months of dependency on this
+platform, not just what happens if a single API call fails.
+
+CORE EVALUATION PRINCIPLE
+A vendor can be individually well-built and still be dangerous to
+adopt if the responsibility gap between "vendor's system did something"
+and "buyer's team is accountable for the outcome" is invisible to the
+buyer at the moment they integrate it. This is the central question
+Platform Risk evaluation exists to answer: not "is this vendor good,"
+but "does the buyer know, at every point, where control actually sits."
+
+
+COMPLIANCE AND REGULATORY REFERENCE (for Compliance Posture scoring)
+
+SOC 2 (Type I vs Type II)
+SOC 2 Type I assesses whether a vendor's controls are suitably
+designed at a single point in time. SOC 2 Type II assesses whether
+those controls actually operated effectively over a period, typically
+6-12 months. Type II is the stronger signal, since it requires
+sustained operation, not just a design review. A vendor citing "SOC 2
+compliant" without specifying Type I or II, or without a visible
+report date, is a weaker claim than one with a dated, specific
+attestation. Ask: is the report available, current, and Type II?
+
+GDPR (General Data Protection Regulation, EU)
+Relevant vendor questions: Does the vendor act as a data processor or
+data controller for the buyer's data? Is there a Data Processing
+Agreement (DPA) available? Where is data stored and processed
+(data residency matters for EU buyers)? Does the vendor support data
+subject rights (access, deletion, portability) for data the buyer's
+own users provide through the platform? A vendor that cannot answer
+where data is stored, or has no DPA, is a compliance gap regardless of
+marketing claims of "GDPR compliant."
+
+ISO 27001
+An information security management system standard. Certification
+means a vendor has documented and audited security processes, not
+that the vendor is immune to breaches. Check certificate validity
+dates (certification lapses) and scope (a certification can cover
+one product line and not another).
+
+DATA BREACH AND INCIDENT DISCLOSURE
+A vendor's public incident history matters less as an absolute count
+and more as a pattern: was the vendor transparent when incidents
+happened, how fast was disclosure, and what changed afterward? A
+vendor with one disclosed, well-handled incident can be a better bet
+than a vendor with no disclosed incidents and no visible security
+practice, since the absence of disclosed incidents is not the same as
+the absence of incidents.
+
+VENDOR-AS-PROCESSOR RISK (specific to AI/no-code platforms)
+When a buyer's data flows through a third-party AI platform, the
+buyer's own compliance obligations do not transfer away, they extend
+to cover the vendor's handling of that data. This is the responsibility
+gap in Platform Risk terms: the buyer is accountable for outcomes
+even when the vendor's system produced them. A platform that trains
+on customer data by default, without an opt-out, is a materially
+different risk than one that processes data only per-request with no
+retention.
+
+INTEGRATION RISK (specific to fintech buyers)
+For a fintech buyer, ask: what happens to the buyer's own workflow if
+this vendor's platform goes down, changes its API, or gets acquired?
+A vendor deeply wired into a payment or compliance workflow with no
+documented fallback path is a structural risk independent of how good
+the vendor's own security posture is.

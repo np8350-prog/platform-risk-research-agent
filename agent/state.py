@@ -28,6 +28,11 @@ class GraphState(TypedDict):
     # ---- Set once retrieval (RAG) has run ----
     framework_context: str    # relevant excerpts from your book / ControlGap
 
+    # ---- Set by watchlist_check_node, read by the graph's routing edge ----
+    # True only on a fresh watchlist hit. Lets the graph skip straight to
+    # synthesis instead of running the live ReAct tool loop.
+    used_cached_watchlist: bool
+
     # ---- Set once the agent decides it has enough signal ----
     ready_to_report: bool
 

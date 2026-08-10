@@ -1,0 +1,112 @@
+THE INTERFACE IS NOT THE SYSTEM — Six Failure Patterns
+Source: Nelly Pourmehr, Chapters 1-2.
+
+FAILURE PATTERN 1: CONFUSING A FEATURE WITH A STRATEGY
+"We need AI in our product" sounds like strategy but is a feature
+request dressed up in urgency. Adding AI without a clear problem to
+solve means nobody has answered what user problem becomes solvable
+that wasn't before, or what workflow transforms in a way that matters.
+Teams skip this question because answering it honestly might mean
+admitting they don't need AI at all.
+
+FAILURE PATTERN 2: OPTIMIZING FOR ACCURACY INSTEAD OF USEFULNESS
+Accuracy is measurable and seductive, it goes in a slide deck. But
+accuracy measures the model, not the product. A 95% accurate system
+that destroys user trust on the first error is worse than an 80%
+accurate system that helps users catch and correct mistakes easily.
+The real question: when the AI is wrong, can the user tell? Can they
+recover without starting over? Users experience consequences, not
+accuracy percentages.
+
+FAILURE PATTERN 3: TREATING UNCERTAINTY LIKE A BUG
+Traditional software is deterministic; AI breaks that contract. Design
+teams try to hide the uncertainty, stripping confidence scores because
+"users don't understand them," or auto-applying AI suggestions to
+streamline the flow. This creates interfaces that look deterministic
+even though the system underneath is not. The failure isn't the
+uncertainty itself, it's pretending the uncertainty doesn't exist.
+
+FAILURE PATTERN 4: SKIPPING THE WORKFLOW IMPACT ANALYSIS
+An AI feature doesn't just slot into an existing workflow, it
+transforms it, or it should. Questions that go unasked: does it
+eliminate steps or add new ones? Does it shift when decisions get
+made? Does it change who's involved? Does it create new dependencies?
+If an AI feature slides seamlessly into the existing workflow with no
+friction, it's probably not doing anything important enough to matter.
+
+FAILURE PATTERN 5: BRINGING IN UX AFTER THE DECISIONS ARE MADE
+By the time UX is asked to "make it easy to use," the core decisions,
+what the AI predicts, what inputs it needs, what outputs it gives, are
+already locked in. These are UX decisions made in engineering meetings
+in disguise. Starting with UX doesn't slow teams down, it prevents
+them from building the wrong thing quickly.
+
+FAILURE PATTERN 6: ASSUMING USERS WANT WHAT YOU'RE BUILDING
+Technically impressive systems can solve a problem users don't
+actually have. This happens when nobody asked real end users, or the
+answer got reinterpreted, or the wrong people were asked (managers
+instead of the people doing the work daily). The failure isn't
+technical, it's empathy: the team fell in love with their solution
+before understanding the problem.
+
+WHEN AI SHOULD NOT BE USED AT ALL (disqualifying conditions)
+- The current workflow is already fast and reliable; users complete
+  the task in seconds with full confidence.
+- Users need to understand exactly how a decision was made: legal
+  research, financial compliance, medical diagnosis, audit trails.
+  AI that can't explain its reasoning in verifiable terms makes these
+  jobs impossible, not easier.
+- Failure breaks critical trust: being wrong once costs more than many
+  correct outputs earn back. The math doesn't favor probabilistic
+  systems when errors are unforgivable.
+- It forces users to change their workflow to feed the model. The AI
+  must deliver extraordinary value to justify that tax. Most don't.
+
+RED FLAGS IN AI PRODUCT IDEAS
+- "We'll figure out UX later" / "Users will learn to trust it over
+  time" — trust is earned by being trustworthy, not owed with exposure.
+- "The AI is good enough that users won't need to verify" — when users
+  can't easily verify output, they either trust blindly, verify
+  thoroughly (killing time savings), or don't use it at all.
+- "We can educate users about the limitations" — education is not a
+  substitute for good design.
+- "It works in the demo" — demos use ideal conditions; real usage
+  happens under time pressure with messy data and skeptical users.
+- "We're using AI because everyone else is" — checks a marketing box
+  while creating a support burden.
+
+RISK ASSESSMENT: THE FOUR DIMENSIONS
+1. Impact — what happens when the AI is wrong? Low-impact errors are
+   inconvenient; high-impact errors are costly, embarrassing, harmful.
+2. Reversibility — how easily can users undo or correct AI decisions?
+3. User confidence — can users tell when they should trust the AI, or
+   does it appear equally confident whether right or wrong?
+4. Downstream effects — do results stay contained, or cascade, affect
+   other people, trigger irreversible processes, create obligations?
+
+Low-risk AI assists decisions (suggesting, recommending, categorizing
+with visible, movable results). High-risk AI makes decisions (auto-
+sending, rejecting candidates without review, adjusting dosages,
+purchasing above a threshold) where users lose control and correction
+is difficult or impossible.
+
+THE 9-QUESTION VALIDATION SCORECARD
+1. Does this problem genuinely require AI rather than deterministic
+   logic or rules?
+2. Is the decision or task clearly defined and repeatable at scale?
+3. Is there a clear, measurable definition of success for this outcome?
+4. Is the impact of error acceptable for users and the business?
+5. Is the decision reversible if the system is wrong?
+6. Can users understand, question, or contextualize the AI's output?
+7. Is reliable, representative data available and sustainable over time?
+8. Can humans intervene, override, or correct the system when needed?
+9. Is the organization prepared to maintain, monitor, and recalibrate
+   this system long-term?
+Three or more "Fail" answers means the use case should be reconsidered
+or redesigned before introducing AI.
+
+CORE PRINCIPLE
+The hard part of AI products isn't getting the AI to work. It's
+knowing what working actually means. Better prompts cannot fix a bad
+use case, and a traceable execution path does not guarantee the
+correctness of the judgment calls that drive it.
