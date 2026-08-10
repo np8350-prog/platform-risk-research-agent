@@ -339,10 +339,10 @@ def synthesis_node(state: GraphState) -> dict:
     shape either way) into a scored PlatformRiskReport. One LLM call per
     dimension, each grounded in the retrieved framework_context.
 
-    Still stubbed: evidence_review, reality_check, disqualifiers, red_flags,
-    and fix_first. Those need their own dedicated logic tied to the book's
-    "point of no return" framing and the humility layer, not just a per-
-    dimension score — building them here would blur two different jobs.
+    evidence_review, reality_check, disqualifiers, red_flags, and fix_first
+    are filled in with honest placeholders here — they get real content in
+    finalize_report_node, which runs next and looks across all six scored
+    dimensions at once rather than one at a time.
     """
     research_notes = state.get("research_notes", [])
     framework_context = state.get("framework_context", "")
@@ -390,3 +390,106 @@ def synthesis_node(state: GraphState) -> dict:
         "report": validated.model_dump(),
         "ready_to_report": True,
     }
+
+
+# ---- Finalize: evidence review, reality check, disqualifiers, red flags, fix-first ----
+
+_FINALIZE_SYSTEM_PROMPT = """You are producing the closing sections of an AI vendor risk report, building on six already-scored dimensions. Respond with ONLY a JSON object, no markdown fences, no preamble, in exactly this shape:
+
+{
+  "evidence_review": {
+    "provided": true|false,
+    "repetition": "string or null",
+    "resolution_pattern": "string or null",
+    "volume": "string or null",
+    "contradiction": "string or null"
+  },
+  "reality_check": {
+    "performed": true|false,
+    "findings": [{"source": "string", "finding": "string", "url": "string or null"}],
+    "contradicts_stated_framing": "string or null",
+    "note": "string or null"
+  },
+  "disqualifiers": [{"condition": "string", "cost": "string"}],
+  "red_flags": [{"quote": "string", "explanation": "string"}],
+  "fix_first": {"what": "string", "with_whom": "string", "question": "string"}
+}
+
+Rules:
+- evidence_review looks ACROSS all six dimensions' research, not one at a time: is evidence repeated verbatim across sources without new substantiation (repetition)? When issues are raised, is there a documented pattern for how they get resolved (resolution_pattern)? Is there a meaningful volume of evidence, or is most of it thin (volume)? Do any sources contradict each other (contradiction)? If notes are too thin to assess this, set provided=false and leave the rest null.
+- reality_check independently checks whether the vendor's own claims hold up against what was actually found. Only include a URL in a finding if that exact URL literally appears in the research notes below — never invent or guess a URL. If you can't verify a URL, set it to null.
+- disqualifiers should ONLY be included if the buyer's stated use case or context creates a hard requirement the vendor demonstrably does not meet (e.g., buyer explicitly handles PHI and no BAA is available). If no such hard conflict exists, return an empty list — do not manufacture disqualifiers to seem thorough.
+- red_flags must be grounded in specific findings from the research notes, not general risk commentary. Keep each quote under 15 words and phrase it in your own words rather than copying source text verbatim.
+- fix_first names the single most important next step for the buyer before adopting this vendor — a specific, concrete action, not a generic "do more diligence."
+- If the research notes are too thin to responsibly fill a section, say so honestly (empty list, or provided/performed=false) rather than inventing content."""
+
+
+def _truncate(text: str, max_chars: int = 800) -> str:
+    return text if len(text) <= max_chars else text[:max_chars] + " [...truncated]"
+
+
+def finalize_report_node(state: GraphState) -> dict:
+    """
+    Fills in evidence_review, reality_check, disqualifiers, red_flags, and
+    fix_first — the parts of the report that look across all six already-
+    scored dimensions together, rather than one dimension at a time like
+    synthesis_node does.
+
+    On any failure, returns {} (no state change), so the report keeps the
+    honest placeholders from synthesis_node instead of crashing or silently
+    losing the six real dimension scores that already succeeded.
+    """
+    report = state.get("report")
+    if not report:
+        print("finalize_report_node: no report in state to finalize — skipping")
+        return {}
+
+    research_notes = state.get("research_notes", [])
+    framework_context = state.get("framework_context", "")
+
+    # Truncated per-note to keep this single call's prompt a reasonable
+    # size — the six PatternResult reasons already carry the distilled
+    # signal; the truncated raw notes are here mainly so reality_check
+    # can point to real URLs instead of paraphrasing without a source.
+    truncated_notes = "\n\n".join(_truncate(n) for n in research_notes)
+
+    user_prompt = (
+        f"Vendor: {state['vendor_name']}\n"
+        f"Buyer's intended use case: {state['use_case']}\n"
+        f"Buyer context: {state['buyer_context']}\n\n"
+        f"--- Authored framework context ---\n{framework_context or '(none retrieved)'}\n\n"
+        f"--- Scored dimensions ---\n{json.dumps(report['patterns'], indent=2)}\n\n"
+        f"--- Research notes (truncated per dimension) ---\n{truncated_notes}"
+    )
+
+    try:
+        client = _get_llm()
+        response = client.chat.completions.create(
+            model=DEEPSEEK_MODEL,
+            messages=[
+                {"role": "system", "content": _FINALIZE_SYSTEM_PROMPT},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0,
+        )
+        raw = response.choices[0].message.content.strip()
+        raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
+        parsed = json.loads(raw)
+
+        updated_report = {
+            **report,
+            "evidence_review": parsed["evidence_review"],
+            "reality_check": parsed["reality_check"],
+            "disqualifiers": parsed["disqualifiers"],
+            "red_flags": parsed["red_flags"],
+            "fix_first": parsed["fix_first"],
+        }
+
+        # Validate before handing back — a malformed field here should
+        # fall through to the except block below, not corrupt the report.
+        validated = PlatformRiskReport(**updated_report)
+        return {"report": validated.model_dump()}
+
+    except Exception as e:
+        print(f"finalize_report_node failed, keeping placeholder sections: {e}")
+        return {}

@@ -4,17 +4,18 @@ LangGraph wiring for the platform risk research agent.
 Current shape:
 
     watchlist_check (entry)
-        -> used_cached_watchlist=True  -> framework_retrieval -> synthesis -> END
-        -> used_cached_watchlist=False -> live_research -> framework_retrieval -> synthesis -> END
+        -> used_cached_watchlist=True  -> framework_retrieval -> synthesis -> finalize_report -> END
+        -> used_cached_watchlist=False -> live_research -> framework_retrieval -> synthesis -> finalize_report -> END
 
 framework_retrieval runs on both paths, right before synthesis, since it
 depends only on vendor/use_case/buyer_context, not on where the research
 notes came from.
 
-live_research is still a STUB. synthesis is real (calls DeepSeek per
-dimension, grounded in framework_retrieval's output) but several report
-fields inside it (evidence_review, reality_check, disqualifiers, red_flags,
-fix_first) are still placeholders — see agent/nodes.py for exactly which.
+synthesis scores the six dimensions (one DeepSeek call each). finalize_report
+looks across all six at once to fill in evidence_review, reality_check,
+disqualifiers, red_flags, and fix_first. If finalize_report fails for any
+reason, the report keeps the honest placeholders synthesis set instead of
+losing the six real scores that already succeeded.
 """
 
 from langgraph.graph import StateGraph, END
@@ -25,6 +26,7 @@ from agent.nodes import (
     live_research_node,
     framework_retrieval_node,
     synthesis_node,
+    finalize_report_node,
 )
 
 
@@ -42,6 +44,7 @@ def build_graph():
     graph.add_node("live_research", live_research_node)
     graph.add_node("framework_retrieval", framework_retrieval_node)
     graph.add_node("synthesis", synthesis_node)
+    graph.add_node("finalize_report", finalize_report_node)
 
     graph.set_entry_point("watchlist_check")
 
@@ -56,6 +59,7 @@ def build_graph():
 
     graph.add_edge("live_research", "framework_retrieval")
     graph.add_edge("framework_retrieval", "synthesis")
-    graph.add_edge("synthesis", END)
+    graph.add_edge("synthesis", "finalize_report")
+    graph.add_edge("finalize_report", END)
 
     return graph.compile()
