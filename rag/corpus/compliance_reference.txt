@@ -1,0 +1,43 @@
+SOC 2: What It Actually Certifies
+
+SOC 2 is an attestation report issued by an independent CPA firm, based on the AICPA's Trust Services Criteria. It is not a government certification and there is no single universal "SOC 2 certified" checkbox — the report's scope depends on which Trust Service Criteria the vendor chose to be assessed against: Security (the only mandatory one), Availability, Processing Integrity, Confidentiality, and Privacy.
+
+Type I vs Type II matters more than most vendor marketing pages make clear. A SOC 2 Type I report only evaluates whether controls are designed appropriately at a single point in time. A SOC 2 Type II report evaluates whether those controls actually operated effectively over an observation period, typically 6 to 12 months. Type II is the stronger claim. A vendor advertising "SOC 2 compliant" without specifying Type I or Type II should be treated as an incomplete claim, not a red flag by itself, but a gap worth asking about directly.
+
+A SOC 2 report is not published publicly by default. Vendors typically gate it behind an NDA or a trust portal request. A vendor that cannot produce the actual report, or the name of the auditing firm, when asked, is making a materially weaker claim than one that can. The presence of a public "SOC 2 Type II" badge on a marketing page is a vendor claim; the presence of a downloadable, named-auditor report is independent evidence.
+
+GDPR: What Actually Matters for a Vendor Evaluation
+
+GDPR is EU law, not a certification, so there is no such thing as being "GDPR certified" in the way a company can be ISO certified. When a vendor says "GDPR compliant," this is a self-assessment of their own practices against the regulation, not a third-party attestation, unless they can point to a specific accredited GDPR certification mechanism (these exist under Article 42 but are still uncommon in practice).
+
+The single most concrete, checkable artifact for a fintech buyer is the Data Processing Agreement (DPA), required under GDPR Article 28 whenever a vendor processes personal data on a customer's behalf. A real DPA specifies: what data the processor may process and for what purpose, the processor's obligation to only act on the controller's documented instructions, confidentiality obligations for anyone with data access, security measures, sub-processor rules (the processor must get authorization before engaging further sub-processors and must flow down the same data protection obligations to them), and terms for assisting the controller with data subject rights requests and breach notification. If a vendor cannot produce a DPA, or only offers one on Enterprise-tier plans, that is a concrete, checkable fact worth scoring, not a vague compliance gap.
+
+International data transfer mechanisms are the second concrete artifact. If a vendor processes EU personal data outside the EU (commonly the US), they need a legal transfer mechanism: Standard Contractual Clauses (SCCs) are the most common in practice, the EU-US Data Privacy Framework is another for certified US companies. A vendor moving EU data to US servers with no named transfer mechanism is a real, specific compliance gap, not a technicality.
+
+ISO 27001 vs ISO 27701
+
+ISO/IEC 27001 certifies an organization's Information Security Management System (ISMS): the governance processes, risk assessment methodology, and controls the organization uses to manage information security. It is issued by an accredited certification body after an external audit, and re-assessed periodically (typically annual surveillance audits with recertification every three years). Unlike SOC 2, an ISO 27001 certificate is a specific document with a certificate number and an issuing body, which makes it easier to verify: a vendor should be able to name the certification body and, ideally, show the certificate itself.
+
+ISO/IEC 27701 is a privacy-specific extension to ISO 27001. It certifies a Privacy Information Management System (PIMS), essentially applying the same management-system approach to privacy obligations rather than general security. A vendor holding 27701 has gone further than baseline 27001 specifically on privacy governance, which matters more for a vendor handling significant personal data than for one handling mostly operational metadata.
+
+HIPAA and Business Associate Agreements
+
+HIPAA does not certify vendors; there is no such thing as "HIPAA certified" software, despite how often that phrase appears in vendor marketing. What actually matters is whether the vendor will sign a Business Associate Agreement (BAA), a contract required whenever a "business associate" handles Protected Health Information (PHI) on behalf of a covered entity. The BAA itself is the artifact to check for, not a marketing claim of "HIPAA compliant" or "HIPAA ready."
+
+A vendor can be reasonably secure in general and still not offer a BAA, either because their infrastructure isn't architected for PHI handling, or because they've made a business decision not to take on that liability. If a buyer's use case involves PHI in any form and the vendor doesn't offer a BAA, that is a hard disqualifying condition for that specific use case, not a minor gap, regardless of how strong the vendor's other security posture looks.
+
+PCI DSS
+
+PCI DSS applies to any organization that stores, processes, or transmits cardholder data. There are four compliance levels based on transaction volume, and validation requirements scale accordingly, from a Self-Assessment Questionnaire (SAQ) at the lowest level up to a full Report on Compliance (RoC) from a Qualified Security Assessor (QSA) at the highest. A vendor's PCI DSS claim is only meaningful in the context of what they actually do with card data: a vendor that never touches raw card numbers (because they use a tokenization provider like Stripe under the hood) has a fundamentally different, usually lower, PCI exposure than one that directly processes card data.
+
+FedRAMP
+
+FedRAMP is a US government authorization program for cloud services used by federal agencies, not a general-purpose enterprise certification, though vendors increasingly cite it as a general trust signal. Authorization levels (Low, Moderate, High) reflect the sensitivity of data the system is authorized to handle. A vendor being "FedRAMP authorized" for one specific product or deployment does not mean their entire platform holds that authorization; the authorization is scoped to a specific system boundary, and it's worth checking whether the specific product a buyer would use is actually the one that's authorized.
+
+CCPA / CPRA
+
+The California Consumer Privacy Act, as amended by the California Privacy Rights Act, is US state law, not a certification. It grants California residents rights over their personal information (access, deletion, opt-out of sale/sharing) and imposes obligations on businesses meeting certain size or data-volume thresholds, and on the service providers those businesses use. Similar to GDPR, the concrete artifact to look for is a data processing addendum covering CCPA/CPRA obligations, not a general marketing claim of compliance. A vendor operating only outside the US, or below the applicable thresholds, may not need CCPA compliance at all, so this claim should be read in context of the buyer's actual customer base, not treated as universally required.
+
+The General Pattern Across All of These
+
+Across every framework above, the same distinction recurs: a certification or attestation issued by a named, independent third party (an auditor, a certification body, a government program) is verifiable evidence. A vendor's own description of their practices as "compliant," without a named third party, a report, or a specific contractual artifact (DPA, BAA, SCCs) behind it, is a claim, not evidence, no matter how confidently or how often it's repeated across the vendor's marketing pages. Repetition of an unverified claim across many pages of a vendor's own website does not make it more true; it just makes it more visible.
