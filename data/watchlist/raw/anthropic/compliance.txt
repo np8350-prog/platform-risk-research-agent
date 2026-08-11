@@ -1,38 +1,6 @@
-An overview of Anthropic's security, compliance, and regulatory posture outlines how these frameworks are verified:
-
-1. SOC 2 Status
-	•	Status: SOC 2 Type II, SOC 2 Type I, and SOC 3.  
-	•	Vendor Claim vs. Independent Confirmation: 
-	◦	Vendor Claim: Anthropic lists SOC 2 Type II compliance on its official Trust Center (trust.anthropic.com) and offers the report for download to enterprise clients.  
-	◦	Independent Confirmation: Independently confirmed. SOC 2 Type II compliance is verified by an independent third-party auditing firm (attesting to the operational effectiveness of Anthropic’s security, availability, and confidentiality controls). 
-2. ISO Certifications (ISO 27001 & ISO 42001)
-	•	Status: ISO 27001 (Information Security Management) and ISO 42001 (AI Management System) certified.  
-	•	Vendor Claim vs. Independent Confirmation: 
-	◦	Vendor Claim: Published on Anthropic’s Trust Portal alongside their Statement of Applicability.  
-	◦	Independent Confirmation: Independently confirmed. ISO certification requires formal audits and issuance of an official certificate by an accredited, independent third-party registrar. Anthropic hosts the third-party issued ISO certificates directly in its document library.  
-3. GDPR Compliance
-	•	Status: Self-declared GDPR compliant with a standardized Data Processing Addendum (DPA) and Standard Contractual Clauses (SCCs). 
-	•	Vendor Claim vs. Independent Confirmation: 
-	◦	Vendor Claim: Vendor self-claim / contractual representation. Anthropic self-asserts GDPR compliance in its terms, privacy policy, and DPA. 
-	◦	Independent Confirmation: Not independently certifiable. There is no official, universally recognized central "GDPR certifying body." While Anthropic enforces data subject rights, zero data retention (ZDR) options, and EU data isolation agreements, GDPR compliance remains a self-asserted legal representation rather than a third-party accredited seal.  
-4. Other Relevant Compliance & Certifications
-HIPAA (Health Insurance Portability and Accountability Act)
-	•	Status: HIPAA-Ready for specific enterprise offerings. Anthropic offers a Business Associate Agreement (BAA) for eligible products (Claude Enterprise, first-party API, and specific Claude Code configurations).  
-	•	Vendor Claim vs. Independent Confirmation: 
-	◦	Vendor Claim: Anthropic publishes HIPAA Implementation Guides and BAA terms on its website.  
-	◦	Independent Confirmation: Independently confirmed via audit. Anthropic maintains third-party HIPAA assessment reports (e.g., Type 1 HIPAA Report) conducted by external auditors, available under NDA via their Trust Center.  
-FedRAMP & U.S. Government Frameworks
-	•	Status: FedRAMP High Authorized for Claude for Government (C4G) via the Palantir Federal Cloud Service (PFCS); NIST 800-171r3 attestation.  
-	•	Vendor Claim vs. Independent Confirmation: 
-	◦	Vendor Claim: Stated in Anthropic’s Trust Center documentation.  
-	◦	Independent Confirmation: Independently confirmed. Listed and verified directly on the official U.S. Federal Government FedRAMP Marketplace (marketplace.fedramp.gov) under Palantir’s FedStart authorization program.  
-PCI DSS (Payment Card Industry Data Security Standard)
-	•	Status: Not PCI DSS certified for model training or prompt processing. 
-	•	Vendor Claim vs. Independent Confirmation: 
-	◦	Vendor Claim: Anthropic explicitly warns users in its terms and documentation against transmitting payment card details or cardholder data (PANs) into Claude prompts. 
-	◦	Independent Confirmation: Third-party security analysis confirms that while Anthropic uses PCI-compliant payment gateways (like Stripe) for customer billing, the core Claude LLM platform and APIs do not hold PCI DSS certification. 
-CSA STAR & Cyber Essentials
-	•	Status: CSA STAR Level 2 certified and UK Cyber Essentials certified (via Anthropic Ireland Limited).  
-	•	Vendor Claim vs. Independent Confirmation: 
-	◦	Vendor Claim: Listed on the Anthropic Trust Portal. 
-	◦	Independent Confirmation: Independently confirmed. Verified through third-party assessment filings on the Cloud Security Alliance (CSA) registry and UK certification bodies.
+•	SOC 2 Status: Anthropic maintains an independently audited SOC 2 Type II report (covering Security, Availability, and Confidentiality) alongside a public SOC 3 report and CSA STAR Level 2 attestation (https://trust.anthropic.com/). These claims are independently confirmed by third-party CPA audit firms engaged by Anthropic (https://trust.anthropic.com/). 
+	•	ISO 27001 & ISO 42001: Anthropic holds third-party accredited ISO/IEC 27001:2022 (Information Security Management) and ISO/IEC 42001:2023 (Artificial Intelligence Management System) certifications (https://trust.anthropic.com/faq) (https://trust.anthropic.com/resources). 
+	•	GDPR: Supports GDPR compliance through a standardized Data Processing Addendum (DPA) incorporating Standard Contractual Clauses (SCCs) for international data transfers (https://trust.anthropic.com/). 
+	•	HIPAA / BAA Availability: Anthropic provides a Business Associate Agreement (BAA) for HIPAA-regulated customers utilizing eligible enterprise products, specifically Claude Enterprise and the commercial 1P Developer Platform API, supported by an official HIPAA Implementation Guide (https://trust.anthropic.com/faq) (https://trust.anthropic.com/updates). 
+	•	PCI DSS: Payment handling for commercial subscriptions is offloaded to PCI DSS Level 1 certified third-party payment gateways, specifically Stripe (https://trust.anthropic.com/subprocessors); Anthropic's core API infrastructure does not process or store raw payment card data directly (no URL available for this). 
+	•	FedRAMP & Government Standards: Offers Claude for Government (C4G) backed by FedRAMP High authorization via Palantir Federal Cloud Service (PFCS) and NIST 800-171r3 compliance attestations (https://trust.anthropic.com/) (https://trust.anthropic.com/subprocessors).

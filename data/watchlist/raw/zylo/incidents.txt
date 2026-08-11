@@ -1,5 +1,8 @@
-•	Data Breaches: None reported or publicly disclosed. 
-	•	Outages or Service Failures: No major public outages or widespread service disruptions recorded in public incident databases. 
-	•	Public Security Incidents: No public security incidents, vulnerability exploits, or disclosures reported by news outlets or security researchers. 
-	•	Lawsuits: No public records of lawsuits related to data security, privacy violations, or data handling practices. 
-	•	Source Disclosure: Verified against public cybersecurity incident tracking databases, legal registers, cybersecurity press, and vendor trust center disclosures.
+•	I found no credible public report of a confirmed Zylo customer-data breach in the sources reviewed. No URL available for this negative finding.
+	•	I found no credible public report of a major Zylo security compromise or ransomware incident. No URL available for this negative finding.
+	•	I found no publicly documented major Zylo platform outage with a material customer-data impact. No URL available for this negative finding.
+	•	Zylo's Master Service Agreement commits it to commercially reasonable efforts to make the service available 24×7, excluding scheduled maintenance and circumstances outside its reasonable control. (https://zylo.com/msa/) (Zylo("https://zylo.com/msa/?utm_source=chatgpt.com"))
+	•	Zylo's Slack Marketplace security profile identifies a dedicated security team and SAML/SSO support, but also states that Zylo does not have a public vulnerability disclosure program or bug-bounty program. (https://slack.com/marketplace/A37JHBS0G-zylo) (Slack("https://slack.com/marketplace/A37JHBS0G-zylo?utm_source=chatgpt.com"))
+	•	The same Slack Marketplace record says the Zylo integration is cloud-hosted in the United States on AWS and uses subprocessors. (https://slack.com/marketplace/A37JHBS0G-zylo) (Slack("https://slack.com/marketplace/A37JHBS0G-zylo?utm_source=chatgpt.com"))
+	•	Security-related lawsuits: I found no credible lawsuit alleging that Zylo itself caused a significant customer-data breach or security failure. No URL available for this negative finding.
+	•	Overall incident assessment: LOW based on publicly visible evidence, with the caveat that the absence of public incidents is not evidence that no incidents have occurred. For enterprise procurement, request Zylo's current incident history and SOC 2 report directly.

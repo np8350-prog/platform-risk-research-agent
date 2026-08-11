@@ -14,7 +14,7 @@ Implemented:
   - synthesis_node: turns research_notes + framework_context into six
     scored PatternResult entries (one DeepSeek call per dimension) and
     assembles a PlatformRiskReport. evidence_review, reality_check,
-    disqualifiers, red_flags, and fix_first are still placeholders —
+    disqualifiers, red_flags, and fix_first are still placeholders,
     see synthesis_node's docstring for why those are scoped separately.
 """
 
@@ -49,12 +49,12 @@ def _normalize_vendor_name(name: str) -> str:
 
 def _is_stale(last_updated_str: str | None, max_days: int = WATCHLIST_STALENESS_DAYS) -> bool:
     if not last_updated_str:
-        # No date on record means we can't trust it — treat as stale.
+        # No date on record means we can't trust it, treat as stale.
         return True
     try:
         last_updated = datetime.strptime(last_updated_str, "%Y-%m-%d")
     except ValueError:
-        # Unparseable date — same reasoning, don't silently trust it.
+        # Unparseable date, same reasoning, don't silently trust it.
         return True
     return (datetime.utcnow() - last_updated).days > max_days
 
@@ -75,7 +75,7 @@ def watchlist_check_node(state: GraphState) -> dict:
     if not os.path.exists(processed_path):
         return {
             "tool_calls_made": [
-                f"watchlist_check: '{vendor_slug}' not on watchlist — proceeding to live research"
+                f"watchlist_check: '{vendor_slug}' not on watchlist, proceeding to live research"
             ],
         }
 
@@ -83,11 +83,11 @@ def watchlist_check_node(state: GraphState) -> dict:
         with open(processed_path, "r", encoding="utf-8") as f:
             cached = json.load(f)
     except (json.JSONDecodeError, OSError) as e:
-        # A broken cache file should never crash the graph — fall through
+        # A broken cache file should never crash the graph, fall through
         # to live research instead, same as any other tool failure.
         return {
             "tool_calls_made": [
-                f"watchlist_check: '{vendor_slug}' cache file unreadable ({e}) — proceeding to live research"
+                f"watchlist_check: '{vendor_slug}' cache file unreadable ({e}), proceeding to live research"
             ],
         }
 
@@ -97,11 +97,11 @@ def watchlist_check_node(state: GraphState) -> dict:
             "tool_calls_made": [
                 f"watchlist_check: '{vendor_slug}' found but stale "
                 f"(last_updated={last_updated}, staleness limit={WATCHLIST_STALENESS_DAYS}d) "
-                f"— proceeding to live research"
+                f", proceeding to live research"
             ],
         }
 
-    # Fresh hit — load every dimension's cached content into research_notes,
+    # Fresh hit: load every dimension's cached content into research_notes,
     # in the fixed order the report expects, so the synthesis node sees the
     # same shape it would from a live research loop.
     notes = []
@@ -109,10 +109,10 @@ def watchlist_check_node(state: GraphState) -> dict:
     for dimension_name in PLATFORM_RISK_DIMENSIONS:
         entry = dimensions.get(dimension_name)
         if not entry or not entry.get("content"):
-            notes.append(f"[WATCHLIST CACHE — {dimension_name}] no cached content found.")
+            notes.append(f"[WATCHLIST CACHE: {dimension_name}] no cached content found.")
             continue
         notes.append(
-            f"[WATCHLIST CACHE — {dimension_name}] "
+            f"[WATCHLIST CACHE: {dimension_name}] "
             f"(confidence: {entry.get('confidence', 'no signal found')}, "
             f"source: {entry.get('source_type', 'unspecified')})\n"
             f"{entry['content']}"
@@ -121,7 +121,7 @@ def watchlist_check_node(state: GraphState) -> dict:
     return {
         "research_notes": notes,
         "tool_calls_made": [
-            f"watchlist_check: '{vendor_slug}' hit — loaded {len(notes)} cached dimensions "
+            f"watchlist_check: '{vendor_slug}' hit, loaded {len(notes)} cached dimensions "
             f"(last_updated={last_updated}), skipped live search"
         ],
         "used_cached_watchlist": True,
@@ -158,8 +158,8 @@ def live_research_node(state: GraphState) -> dict:
 
     def _format_results(results: list[dict], dimension_name: str) -> str:
         if not results:
-            return f"[LIVE SEARCH — {dimension_name}] No results found for '{vendor}'."
-        lines = [f"[LIVE SEARCH — {dimension_name}] {len(results)} results for '{vendor}':"]
+            return f"[LIVE SEARCH: {dimension_name}] No results found for '{vendor}'."
+        lines = [f"[LIVE SEARCH: {dimension_name}] {len(results)} results for '{vendor}':"]
         for r in results:
             snippet = (r.get("content") or "")[:400]
             lines.append(f"- {r.get('title', '(no title)')}: {snippet} ({r.get('url', '')})")
@@ -201,7 +201,7 @@ def framework_retrieval_node(state: GraphState) -> dict:
 
     Runs after research (cached or live) and before synthesis, so every
     dimension gets scored against the framework instead of just the
-    model's general knowledge — this is what makes the risk scoring
+    model's general knowledge, this is what makes the risk scoring
     reflect a specific point of view instead of a generic checklist.
     """
     query = (
@@ -231,7 +231,7 @@ def _get_llm() -> OpenAI:
 
 # Fallback used whenever the LLM call fails outright or returns something
 # that doesn't parse. The graph must never crash because a model call had
-# a bad day — a low-confidence pattern is the honest response, not a crash.
+# a bad day; a low-confidence pattern is the honest response, not a crash.
 _FALLBACK_PATTERN = {
     "score": "Risk",
     "score_value": 1,
@@ -243,10 +243,10 @@ _FALLBACK_PATTERN = {
 
 
 def _find_notes_for_dimension(research_notes: list[str], dimension_name: str) -> str:
-    """research_notes entries are tagged with '— {Dimension Name}]' whether
+    """research_notes entries are tagged with ': {Dimension Name}]' whether
     they came from the watchlist cache or (eventually) a live search. Pull
     out just the notes relevant to this one dimension."""
-    matches = [note for note in research_notes if f"— {dimension_name}]" in note]
+    matches = [note for note in research_notes if f": {dimension_name}]" in note]
     return "\n\n".join(matches) if matches else "No research notes available for this dimension."
 
 
@@ -264,7 +264,7 @@ def _score_dimension(
     the research instead of skimming the back half."""
     system_prompt = (
         "You are scoring one specific risk dimension for an AI vendor evaluation. "
-        "You are grounded in an authored risk framework (below) — use it to inform "
+        "You are grounded in an authored risk framework (below); use it to inform "
         "your judgment, not just general knowledge. "
         "Respond with ONLY a JSON object, no markdown fences, no preamble, in exactly "
         "this shape:\n"
@@ -275,7 +275,9 @@ def _score_dimension(
         "The confidence field must reflect the actual evidence quality in the notes, "
         "not how confident you feel about your own reasoning. If the notes say a claim "
         "is a vendor's own claim with no independent confirmation, that is at most "
-        "'limited evidence', never 'strong evidence'."
+        "'limited evidence', never 'strong evidence'. "
+        "Do not use em dashes anywhere in your response; use a comma, period, or "
+        "parentheses instead."
     )
 
     user_prompt = (
@@ -298,7 +300,7 @@ def _score_dimension(
             temperature=0,
         )
         raw = response.choices[0].message.content.strip()
-        # Models sometimes wrap JSON in markdown fences despite instructions — strip if present.
+        # Models sometimes wrap JSON in markdown fences despite instructions; strip if present.
         raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
         parsed = json.loads(raw)
 
@@ -324,7 +326,7 @@ def _score_dimension(
 def _compute_verdict(patterns: list[dict]) -> tuple[str, str]:
     """Simple, explainable rule: worst dimension sets the verdict. A single
     Fail is enough to call the whole vendor high risk, same logic a human
-    reviewer would apply — one disqualifying finding outweighs five clean ones."""
+    reviewer would apply; one disqualifying finding outweighs five clean ones."""
     scores = [p["score"] for p in patterns]
     if "Fail" in scores:
         return "High risk", "risk"
@@ -335,12 +337,12 @@ def _compute_verdict(patterns: list[dict]) -> tuple[str, str]:
 
 def synthesis_node(state: GraphState) -> dict:
     """
-    Turns research_notes (from the watchlist cache or a live search — same
+    Turns research_notes (from the watchlist cache or a live search, same
     shape either way) into a scored PlatformRiskReport. One LLM call per
     dimension, each grounded in the retrieved framework_context.
 
     evidence_review, reality_check, disqualifiers, red_flags, and fix_first
-    are filled in with honest placeholders here — they get real content in
+    are filled in with honest placeholders here; they get real content in
     finalize_report_node, which runs next and looks across all six scored
     dimensions at once rather than one at a time.
     """
@@ -365,7 +367,7 @@ def synthesis_node(state: GraphState) -> dict:
     report_dict = {
         "id": str(uuid.uuid4()),
         "created_at": datetime.utcnow().isoformat(),
-        "subject": f"{state['vendor_name']} — {state['use_case']}",
+        "subject": f"{state['vendor_name']}: {state['use_case']}",
         "summary": f"Automated risk scan across {len(patterns)} dimensions. "
                    f"Overall verdict: {verdict}.",
         "verdict": verdict,
@@ -382,7 +384,7 @@ def synthesis_node(state: GraphState) -> dict:
         },
     }
 
-    # Validate against the real schema before handing it back — if this
+    # Validate against the real schema before handing it back; if this
     # fails, we want to know now, not when someone tries to render the report.
     validated = PlatformRiskReport(**report_dict)
 
@@ -417,21 +419,70 @@ _FINALIZE_SYSTEM_PROMPT = """You are producing the closing sections of an AI ven
 
 Rules:
 - evidence_review looks ACROSS all six dimensions' research, not one at a time: is evidence repeated verbatim across sources without new substantiation (repetition)? When issues are raised, is there a documented pattern for how they get resolved (resolution_pattern)? Is there a meaningful volume of evidence, or is most of it thin (volume)? Do any sources contradict each other (contradiction)? If notes are too thin to assess this, set provided=false and leave the rest null.
-- reality_check independently checks whether the vendor's own claims hold up against what was actually found. Only include a URL in a finding if that exact URL literally appears in the research notes below — never invent or guess a URL. If you can't verify a URL, set it to null.
-- disqualifiers should ONLY be included if the buyer's stated use case or context creates a hard requirement the vendor demonstrably does not meet (e.g., buyer explicitly handles PHI and no BAA is available). If no such hard conflict exists, return an empty list — do not manufacture disqualifiers to seem thorough.
+- reality_check independently checks whether the vendor's own claims hold up against what was actually found. You will be given a list of "URLs found in research notes". A finding's url field must EXACTLY match one entry from that list, or be null. Never invent, guess, or slightly modify a URL, and never use a dimension name (like "Compliance Posture") as a source when a real URL from the list is available and relevant; prefer citing the real URL.
+- disqualifiers should ONLY be included if the buyer's stated use case or context creates a hard requirement the vendor demonstrably does not meet (e.g., buyer explicitly handles PHI and no BAA is available). If no such hard conflict exists, return an empty list; do not manufacture disqualifiers to seem thorough.
 - red_flags must be grounded in specific findings from the research notes, not general risk commentary. Keep each quote under 15 words and phrase it in your own words rather than copying source text verbatim.
-- fix_first names the single most important next step for the buyer before adopting this vendor — a specific, concrete action, not a generic "do more diligence."
-- If the research notes are too thin to responsibly fill a section, say so honestly (empty list, or provided/performed=false) rather than inventing content."""
+- fix_first names the single most important next step for the buyer before adopting this vendor: a specific, concrete action, not a generic "do more diligence." fix_first MUST be a JSON object with exactly the three string keys shown in the shape above (what, with_whom, question); never return it as a plain string.
+- If the research notes are too thin to responsibly fill a section, say so honestly (empty list, or provided/performed=false) rather than inventing content.
+- Do not use em dashes anywhere in your response, in any field; use a comma, period, or parentheses instead."""
 
 
 def _truncate(text: str, max_chars: int = 800) -> str:
     return text if len(text) <= max_chars else text[:max_chars] + " [...truncated]"
 
 
+def _extract_urls(text: str) -> list[str]:
+    """Pulls every URL out of a note's full, untruncated text. Truncating
+    notes for prompt size was cutting off real citations that happened to
+    sit past the cutoff, causing reality_check to correctly (per its own
+    rules) fall back to a source with no URL, even when a real one existed
+    further into the text. Extracting URLs before truncation means a
+    citation's position in the note no longer determines whether it
+    survives."""
+    return re.findall(r'https?://[^\s)\]"\'<>]+', text)
+
+
+def _coerce_evidence_review(value) -> dict:
+    if isinstance(value, dict) and isinstance(value.get("provided"), bool):
+        return value
+    return {"provided": False, "repetition": None, "resolution_pattern": None,
+             "volume": None, "contradiction": None}
+
+
+def _coerce_reality_check(value) -> dict:
+    if isinstance(value, dict) and isinstance(value.get("performed"), bool) and isinstance(value.get("findings"), list):
+        return value
+    return {"performed": False, "findings": [], "contradicts_stated_framing": None, "note": None}
+
+
+def _coerce_list(value) -> list:
+    return value if isinstance(value, list) else []
+
+
+def _coerce_fix_first(value) -> dict:
+    if isinstance(value, dict) and all(k in value for k in ("what", "with_whom", "question")):
+        return value
+    if isinstance(value, str) and value.strip():
+        # The model sometimes returns a bare recommendation string instead
+        # of the structured object. That string is still real, useful
+        # content, salvage it into "what" rather than discarding a genuine
+        # recommendation over a shape mismatch.
+        return {
+            "what": value.strip(),
+            "with_whom": "Not specified by the model. Ask your vendor contact directly.",
+            "question": "Not specified by the model.",
+        }
+    return {
+        "what": "Not available. The model's response for this section could not be parsed.",
+        "with_whom": "N/A",
+        "question": "N/A",
+    }
+
+
 def finalize_report_node(state: GraphState) -> dict:
     """
     Fills in evidence_review, reality_check, disqualifiers, red_flags, and
-    fix_first — the parts of the report that look across all six already-
+    fix_first, the parts of the report that look across all six already-
     scored dimensions together, rather than one dimension at a time like
     synthesis_node does.
 
@@ -441,17 +492,30 @@ def finalize_report_node(state: GraphState) -> dict:
     """
     report = state.get("report")
     if not report:
-        print("finalize_report_node: no report in state to finalize — skipping")
+        print("finalize_report_node: no report in state to finalize, skipping")
         return {}
 
     research_notes = state.get("research_notes", [])
     framework_context = state.get("framework_context", "")
 
     # Truncated per-note to keep this single call's prompt a reasonable
-    # size — the six PatternResult reasons already carry the distilled
-    # signal; the truncated raw notes are here mainly so reality_check
-    # can point to real URLs instead of paraphrasing without a source.
+    # size; the six PatternResult reasons already carry the distilled
+    # signal from each dimension.
     truncated_notes = "\n\n".join(_truncate(n) for n in research_notes)
+
+    # Collect every URL from the FULL (untruncated) notes separately, so a
+    # citation late in a long note isn't lost just because the note itself
+    # got cut short above. Deduplicated, order preserved, capped so a huge
+    # note list can't blow up the prompt.
+    seen_urls = set()
+    known_urls = []
+    for note in research_notes:
+        for url in _extract_urls(note):
+            if url not in seen_urls:
+                seen_urls.add(url)
+                known_urls.append(url)
+    known_urls = known_urls[:50]
+    known_urls_block = "\n".join(known_urls) if known_urls else "(none found in research notes)"
 
     user_prompt = (
         f"Vendor: {state['vendor_name']}\n"
@@ -459,6 +523,7 @@ def finalize_report_node(state: GraphState) -> dict:
         f"Buyer context: {state['buyer_context']}\n\n"
         f"--- Authored framework context ---\n{framework_context or '(none retrieved)'}\n\n"
         f"--- Scored dimensions ---\n{json.dumps(report['patterns'], indent=2)}\n\n"
+        f"--- URLs found in research notes (reality_check may ONLY cite a URL from this exact list, or use null) ---\n{known_urls_block}\n\n"
         f"--- Research notes (truncated per dimension) ---\n{truncated_notes}"
     )
 
@@ -476,17 +541,23 @@ def finalize_report_node(state: GraphState) -> dict:
         raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
         parsed = json.loads(raw)
 
+        # Each field is validated and salvaged independently. A malformed
+        # fix_first (or any other single field) should not throw away a
+        # reality_check or evidence_review that parsed correctly, that
+        # wastes a real API call and hides good data over an unrelated
+        # shape mismatch.
         updated_report = {
             **report,
-            "evidence_review": parsed["evidence_review"],
-            "reality_check": parsed["reality_check"],
-            "disqualifiers": parsed["disqualifiers"],
-            "red_flags": parsed["red_flags"],
-            "fix_first": parsed["fix_first"],
+            "evidence_review": _coerce_evidence_review(parsed.get("evidence_review")),
+            "reality_check": _coerce_reality_check(parsed.get("reality_check")),
+            "disqualifiers": _coerce_list(parsed.get("disqualifiers")),
+            "red_flags": _coerce_list(parsed.get("red_flags")),
+            "fix_first": _coerce_fix_first(parsed.get("fix_first")),
         }
 
-        # Validate before handing back — a malformed field here should
-        # fall through to the except block below, not corrupt the report.
+        # Validate before handing back; if this still fails (e.g. the
+        # response wasn't valid JSON at all), fall through to the except
+        # block below rather than corrupt the report.
         validated = PlatformRiskReport(**updated_report)
         return {"report": validated.model_dump()}
 

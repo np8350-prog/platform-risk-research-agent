@@ -1,18 +1,5 @@
-practices differ sharply between Enterprise and non-Enterprise tiers, particularly regarding AI data retention. 
-
-Data Collection and Hosting
-	•	Scope: Collects all pages, databases, and workspace content. Notion holds encryption keys (no default end-to-end encryption). 
-	•	Infrastructure: Data hosted on AWS, Cloudflare, and Google Cloud.   Notion Mail specifically utilized AWS us-west-2. 
-	•	Subprocessors: Data is shared with AWS, Anthropic, OpenAI, Runlayer, Stripe, and Cloudflare. 
-AI Data Retention Policy
-Plan Tier|LLM Data Retention|Training Usage|
-Enterprise|0 Days (Zero Retention API)|No (Contractually prohibited)|
-Free / Plus / Business|Up to 30 Days|No (By default)|
-Embeddings|Deleted within 60 days of page/workspace deletion|N/A|
-
-	•	Model Training: Notion states it does not use customer data to train models by default.   Contractual agreements with subprocessors prohibit this. However, some analyses describe the documentation as "vague," and one source claimed "no opt-out mechanisms" in specific enterprise contexts, suggesting potential ambiguity.
-	•	Encryption: Data is encrypted in transit (TLS 1.2+). 
-Limitations & Unknowns
-	•	HIPAA Verification: Critical conflict exists between vendor claims (HIPAA compliant for Enterprise) and third-party audits (No BAA). Independent verification is required before handling Protected Health Information (PHI). 
-	•	Financial Distress Indicators: While valuation is high, specific 2026 financial health metrics (revenue, burn rate) are not public. Layoff rumors on forums remain anecdotal without official confirmation.
-	•	API Vulnerability Remediation: Reports indicate the unauthenticated API leak was still active as of April 2026; current remediation status beyond "exploring fixes" is unconfirmed.
+•	Data Collected & Stored: Customer content (text, blocks, database entries, uploaded files), AI prompt queries, generated AI outputs, session telemetry, and account metadata (https://www.notion.com/help/notion-ai-security-practices) (https://trust.notion.com/). 
+	•	Hosting Location: All customer data and AI vector embeddings are hosted on cloud infrastructure in Amazon Web Services (AWS) data centers (https://trust.notion.com/). 
+	•	Data Retention Policy: Active account data is retained continuously. When a page or workspace is deleted, content can be restored for 30 days, after which it is permanently purged within 60 days (https://www.notion.com/help/notion-ai-security-practices). For AI features: Enterprise plan workspaces operate under zero data retention by LLM providers during processing; non-Enterprise workspaces retain AI prompt data with LLM providers for up to 30 days before deletion (https://www.notion.com/help/notion-ai-security-practices). Vector embeddings are purged within 60 days of workspace deletion (https://www.notion.com/help/notion-ai-security-practices). 
+	•	Model Training Policy: Customer data is strictly never used to train or fine-tune Notion AI models or third-party partner LLMs; contractual agreements with LLM vendors explicitly enforce this restriction (https://www.notion.com/help/notion-ai-security-practices) (https://trust.notion.com/). 
+	•	Subprocessors & Third Parties: Primary AI subprocessors include OpenAI (used for zero-retention embeddings and LLM inference) and Anthropic (Claude models), alongside cloud infrastructure providers AWS and Turbopuffer (vector storage) (https://www.notion.com/help/notion-ai-security-practices). Subprocessor changes are published with advance email notification available via team@makenotion.com (https://www.notion.com/help/notion-ai-security-practices).

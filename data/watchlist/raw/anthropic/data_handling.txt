@@ -1,36 +1,8 @@
-Anthropic’s data handling policies vary based on whether you are using Commercial Services (Anthropic API, Claude Console, Claude for Work / Team / Enterprise) or Consumer Services (Claude Free, Pro, Max at claude.ai).
-
-1. What Data They Collect & Store
-	•	Prompts & Outputs: User prompts, attachments, system instructions, and generated completions. 
-	•	Account & Billing Data: Account email, workspace details, user profile info, and payment records (processed via Stripe). 
-	•	Telemetry & Technical Logs: IP addresses, browser/device metadata, usage metrics, error logs, and session interactions. 
-	•	Identity Verification Data: For consumer accounts undergoing anti-abuse checks, identity/age verification data via third-party partners. 
-2. Where Data is Hosted (Region & Cloud Providers)
-	•	Cloud Infrastructure Providers: Anthropic relies on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure as primary infrastructure subprocessors.  
-	•	Data Location at Rest: Data stored directly through claude.ai or the first-party Anthropic API is stored at rest in United States data centers by default.  
-	•	Inference Geo Controls: For first-party API users, Anthropic supports an inference_geo parameter (e.g., locking execution to US regions).  
-	•	EU Data Residency: Direct Anthropic API or Enterprise plans do not offer native EU data residency at rest. Organizations requiring strict EU data isolation must deploy Claude models through AWS Bedrock (EU profiles in Frankfurt, Ireland, Paris) or Google Cloud Vertex AI (EU regions).  
-3. Data Retention Policy
-	•	Commercial Services (API & Claude for Work): 
-	◦	Default Retention: Prompts and responses are retained for 30 days for safety monitoring and abuse detection before deletion.  
-	◦	Zero Data Retention (ZDR): Available for eligible enterprise API customers, where prompt and output data are processed strictly in-memory and not stored on disk (except where flagged for safety review). 
-	•	Consumer Services (claude.ai Free, Pro, Max): 
-	◦	Standard (Opt-Out): Conversations are retained for 30 days.  
-	◦	Training Opt-In: If a consumer user opts in to the "Improve Claude for everyone" setting, retention extends up to 5 years in de-identified form.  
-	•	Policy Violations & Feedback Exceptions: 
-	◦	Sessions flagged for Acceptable Use Policy violations are retained for up to 2 years, with safety classification metadata stored for up to 7 years.  
-	◦	User feedback (e.g., thumbs up/down, bug reports) is kept for up to 5 years.  
-4. Use of Customer Data for Model Training
-	•	Commercial / API Users: No. Anthropic explicitly commits not to train its foundation models on customer prompts, completions, or workspace data submitted via the API, Claude Console, or Enterprise plans. 
-	•	Consumer Web Users: Opt-In Only. Consumer chats (Free, Pro, Max) and Claude Code sessions are not used for training by default. Training occurs only if a user explicitly opts in via settings or manually submits feedback/ratings.  
-5. Subprocessors and Third Parties
-Anthropic maintains a public subprocessor registry on its Trust Center. Key third parties include:
-Category|Subprocessor(s)|Function / Scope|
-Cloud Hosting|AWS, Google Cloud, Microsoft Azure|Core model hosting, compute, and database storage|
-CDN & Network|Cloudflare|Global traffic routing and DDoS protection|
-Authentication & SSO|WorkOS|Single Sign-On and enterprise security|
-Billing & Payments|Stripe|Payment processing and billing operations|
-Fraud & Safety|Persona, Yoti, Sift, Arkose Labs|Identity verification, bot defense, and fraud prevention|
-Customer Support|Intercom, Boldr, Nutun|Support ticketing and user communication|
-Integrated Tools|Brave Search, TurboPuffer, ElevenLabs|Web search capabilities and mobile text-to-speech|
-Government Cloud|Palantir Federal Cloud Service|FedRAMP hosting for Claude for Government|
+•	Data Collected & Stored: System prompts, completion outputs, user account metadata, operational logs, payment history, and usage analytics (https://trust.anthropic.com/subprocessors) (https://anarlog.so/blog/anthropic-data-retention-policy/). 
+	•	Hosting Locations: Infrastructure hosted across Google Cloud Platform (GCP), Amazon Web Services (AWS), and Microsoft Azure data center regions worldwide (https://trust.anthropic.com/subprocessors). 
+	•	Retention Policy: 
+	◦	Commercial API & Enterprise Users: Default log retention is 7 days (reduced from 30 days in late 2025), expandable up to 30 days upon request via DPA (https://anarlog.so/blog/anthropic-data-retention-policy/). 
+	◦	Zero Data Retention (ZDR): Available for qualifying Enterprise API accounts, where inputs and outputs are retained in volatile memory only long enough to execute real-time automated trust and safety screening (https://anarlog.so/blog/anthropic-data-retention-policy/). 
+	◦	Consumer Accounts (Free, Pro, Max): Account data and chat history may be retained up to 5 years for model training unless the user manually toggles off data usage in privacy settings (https://rits.shanghai.nyu.edu/ai/understanding-anthropics-data-usage-policy-what-users-need-to-know/). 
+	•	Training on Customer Data: Customer inputs and outputs submitted through the commercial API or Claude Enterprise plans are never used to train Anthropic's foundation models (https://rits.shanghai.nyu.edu/ai/understanding-anthropics-data-usage-policy-what-users-need-to-know/) (https://anarlog.so/blog/anthropic-data-retention-policy/). 
+	•	Subprocessors & Third Parties: Key subprocessors include Amazon Web Services, Google Cloud Platform, Microsoft Azure, Cloudflare (CDN/routing), Stripe (billing), WorkOS (SSO/identity), Intercom, Twilio, Sentry, Sift, Arkose Labs, Brave Search (web search capabilities), ElevenLabs (voice synthesis), and Palantir (government cloud hosting) (https://trust.anthropic.com/subprocessors).

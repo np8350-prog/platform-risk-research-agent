@@ -1,18 +1,3 @@
-Notion has experienced specific security vulnerabilities and a denied breach allegation, alongside historical infrastructure issues. 
-
-Data Breaches and Vulnerabilities
-Incident|Date Identified|Details|Source Status|
-Unauthenticated API Leak|2022 (Active as of Apr 2026)|Exposed names, emails, and profile images of contributors on public pages via unauthenticated API.|Security Researchers|
-Alleged 110M Record Breach|2026|Threat actor claimed dataset of 110M records. 
-
- Notion investigated and declared claims fabricated; no evidence of unauthorized access. 
-|Vendor Disclosure / News|
-AI Prompt Injection|Recent|AI agents vulnerable to data exfiltration via malicious PDFs/prompt injection. 
-|Security Researchers|
-
-	•	Resolution Status: Notion acknowledged the API metadata leak and is exploring fixes like email proxying. Security updates were implemented to detect AI injection patterns. 
-Service Outages
-	•	DNS Outage (2021): A significant outage exposed centralized reliability risks. 
-	•	Current Status: As of August 2026, status pages report systems are fully operational with no active major incidents. 
-Lawsuits
-	•	No specific filed lawsuits related to data handling or security were identified in the provided research context.
+•	Data Breaches: No major public customer data breaches or systemic database exposures have been reported to date ("no URL available for this"). 
+	•	Outages & Infrastructure: On February 12, 2021, Notion experienced a major global outage when its primary .so domain (notion.so) was temporarily locked by the registry due to a DNS registrar dispute, forcing the company to expedite its transition to notion.com (https://news.ycombinator.com/item?id=26113444). Notion maintains a public status page and targets a 99.9% uptime SLA for Enterprise plan customers (https://www.notion.com/security). 
+	•	Lawsuits: No public class-action lawsuits or regulatory actions regarding data mishandling or security breaches exist against Notion Labs ("no URL available for this"). Privacy discussions on developer forums note potential third-party consent risks when using automated AI meeting summary tools, though no formal legal actions have been filed (https://news.ycombinator.com/item?id=44942628).

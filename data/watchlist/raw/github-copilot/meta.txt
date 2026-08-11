@@ -1,13 +1,13 @@
 confidence_stability: strong
-source_type_stability: verified (Microsoft-owned, financials well documented)
+source_type_stability: verified (Microsoft-owned, well-documented corporate facts)
 confidence_incidents: limited
-source_type_incidents: verified (CVE numbers, court filing, named press)
+source_type_incidents: verified (named CVEs, court filing, named press)
 confidence_community: limited
 source_type_community: named rating (G2 4.5/5)
 confidence_compliance: limited
-source_type_compliance: self-reported (source text notes info is "primarily based on GitHub's own claims")
+source_type_compliance: verified as independently audited in principle, but source explicitly notes no named auditor is available publicly
 confidence_data_handling: limited
 source_type_data_handling: self-reported
 confidence_integration: limited
 source_type_integration: self-reported (technical docs)
-last_updated: 2026-08-07
+last_updated: 2026-08-11

@@ -1,15 +1,6 @@
-Posture
-Notion maintains major industry certifications, though HIPAA compliance status shows conflicting third-party verification. 
-
-Certification|Status|Verification Source|Notes|
-SOC 2|Type II|Vendor Claim / Third-Party Summary|Available via Trust Center (often under NDA). 
-|
-ISO 27001|Certified|Vendor Claim|Specifically ISO 27001:2022 cited in some reports. 
-|
-GDPR|Compliant|Vendor Claim|Offers Data Processing Agreements (DPA). 
-|
-HIPAA|Claimed (Enterprise)|Conflicting|Vendor claims BAA available for Enterprise; one third-party audit states "No BAA". 
-|
-PCI DSS|Not Specified|N/A|No explicit mention in provided context.|
-
-	•	Verification Note: Most certifications are vendor-claimed via their Trust Center. Independent audit reports are typically not public. The discrepancy in HIPAA status requires direct confirmation with Notion sales/engineering for Enterprise deployments.
+•	SOC 2 Status: Notion maintains a SOC 2 Type II report evaluating Security, Availability, Processing Integrity, Confidentiality, and Privacy over an extended audit window; this is a vendor claim independently audited by an accredited CPA firm (https://www.notion.com/security) (https://trust.notion.com/). 
+	•	ISO Certifications: Notion holds independent certifications for ISO 27001 (Information Security Management), ISO 27701 (Privacy Information Management), ISO 27017 (Cloud Security), and ISO 27018 (Cloud Privacy Protection); these are vendor claims verified by external ISO registrars (https://www.notion.com/security) (https://trust.notion.com/). Notion also holds a BSI C5 cloud security attestation (https://www.notion.com/security). 
+	•	GDPR: Compliant with GDPR requirements; offers a formal Data Processing Addendum (DPA) incorporating Standard Contractual Clauses (SCCs) (vendor claim: https://www.notion.com/security("https://www.notion.com/security")). 
+	•	HIPAA / BAA Availability: HIPAA compliance is supported exclusively for Enterprise plan customers, provided admins configure recommended security controls and execute a formal Business Associate Agreement (BAA) with Notion (vendor claim: https://www.notion.com/security) (https://www.notion.com/help/security-and-privacy). 
+	•	PCI DSS: Compliant as a PCI DSS Merchant Level 2 for processing subscription payments; however, vendor terms explicitly prohibit customers from storing payment card data (PCI) inside their Notion workspace pages (vendor claim: https://www.notion.com/help/security-and-privacy("https://www.notion.com/help/security-and-privacy")). 
+	•	FedRAMP: Notion does not currently hold FedRAMP authorization or FedRAMP In-Process status for US federal agency deployments ("no URL available for this").

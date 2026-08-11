@@ -1,12 +1,5 @@
-Signal
-User sentiment is mixed, balancing high utility praise with significant concerns over security transparency and pricing.
-Common Complaints
-	•	Security & Liability: Users on Reddit criticize the lack of legal consequences for Notion in data loss scenarios, citing policy language that limits liability for unauthorized disclosure. 
-	•	AI Reliability: Frustration exists regarding Q&A search reliability and the perceived value proposition of Notion AI relative to its cost.
-	•	Privacy Controls: Concerns persist about the vagueness of data usage policies, with some users feeling there are insufficient opt-out mechanisms for enterprise data usage in certain contexts. 
-Common Praise
-	•	Feature Utility: Strong positive feedback for Meeting Notes and AI autofill capabilities. 
-	•	Work Culture: High employee satisfaction (4.3/5 Glassdoor) suggests a stable internal environment, which often correlates with product consistency.
-Sentiment Trends
-	•	Churn Indicators: While no mass exodus is confirmed, discussions on alternatives are driven by security concerns and the Notion Mail shutdown. 
-	•	General Impression: The community views Notion as a powerful but "black box" tool where convenience trades off against granular security control.
+•	G2 & Review Platforms: Notion holds an average rating of 4.6/5 across 11,000+ reviews on G2 and 4.7/5 on Capterra (https://checkthat.ai/brands/notion-labs-inc/reviews). 
+	•	Common Praise: Users praise workspace consolidation (combining docs, wikis, and databases), flexible block-based architecture, and AI capabilities for summarizing meeting notes, autofilling database columns, and searching workspace knowledge (https://hackceleration.com/labs/review/notion) (https://checkthat.ai/brands/notion-labs-inc/reviews). 
+	•	Common Complaints: On Reddit (r/Notion) and G2, the primary complaint is the "blank canvas" problem and steep learning curve for non-technical users (https://checkthat.ai/brands/notion-labs-inc/reviews). Other recurring technical complaints include performance slowdowns on databases exceeding 5,000 records, clunky mobile editing, and limited offline capabilities compared to local-first alternatives (https://hackceleration.com/labs/review/notion) (https://checkthat.ai/brands/notion-labs-inc/reviews). 
+	•	AI-Specific Sentiment: Community feedback on Reddit highlights friction around per-user pricing add-ons for full AI/Agent capabilities ($10–$20/user/month) and occasional hallucinated answers during workspace search (https://checkthat.ai/brands/notion-labs-inc/reviews) (https://hackceleration.com/labs/review/notion). 
+	•	User Churn / Competitors: Users switching away from Notion frequently move to Obsidian or Logseq for local-first Markdown storage and offline privacy, or to Asana, ClickUp, and Monday.com for dedicated project management and native time tracking (https://news.ycombinator.com/item?id=26113444) (https://checkthat.ai/brands/notion-labs-inc/reviews).
