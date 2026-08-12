@@ -40,7 +40,7 @@ class GraphState(TypedDict):
     report: dict   # will hold a PlatformRiskReport, dumped to dict
 
 
-VerdictTone = Literal["clear", "warn", "risk"]
+VerdictTone = Literal["clear", "moderate", "warn", "risk"]
 PatternScore = Literal["Pass", "Risk", "Fail"]
 
 
@@ -90,11 +90,34 @@ class FixFirst(BaseModel):
     question: str
 
 
+class PatternDiff(BaseModel):
+    """One dimension's comparison between an alternative and the original
+    rejected vendor. Computed deterministically from the two score_values,
+    never guessed by an LLM, so it's always accurate even if the written
+    explanation text ever drifts."""
+    dimension: str
+    change: Literal["better", "worse", "same"]
+    original_score: PatternScore
+    alt_score: PatternScore
+
+
+class VendorAlternative(BaseModel):
+    """A watchlist vendor proposed as a substitute when the evaluated vendor
+    scores poorly. Scored on the same six dimensions against the same buyer
+    context, so the comparison is apples-to-apples, not just a name drop."""
+    vendor_name: str
+    verdict: str
+    verdict_tone: VerdictTone
+    patterns: list[PatternResult]
+    comparison: list[PatternDiff] = Field(default_factory=list)
+    why_suggested: str
+
+
 class PlatformRiskReport(BaseModel):
     """The full report a completed graph run produces."""
     id: str
     created_at: str
-    subject: str          # e.g. "Zapier AI Actions — customer support automation"
+    subject: str          # e.g. "Zapier AI Actions, customer support automation"
     summary: str
     verdict: str           # "Low risk" | "Moderate risk" | "High risk"
     verdict_tone: VerdictTone
@@ -104,6 +127,10 @@ class PlatformRiskReport(BaseModel):
     patterns: list[PatternResult]   # exactly 6, same rule as Groundwork
     red_flags: list[RedFlag] = Field(default_factory=list)
     fix_first: FixFirst
+    # Only populated when the verdict is bad enough to warrant alternatives
+    # (Elevated risk or worse, or any disqualifier present). Empty list for
+    # a clean report; nothing else about the report format changes.
+    alternatives: list[VendorAlternative] = Field(default_factory=list)
 
 
 # The six dimensions this agent scores, in the fixed order they must

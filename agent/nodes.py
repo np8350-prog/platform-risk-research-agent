@@ -128,6 +128,60 @@ def watchlist_check_node(state: GraphState) -> dict:
     }
 
 
+# Buyer-context signals that mean a specific compliance artifact matters,
+# not just the generic SOC2/GDPR/ISO sweep compliance_search already does.
+# Without this, a buyer context mentioning minors, PHI, or payment card
+# data gets no dedicated research at all: the fixed COMPLIANCE_MARKERS list
+# in compliance_search.py has no COPPA, BAA, or PCI-specific query, so the
+# model ends up with zero evidence on the one thing that actually matters
+# most for that buyer, and scores it as if the concern didn't exist.
+_CONTEXT_SENSITIVITIES = [
+    {
+        "keywords": ("minor", "minors", "child", "children", "under 18", "underage"),
+        "query_suffix": "COPPA children's privacy policy",
+        "context_note": (
+            "Buyer context indicates minors/children may be involved. COPPA "
+            "(Children's Online Privacy Protection Act) and a specific "
+            "children's-data policy are directly relevant here; general GDPR "
+            "or CCPA language does not address this. If no such policy is "
+            "found, that is a real gap for this buyer, not a neutral result."
+        ),
+    },
+    {
+        "keywords": ("phi", "protected health information", "patient data", "medical record", "health record"),
+        "query_suffix": "HIPAA BAA business associate agreement",
+        "context_note": (
+            "Buyer context indicates protected health information may be "
+            "involved. Whether the vendor will sign a Business Associate "
+            "Agreement (BAA) is the key artifact, a general 'HIPAA compliant' "
+            "claim without a BAA is not sufficient for this buyer."
+        ),
+    },
+    {
+        "keywords": ("card data", "payment card", "cardholder data", "credit card processing"),
+        "query_suffix": "PCI DSS compliance level",
+        "context_note": (
+            "Buyer context indicates payment card data may be involved. PCI "
+            "DSS level and scope is the key artifact to check for this buyer."
+        ),
+    },
+]
+
+
+def _detect_context_sensitivities(buyer_context: str, use_case: str) -> list[dict]:
+    text = f"{buyer_context} {use_case}".lower()
+    triggered = []
+    for sensitivity in _CONTEXT_SENSITIVITIES:
+        for kw in sensitivity["keywords"]:
+            # Word-boundary match, not a raw substring check. A naive `kw in text`
+            # matched "phi" inside "graphics" (gra-phi-cs) and produced a false
+            # HIPAA trigger on a request that had nothing to do with health data.
+            if re.search(r"\b" + re.escape(kw) + r"\b", text):
+                triggered.append(sensitivity)
+                break
+    return triggered
+
+
 def live_research_node(state: GraphState) -> dict:
     """
     Runs when the vendor isn't on the watchlist (or its entry is stale).
@@ -147,6 +201,10 @@ def live_research_node(state: GraphState) -> dict:
       - one targeted web_search each for the four dimensions the two
         specialized tools don't cover: Incident History, Community Signal,
         Data Handling Posture, Integration Risk.
+      - if the buyer context signals a sensitive population (minors, PHI,
+        payment cards), one extra targeted search for the specific artifact
+        that actually matters for that buyer, since the fixed compliance
+        marker list above doesn't cover any of these.
 
     Never raises. Each tool already returns [] on failure instead of
     throwing, so a dead search provider degrades to "no signal found" on
@@ -156,14 +214,15 @@ def live_research_node(state: GraphState) -> dict:
     tool_log = []
     notes = []
 
-    def _format_results(results: list[dict], dimension_name: str) -> str:
+    def _format_results(results: list[dict], dimension_name: str, context_note: str = "") -> str:
+        note_suffix = f"\n[CONTEXT NOTE: {context_note}]" if context_note else ""
         if not results:
-            return f"[LIVE SEARCH: {dimension_name}] No results found for '{vendor}'."
+            return f"[LIVE SEARCH: {dimension_name}] No results found for '{vendor}'.{note_suffix}"
         lines = [f"[LIVE SEARCH: {dimension_name}] {len(results)} results for '{vendor}':"]
         for r in results:
             snippet = (r.get("content") or "")[:400]
             lines.append(f"- {r.get('title', '(no title)')}: {snippet} ({r.get('url', '')})")
-        return "\n".join(lines)
+        return "\n".join(lines) + note_suffix
 
     # --- Vendor Stability, via the specialized firmographic tool ---
     stability_results = firmographic_search(vendor)
@@ -186,6 +245,19 @@ def live_research_node(state: GraphState) -> dict:
         results = web_search(query, max_results=4)
         tool_log.append(f"web_search('{query}'): {len(results)} results")
         notes.append(_format_results(results, dimension_name))
+
+    # --- Context-triggered searches, only when the buyer context calls for them ---
+    sensitivities = _detect_context_sensitivities(
+        state.get("buyer_context", ""), state.get("use_case", "")
+    )
+    for sensitivity in sensitivities:
+        query = f"{vendor} {sensitivity['query_suffix']}"
+        results = web_search(query, max_results=4)
+        tool_log.append(f"web_search('{query}') [context-triggered]: {len(results)} results")
+        # Feeds both Compliance Posture and Data Handling Posture, since a
+        # sensitivity like this genuinely touches both.
+        notes.append(_format_results(results, "Compliance Posture", sensitivity["context_note"]))
+        notes.append(_format_results(results, "Data Handling Posture", sensitivity["context_note"]))
 
     return {
         "research_notes": notes,
@@ -276,6 +348,14 @@ def _score_dimension(
         "not how confident you feel about your own reasoning. If the notes say a claim "
         "is a vendor's own claim with no independent confirmation, that is at most "
         "'limited evidence', never 'strong evidence'. "
+        "If the research notes contain a line starting with '[CONTEXT NOTE:', that "
+        "flags something specific to this buyer (e.g. minors are involved, protected "
+        "health information, payment card data) that a generic compliance sweep "
+        "doesn't cover. Treat it as directly relevant to your score: if the notes "
+        "show no evidence addressing that specific concern, that is a real gap for "
+        "this buyer, not a neutral 'no signal found', and should push the score "
+        "toward Risk or Fail rather than Pass, even if general certifications "
+        "(SOC2, GDPR, ISO) look fine. "
         "Do not use em dashes anywhere in your response; use a comma, period, or "
         "parentheses instead."
     )
@@ -324,15 +404,41 @@ def _score_dimension(
 
 
 def _compute_verdict(patterns: list[dict]) -> tuple[str, str]:
-    """Simple, explainable rule: worst dimension sets the verdict. A single
-    Fail is enough to call the whole vendor high risk, same logic a human
-    reviewer would apply; one disqualifying finding outweighs five clean ones."""
+    """
+    Graduated rule based on how many of the six dimensions are flagged, not
+    just whether any are. The earlier version only checked for presence of
+    a Risk/Fail score, so a vendor with 1 Risk out of 6 and a vendor with 5
+    Risk out of 6 both landed on "Moderate risk", which doesn't reflect a
+    meaningfully different risk picture from the buyer's side.
+
+    Four visually distinct tones (green/blue/yellow/red in the UI):
+      clear    - Low risk, nothing flagged
+      moderate - a couple of dimensions worth checking, nothing severe
+      warn     - roughly half or more flagged, this needs real attention
+      risk     - a Fail, or nearly everything flagged; treat as a stop sign
+
+    Two or more Fails is treated as more severe than a single Fail, since
+    multiple disqualifying-style findings compound rather than just repeat,
+    but both share the "risk" (red) tone; the verdict text still says
+    "Critical risk" so the distinction isn't lost, just not a 5th color.
+    """
     scores = [p["score"] for p in patterns]
-    if "Fail" in scores:
+    total = len(scores)
+    fail_count = scores.count("Fail")
+    risk_count = scores.count("Risk")
+
+    if fail_count >= 2:
+        return "Critical risk", "risk"
+    if fail_count == 1:
         return "High risk", "risk"
-    if "Risk" in scores:
-        return "Moderate risk", "warn"
-    return "Low risk", "clear"
+
+    if risk_count == 0:
+        return "Low risk", "clear"
+    if risk_count <= max(1, total // 3):
+        return "Moderate risk", "moderate"
+    if risk_count <= max(1, (total * 2) // 3):
+        return "Elevated risk", "warn"
+    return "High risk", "risk"
 
 
 def synthesis_node(state: GraphState) -> dict:
@@ -384,9 +490,18 @@ def synthesis_node(state: GraphState) -> dict:
         },
     }
 
-    # Validate against the real schema before handing it back; if this
-    # fails, we want to know now, not when someone tries to render the report.
-    validated = PlatformRiskReport(**report_dict)
+    # Validate against the real schema before handing it back. If this
+    # fails (e.g. _compute_verdict ever returns a tone the schema doesn't
+    # accept yet, the exact bug that happened here once already), fall
+    # back to a safe, always-valid tone rather than losing six real
+    # DeepSeek-scored dimensions over one field.
+    try:
+        validated = PlatformRiskReport(**report_dict)
+    except Exception as e:
+        print(f"synthesis_node: report failed schema validation ({e}); "
+              f"falling back to a safe verdict_tone")
+        report_dict["verdict_tone"] = "warn"
+        validated = PlatformRiskReport(**report_dict)
 
     return {
         "report": validated.model_dump(),
@@ -420,7 +535,8 @@ _FINALIZE_SYSTEM_PROMPT = """You are producing the closing sections of an AI ven
 Rules:
 - evidence_review looks ACROSS all six dimensions' research, not one at a time: is evidence repeated verbatim across sources without new substantiation (repetition)? When issues are raised, is there a documented pattern for how they get resolved (resolution_pattern)? Is there a meaningful volume of evidence, or is most of it thin (volume)? Do any sources contradict each other (contradiction)? If notes are too thin to assess this, set provided=false and leave the rest null.
 - reality_check independently checks whether the vendor's own claims hold up against what was actually found. You will be given a list of "URLs found in research notes". A finding's url field must EXACTLY match one entry from that list, or be null. Never invent, guess, or slightly modify a URL, and never use a dimension name (like "Compliance Posture") as a source when a real URL from the list is available and relevant; prefer citing the real URL.
-- disqualifiers should ONLY be included if the buyer's stated use case or context creates a hard requirement the vendor demonstrably does not meet (e.g., buyer explicitly handles PHI and no BAA is available). If no such hard conflict exists, return an empty list; do not manufacture disqualifiers to seem thorough.
+- reality_check also has to check basic fit, not just risk: does this vendor's actual product category match what the buyer says they intend to do with it? A database/workflow tool being evaluated for graphic design, or a chat app being evaluated for financial transaction processing, is a real mismatch worth surfacing even if every risk dimension looks fine. If the use case and the vendor's actual product don't line up, say so plainly in contradicts_stated_framing; don't let a category mismatch pass silently just because compliance and stability look clean.
+- disqualifiers should ONLY be included if the buyer's stated use case or context creates a hard requirement the vendor demonstrably does not meet (e.g., buyer explicitly handles PHI and no BAA is available, or buyer context indicates minors are involved and research notes show no children's-privacy/COPPA policy). Look specifically for '[CONTEXT NOTE:' lines in the research notes below; these flag a buyer-specific requirement a generic compliance sweep wouldn't catch, and a real gap there is exactly the kind of thing that belongs in disqualifiers. A fundamental product-category mismatch (the vendor's actual product doesn't do what the use case describes) also belongs here, since no amount of good compliance or stability fixes that. If no such hard conflict exists, return an empty list; do not manufacture disqualifiers to seem thorough.
 - red_flags must be grounded in specific findings from the research notes, not general risk commentary. Keep each quote under 15 words and phrase it in your own words rather than copying source text verbatim.
 - fix_first names the single most important next step for the buyer before adopting this vendor: a specific, concrete action, not a generic "do more diligence." fix_first MUST be a JSON object with exactly the three string keys shown in the shape above (what, with_whom, question); never return it as a plain string.
 - If the research notes are too thin to responsibly fill a section, say so honestly (empty list, or provided/performed=false) rather than inventing content.
@@ -563,4 +679,337 @@ def finalize_report_node(state: GraphState) -> dict:
 
     except Exception as e:
         print(f"finalize_report_node failed, keeping placeholder sections: {e}")
+        return {}
+
+
+# ---- Recommendations: alternative vendors when the verdict is bad enough ----
+
+# Rough category per watchlist vendor, used to pick alternatives that are
+# actually comparable, not just a random 3 names off the list. Kept as a
+# plain dict rather than pulling this from research data since it's a
+# stable classification that doesn't change per-report.
+WATCHLIST_CATEGORIES = {
+    "openai": "AI model / API provider",
+    "anthropic": "AI model / API provider",
+    "cohere": "AI model / API provider",
+    "aws-bedrock": "AI model / API provider (multi-model gateway)",
+    "retool": "No-code / low-code internal tooling",
+    "appsmith": "No-code / low-code internal tooling",
+    "outsystems": "No-code / low-code enterprise app platform",
+    "make": "No-code / low-code workflow automation",
+    "salesforce-einstein": "AI features on existing SaaS (CRM)",
+    "notion-ai": "AI features on existing SaaS (workspace/docs)",
+    "github-copilot": "AI features on existing SaaS (developer tools)",
+    "glean": "AI-native enterprise search",
+    "uipath": "AI-native robotic process automation",
+    "dust": "AI-native agent platform",
+    "drata": "Compliance automation / GRC",
+    "sprinto": "Compliance automation / GRC",
+    "whistic": "Third-party risk management (TPRM)",
+    "onetrust": "Privacy management / GRC",
+    "zylo": "SaaS management / spend optimization",
+    "bettercloud": "SaaS management / IT governance",
+}
+
+
+def _should_recommend_alternatives(report: dict) -> bool:
+    """Alternatives only make sense when the verdict is bad enough to
+    reasonably make a buyer look elsewhere: Elevated risk or worse, or any
+    disqualifier present regardless of the six-dimension verdict. A clean
+    or mildly-flagged report doesn't need alternatives, that would just be
+    noise on a vendor that's actually fine."""
+    if report.get("disqualifiers"):
+        return True
+    return report.get("verdict_tone") in ("warn", "risk")
+
+
+def _pick_alternative_vendors(vendor_name: str, use_case: str, buyer_context: str) -> list[dict]:
+    """One LLM call: given the buyer's use case and the watchlist's category
+    map, pick up to 3 vendors that are actually comparable substitutes, not
+    just any 3 names. Returns [] on any failure, never raises, alternatives
+    are a bonus on top of the core report, not something worth crashing over."""
+    vendor_slug = _normalize_vendor_name(vendor_name)
+    candidates = {slug: cat for slug, cat in WATCHLIST_CATEGORIES.items() if slug != vendor_slug}
+
+    system_prompt = (
+        "You are picking 2-3 alternative vendors for a buyer whose first-choice "
+        "vendor scored poorly on a risk evaluation. Respond with ONLY a JSON array, "
+        "no markdown fences, no preamble, in exactly this shape: "
+        '[{"slug": "exact-slug-from-the-list", "why": "one sentence on why this fits '
+        "the buyer's use case\"}]. "
+        "Only pick slugs that appear in the provided list, spelled exactly as given. "
+        "Pick vendors in the same or an adjacent category to the rejected vendor's "
+        "likely category, actually usable substitutes for the stated use case, not "
+        "just any vendor. Pick at most 3, at least 1 if anything reasonably fits, "
+        "empty array if genuinely nothing in the list fits. "
+        "Do not use em dashes anywhere in your response; use a comma, period, or "
+        "parentheses instead."
+    )
+    user_prompt = (
+        f"Rejected vendor: {vendor_name}\n"
+        f"Buyer's use case: {use_case}\n"
+        f"Buyer context: {buyer_context}\n\n"
+        f"Available vendors (slug: category):\n"
+        + "\n".join(f"{slug}: {cat}" for slug, cat in candidates.items())
+    )
+
+    try:
+        client = _get_llm()
+        response = client.chat.completions.create(
+            model=DEEPSEEK_MODEL,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0,
+        )
+        raw = response.choices[0].message.content.strip()
+        raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
+        parsed = json.loads(raw)
+
+        if not isinstance(parsed, list):
+            return []
+
+        valid = []
+        for item in parsed:
+            if isinstance(item, dict) and item.get("slug") in candidates:
+                valid.append({"slug": item["slug"], "why": item.get("why", "")})
+            if len(valid) >= 3:
+                break
+        return valid
+
+    except Exception as e:
+        print(f"_pick_alternative_vendors failed, skipping alternatives: {e}")
+        return []
+
+
+def _score_alternative(
+    slug: str,
+    use_case: str,
+    buyer_context: str,
+    framework_context: str,
+) -> dict | None:
+    """Loads a watchlist vendor's cached research and scores it against the
+    SAME use case and buyer context as the rejected vendor, so the
+    comparison in the report is apples-to-apples, not a generic profile.
+    Returns None on failure (missing file, bad JSON) rather than raising;
+    a missing alternative just doesn't show up, it doesn't break the report.
+
+    Does NOT set why_suggested here on purpose: at this point the score
+    doesn't exist yet, so any explanation generated now would be guessing
+    at fit rather than grounded in an actual comparison. That gets filled
+    in later, after we know how this alternative's scores actually compare
+    to the rejected vendor's."""
+    path = os.path.join(WATCHLIST_PROCESSED_DIR, f"{slug}.json")
+    if not os.path.exists(path):
+        print(f"_score_alternative: no processed data for '{slug}', skipping")
+        return None
+
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cached = json.load(f)
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"_score_alternative: cache unreadable for '{slug}' ({e}), skipping")
+        return None
+
+    dimensions = cached.get("dimensions", {})
+    patterns = []
+    for dimension_name in PLATFORM_RISK_DIMENSIONS:
+        entry = dimensions.get(dimension_name, {})
+        dimension_notes = entry.get("content") or "No research notes available for this dimension."
+        scored = _score_dimension(
+            vendor_name=cached.get("vendor", slug),
+            use_case=use_case,
+            buyer_context=buyer_context,
+            dimension_name=dimension_name,
+            dimension_notes=dimension_notes,
+            framework_context=framework_context,
+        )
+        patterns.append({"name": dimension_name, **scored})
+
+    verdict, verdict_tone = _compute_verdict(patterns)
+
+    return {
+        "vendor_name": cached.get("vendor", slug),
+        "verdict": verdict,
+        "verdict_tone": verdict_tone,
+        "patterns": patterns,
+    }
+
+
+def _compute_pattern_diff(original_patterns: list[dict], alt_patterns: list[dict]) -> list[dict]:
+    """Deterministic, dimension-by-dimension comparison between an
+    alternative and the rejected vendor. This is plain arithmetic on
+    score_value, not an LLM guess, so it's always correct even if the
+    written explanation text drifts. This is what actually answers "why
+    is this better," not a category description written before the score
+    existed."""
+    diff = []
+    original_by_name = {p["name"]: p for p in original_patterns}
+    for alt in alt_patterns:
+        original = original_by_name.get(alt["name"])
+        if not original:
+            continue
+        if alt["score_value"] > original["score_value"]:
+            change = "better"
+        elif alt["score_value"] < original["score_value"]:
+            change = "worse"
+        else:
+            change = "same"
+        diff.append({
+            "dimension": alt["name"],
+            "change": change,
+            "original_score": original["score"],
+            "alt_score": alt["score"],
+        })
+    return diff
+
+
+def _generate_alternative_reasons(
+    original_vendor_name: str,
+    use_case: str,
+    buyer_context: str,
+    alternatives: list[dict],
+) -> dict[str, str]:
+    """One LLM call covering all alternatives at once, given each one's
+    actual computed diff against the rejected vendor. The model is required
+    to reference the real comparison, not write a generic vendor blurb,
+    that's the whole fix for why_suggested reading like marketing copy
+    instead of an actual reason. Falls back to a plain, still-accurate
+    templated sentence per vendor on any failure, never raises."""
+
+    def _fallback_reason(alt: dict) -> str:
+        better = [d["dimension"] for d in alt["comparison"] if d["change"] == "better"]
+        worse = [d["dimension"] for d in alt["comparison"] if d["change"] == "worse"]
+        parts = []
+        if better:
+            parts.append(f"scores better on {', '.join(better)}")
+        if worse:
+            parts.append(f"scores worse on {', '.join(worse)}")
+        if not parts:
+            return f"{alt['vendor_name']} scores the same as {original_vendor_name} on every dimension."
+        return f"Compared to {original_vendor_name}, {alt['vendor_name']} " + ", and ".join(parts) + "."
+
+    fallback = {alt["vendor_name"]: _fallback_reason(alt) for alt in alternatives}
+
+    system_prompt = (
+        "You are explaining why each alternative vendor is a reasonable substitute "
+        "for a rejected one, for a buyer deciding between them. You will be given, "
+        "for each alternative, its actual dimension-by-dimension comparison against "
+        "the rejected vendor (which dimensions it scores better on, worse on, or the "
+        "same). Your explanation MUST reference at least one specific dimension from "
+        "that comparison, using the exact dimension name given. Do not write a generic "
+        "description of what the vendor does; explain the actual comparative advantage "
+        "or tradeoff, and connect it to the buyer's specific use case and context where "
+        "relevant. If an alternative is worse on a dimension that matters for the "
+        "buyer's context, say so plainly rather than omitting it. "
+        "Respond with ONLY a JSON object, no markdown fences, no preamble, mapping each "
+        "vendor name (spelled exactly as given) to its explanation string: "
+        '{"vendor-name": "explanation"}. '
+        "Do not use em dashes anywhere in your response; use a comma, period, or "
+        "parentheses instead."
+    )
+
+    alt_summaries = []
+    for alt in alternatives:
+        comparison_lines = [
+            f"  {d['dimension']}: {d['change']} ({original_vendor_name}={d['original_score']}, {alt['vendor_name']}={d['alt_score']})"
+            for d in alt["comparison"]
+        ]
+        alt_summaries.append(f"{alt['vendor_name']} (overall verdict: {alt['verdict']}):\n" + "\n".join(comparison_lines))
+
+    user_prompt = (
+        f"Rejected vendor: {original_vendor_name}\n"
+        f"Buyer's use case: {use_case}\n"
+        f"Buyer context: {buyer_context}\n\n"
+        f"Alternatives and their actual comparisons:\n\n" + "\n\n".join(alt_summaries)
+    )
+
+    try:
+        client = _get_llm()
+        response = client.chat.completions.create(
+            model=DEEPSEEK_MODEL,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0,
+        )
+        raw = response.choices[0].message.content.strip()
+        raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
+        parsed = json.loads(raw)
+
+        if not isinstance(parsed, dict):
+            return fallback
+
+        result = {}
+        for alt in alternatives:
+            name = alt["vendor_name"]
+            reason = parsed.get(name)
+            result[name] = reason if isinstance(reason, str) and reason.strip() else fallback[name]
+        return result
+
+    except Exception as e:
+        print(f"_generate_alternative_reasons failed, using templated fallback: {e}")
+        return fallback
+
+
+def recommendation_node(state: GraphState) -> dict:
+    """
+    Runs after finalize_report. If the verdict is bad enough (Elevated risk
+    or worse, or any disqualifier), picks 2-3 comparable watchlist vendors,
+    scores each against the same use case and buyer context, computes a
+    real dimension-by-dimension diff against the rejected vendor, and
+    generates an explanation grounded in that diff, not a guess made before
+    the score existed.
+
+    Skipped entirely (no extra API calls) on a clean or mildly-flagged
+    report, alternatives aren't useful noise on a vendor that's actually
+    fine. Never raises: any failure here means the report keeps its
+    already-complete core content with an empty alternatives list.
+    """
+    report = state.get("report")
+    if not report:
+        return {}
+
+    if not _should_recommend_alternatives(report):
+        return {}
+
+    picks = _pick_alternative_vendors(
+        state["vendor_name"], state["use_case"], state["buyer_context"]
+    )
+    if not picks:
+        return {}
+
+    framework_context = state.get("framework_context", "")
+    scored_alternatives = []
+    for pick in picks:
+        scored = _score_alternative(
+            slug=pick["slug"],
+            use_case=state["use_case"],
+            buyer_context=state["buyer_context"],
+            framework_context=framework_context,
+        )
+        if scored:
+            scored["comparison"] = _compute_pattern_diff(report["patterns"], scored["patterns"])
+            scored_alternatives.append(scored)
+
+    if not scored_alternatives:
+        return {}
+
+    reasons = _generate_alternative_reasons(
+        original_vendor_name=state["vendor_name"],
+        use_case=state["use_case"],
+        buyer_context=state["buyer_context"],
+        alternatives=scored_alternatives,
+    )
+    for alt in scored_alternatives:
+        alt["why_suggested"] = reasons.get(alt["vendor_name"], "")
+
+    try:
+        updated_report = {**report, "alternatives": scored_alternatives}
+        validated = PlatformRiskReport(**updated_report)
+        return {"report": validated.model_dump()}
+    except Exception as e:
+        print(f"recommendation_node: failed to attach alternatives ({e}), keeping report without them")
         return {}

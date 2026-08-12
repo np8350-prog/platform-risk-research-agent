@@ -4,8 +4,8 @@ LangGraph wiring for the platform risk research agent.
 Current shape:
 
     watchlist_check (entry)
-        -> used_cached_watchlist=True  -> framework_retrieval -> synthesis -> finalize_report -> END
-        -> used_cached_watchlist=False -> live_research -> framework_retrieval -> synthesis -> finalize_report -> END
+        -> used_cached_watchlist=True  -> framework_retrieval -> synthesis -> finalize_report -> recommendation -> END
+        -> used_cached_watchlist=False -> live_research -> framework_retrieval -> synthesis -> finalize_report -> recommendation -> END
 
 framework_retrieval runs on both paths, right before synthesis, since it
 depends only on vendor/use_case/buyer_context, not on where the research
@@ -13,9 +13,11 @@ notes came from.
 
 synthesis scores the six dimensions (one DeepSeek call each). finalize_report
 looks across all six at once to fill in evidence_review, reality_check,
-disqualifiers, red_flags, and fix_first. If finalize_report fails for any
-reason, the report keeps the honest placeholders synthesis set instead of
-losing the six real scores that already succeeded.
+disqualifiers, red_flags, and fix_first. recommendation runs last: only on a
+bad enough verdict (Elevated risk or worse, or any disqualifier), it picks
+2-3 comparable watchlist vendors and scores each against the same use case,
+so a rejected vendor doesn't leave the buyer with just a "no". On a clean or
+mildly-flagged report it's a no-op, no extra API calls.
 """
 
 from langgraph.graph import StateGraph, END
@@ -27,6 +29,7 @@ from agent.nodes import (
     framework_retrieval_node,
     synthesis_node,
     finalize_report_node,
+    recommendation_node,
 )
 
 
@@ -45,6 +48,7 @@ def build_graph():
     graph.add_node("framework_retrieval", framework_retrieval_node)
     graph.add_node("synthesis", synthesis_node)
     graph.add_node("finalize_report", finalize_report_node)
+    graph.add_node("recommendation", recommendation_node)
 
     graph.set_entry_point("watchlist_check")
 
@@ -60,6 +64,7 @@ def build_graph():
     graph.add_edge("live_research", "framework_retrieval")
     graph.add_edge("framework_retrieval", "synthesis")
     graph.add_edge("synthesis", "finalize_report")
-    graph.add_edge("finalize_report", END)
+    graph.add_edge("finalize_report", "recommendation")
+    graph.add_edge("recommendation", END)
 
     return graph.compile()
