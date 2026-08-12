@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Risk Research Agent</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.12.1/html2pdf.bundle.min.js" integrity="sha512-D25Z8/1q2z65ZpJ3NzY6XiPZfwjhbv34OTQHDIZd+KPK+uWCovGt+fMkSzW8ArzCMFUgZt6Cdu7qoXNuy6a2GA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+  :root {
+    --pink: #E91E63;
+    --pink-dim: #FCE4EC;
+    --blue: #2563EB;
+    --blue-dim: #EFF4FF;
+    --red: #DC2626;
+    --red-dim: #FEF2F2;
+    --amber: #D97706;
+    --amber-dim: #FFFBEB;
+    --green: #15803D;
+    --green-dim: #F0FDF4;
+    --ink: #14141F;
+    --ink-soft: #55556B;
+    --ink-faint: #9494A8;
+    --line: #E4E4EC;
+    --surface: #FFFFFF;
+    --canvas: #FAFAFC;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  a { color: var(--pink); }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 28px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 26px; height: 26px; border-radius: 7px;
+    background: var(--pink);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 13px;
+  }
+  .brand-name { font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
+  .brand-sub { color: var(--ink-faint); font-size: 12px; }
+  nav a {
+    color: var(--ink-soft); text-decoration: none; font-size: 13px;
+    margin-left: 22px; font-weight: 500;
+  }
+  nav a:first-child { margin-left: 0; }
+  nav a.active { color: var(--pink); }
+
+  .layout {
+    max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px;
+  }
+  /* ---- Past Reports table page (matches the order-table reference) ---- */
+  .reports-table-wrap {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow-x: auto;
+  }
+  .reports-table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 12.5px; }
+  .reports-table th {
+    background: var(--canvas); font-size: 10.5px; font-weight: 700; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.03em; text-align: left;
+    padding: 11px 14px; white-space: nowrap; border-bottom: 1px solid var(--line);
+  }
+  .reports-row {
+    border-left: 3px solid transparent; border-bottom: 1px solid var(--line);
+    cursor: pointer; transition: background 0.1s ease;
+  }
+  .reports-row:hover { background: var(--canvas); }
+  .reports-row.clear { border-left-color: var(--green); }
+  .reports-row.moderate { border-left-color: var(--blue); }
+  .reports-row.warn { border-left-color: var(--amber); }
+  .reports-row.risk { border-left-color: var(--red); }
+  .reports-row td { padding: 12px 14px; vertical-align: middle; }
+  .reports-vendor-cell { font-weight: 700; color: var(--ink); white-space: nowrap; }
+  .reports-usecase-cell {
+    color: var(--ink-soft); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .reports-source-badge {
+    font-size: 10.5px; font-weight: 600; color: var(--ink-faint);
+    border: 1px solid var(--line); border-radius: 10px; padding: 2px 9px; white-space: nowrap;
+  }
+  .reports-status-pill {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700;
+    padding: 3px 10px; border-radius: 10px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.02em;
+  }
+  .reports-status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .reports-status-pill.clear { background: var(--green-dim); color: var(--green); }
+  .reports-status-pill.clear .reports-status-dot { background: var(--green); }
+  .reports-status-pill.moderate { background: var(--blue-dim); color: var(--blue); }
+  .reports-status-pill.moderate .reports-status-dot { background: var(--blue); }
+  .reports-status-pill.warn { background: var(--amber-dim); color: var(--amber); }
+  .reports-status-pill.warn .reports-status-dot { background: var(--amber); }
+  .reports-status-pill.risk { background: var(--red-dim); color: var(--red); }
+  .reports-status-pill.risk .reports-status-dot { background: var(--red); }
+  .reports-date-cell { color: var(--ink-faint); white-space: nowrap; }
+  .reports-actions-cell { text-align: right; white-space: nowrap; }
+  .reports-action-btn {
+    background: var(--blue-dim); color: var(--blue); border: none; font-size: 10.5px; font-weight: 600;
+    padding: 6px 10px; border-radius: 6px; cursor: pointer; margin-left: 6px; transition: background 0.1s ease;
+  }
+  .reports-action-btn:hover { background: #E2EBFF; }
+  .reports-action-btn:disabled {
+    background: var(--canvas); color: var(--ink-faint); cursor: not-allowed;
+  }
+  .reports-empty-state {
+    padding: 40px 20px; text-align: center; color: var(--ink-faint); font-size: 13px; font-style: italic;
+  }
+
+  .content { max-width: 1040px; }
+
+  .eyebrow {
+    color: var(--pink); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px;
+  }
+  h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .lede { color: var(--ink-soft); font-size: 14px; max-width: 560px; margin-bottom: 32px; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 24px;
+  }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+  input, textarea {
+    width: 100%; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 10px 12px; font-size: 13.5px; font-family: inherit;
+    color: var(--ink); background: var(--surface);
+    transition: border-color 0.12s ease;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--pink); }
+  textarea { resize: vertical; min-height: 56px; }
+
+  button.primary {
+    background: var(--pink); color: white; border: none;
+    padding: 11px 22px; border-radius: var(--radius);
+    font-size: 13.5px; font-weight: 600; cursor: pointer;
+    margin-top: 18px; transition: background 0.12s ease;
+  }
+  button.primary:hover { background: #D01656; }
+  button.primary:disabled { background: var(--ink-faint); cursor: not-allowed; }
+
+  button.secondary {
+    background: var(--blue-dim); color: var(--blue); border: none;
+    padding: 8px 14px; border-radius: var(--radius);
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  button.secondary:hover { background: #E2EBFF; }
+
+  .status-line {
+    display: none; align-items: center; gap: 8px; margin-top: 14px;
+    font-size: 12.5px; color: var(--ink-soft);
+  }
+  .status-line.visible { display: flex; }
+  .spinner {
+    width: 13px; height: 13px; border: 2px solid var(--line);
+    border-top-color: var(--pink); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-box {
+    display: none; background: var(--red-dim); border: 1px solid #FCA5A5;
+    border-radius: var(--radius); padding: 12px 14px; margin-top: 14px;
+    font-size: 12.5px; color: var(--red);
+  }
+  .error-box.visible { display: block; }
+
+  #view-report { margin-top: 0; }
+
+  .verdict-banner {
+    border-radius: var(--radius); padding: 20px 22px; margin-bottom: 22px;
+    border-left: 4px solid; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .verdict-icon { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; }
+  .verdict-body { flex: 1; }
+  .verdict-banner.clear { background: var(--green-dim); border-color: var(--green); }
+  .verdict-banner.moderate { background: var(--blue-dim); border-color: var(--blue); }
+  .verdict-banner.warn { background: var(--amber-dim); border-color: var(--amber); }
+  .verdict-banner.risk { background: var(--red-dim); border-color: var(--red); }
+  .verdict-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.75; }
+  .verdict-banner.clear .verdict-label, .verdict-banner.clear .verdict-title, .verdict-banner.clear .verdict-icon { color: var(--green); }
+  .verdict-banner.moderate .verdict-label, .verdict-banner.moderate .verdict-title, .verdict-banner.moderate .verdict-icon { color: var(--blue); }
+  .verdict-banner.warn .verdict-label, .verdict-banner.warn .verdict-title, .verdict-banner.warn .verdict-icon { color: var(--amber); }
+  .verdict-banner.risk .verdict-label, .verdict-banner.risk .verdict-title, .verdict-banner.risk .verdict-icon { color: var(--red); }
+  .verdict-title { font-size: 19px; font-weight: 700; margin-top: 3px; }
+  .verdict-summary { font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+
+  .new-audit-btn { margin-top: 0 !important; padding: 9px 18px !important; font-size: 13px !important; }
+
+  .required-badge {
+    display: inline-block; background: var(--pink-dim); color: var(--pink);
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    padding: 2px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle;
+  }
+
+  .stepper { display: flex; gap: 28px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .step { cursor: pointer; padding-bottom: 10px; }
+  .step-label {
+    font-size: 13px; font-weight: 600; color: var(--ink-faint); white-space: nowrap;
+    transition: color 0.12s ease;
+  }
+  .step-num { font-weight: 700; margin-right: 4px; }
+  .step-bar { height: 2px; background: transparent; margin-top: 10px; transition: background 0.12s ease; }
+  .step.reached .step-label { color: var(--ink-soft); }
+  .step.reached:hover .step-label { color: var(--pink); }
+  .step.active .step-label { color: var(--pink); }
+  .step.active .step-bar { background: var(--pink); }
+  .step:not(.reached) { cursor: default; }
+  .step:not(.reached) .step-label { color: var(--ink-faint); opacity: 0.5; }
+
+  .action-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .action-buttons { display: flex; align-items: center; gap: 10px; }
+  .alt-btn { margin-top: 0 !important; padding: 8px 16px !important; font-size: 12.5px !important; }
+
+  .view-header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;
+  }
+  .linklike {
+    background: none; border: none; color: var(--pink); font-size: 13px; font-weight: 600;
+    cursor: pointer; padding: 0;
+  }
+  .linklike:hover { text-decoration: underline; }
+
+  .comparison-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .comparison-table th, .comparison-table td {
+    padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line);
+  }
+  .comparison-table th {
+    background: var(--canvas); font-size: 11px; font-weight: 700; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+  }
+  .comparison-table th:first-child { min-width: 140px; }
+  .comparison-table .comp-verdict-row td { padding-top: 16px; padding-bottom: 16px; }
+  .comparison-table .comp-vendor-name { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+  .comparison-table .comp-pill {
+    display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px;
+    border-radius: 10px; margin-top: 4px;
+  }
+  .comparison-table .comp-pill.clear { background: var(--green-dim); color: var(--green); }
+  .comparison-table .comp-pill.moderate { background: var(--blue-dim); color: var(--blue); }
+  .comparison-table .comp-pill.warn { background: var(--amber-dim); color: var(--amber); }
+  .comparison-table .comp-pill.risk { background: var(--red-dim); color: var(--red); }
+  .comparison-table .comp-score-pass { color: var(--green); font-weight: 700; }
+  .comparison-table .comp-score-risk { color: var(--amber); font-weight: 700; }
+  .comparison-table .comp-score-fail { color: var(--red); font-weight: 700; }
+  .comparison-table .comp-confidence { display: block; font-size: 9.5px; color: var(--ink-faint); font-weight: 400; margin-top: 2px; }
+  .comparison-table .comp-original-col { background: var(--canvas); }
+  .comp-diff { font-size: 9px; margin-left: 4px; }
+  .comp-diff-better { color: var(--green); }
+  .comp-diff-worse { color: var(--red); }
+  .comp-net-badge {
+    font-size: 9.5px; color: var(--ink-faint); margin-top: 4px; font-weight: 600;
+  }
+
+  .alt-reason-card {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--pink);
+    border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px;
+  }
+  .alt-reason-vendor { font-size: 12.5px; font-weight: 700; margin-bottom: 4px; }
+  .alt-reason-text { font-size: 12px; color: var(--ink-soft); }
+  .source-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-faint); }
+  .source-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+
+  .radar-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px; margin-bottom: 22px; text-align: center;
+  }
+  .radar-title {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 4px; text-align: left;
+  }
+
+  .dim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 28px; }
+  .dim-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--line); border-radius: var(--radius); padding: 12px 14px;
+  }
+  .dim-card.pass { border-left-color: var(--green); }
+  .dim-card.risk { border-left-color: var(--amber); }
+  .dim-card.fail { border-left-color: var(--red); }
+  .dim-name { font-size: 11.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }
+  .dim-score { font-size: 14px; font-weight: 700; }
+  .dim-card.pass .dim-score { color: var(--green); }
+  .dim-card.risk .dim-score { color: var(--amber); }
+  .dim-card.fail .dim-score { color: var(--red); }
+  .dim-confidence { font-size: 10.5px; color: var(--ink-faint); margin-top: 3px; }
+
+  .toggle-full {
+    background: var(--blue-dim); color: var(--blue); border: none;
+    padding: 10px 18px; border-radius: var(--radius); font-size: 13px;
+    font-weight: 600; cursor: pointer; width: 100%; text-align: left;
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+  }
+  .toggle-full:hover { background: #E2EBFF; }
+  .chevron { transition: transform 0.15s ease; }
+  .chevron.open { transform: rotate(180deg); }
+
+  #full-report { display: none; }
+  #full-report.visible { display: block; }
+
+  .section { margin-bottom: 26px; }
+  .section-title {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 12px;
+  }
+
+  .pattern-row { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .pattern-row:last-child { border-bottom: none; }
+  .pattern-chip {
+    flex-shrink: 0; width: 64px; height: 26px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .pattern-chip.pass { background: var(--green-dim); color: var(--green); }
+  .pattern-chip.risk { background: var(--amber-dim); color: var(--amber); }
+  .pattern-chip.fail { background: var(--red-dim); color: var(--red); }
+  .pattern-body { flex: 1; }
+  .pattern-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .pattern-reason { font-size: 12.5px; color: var(--ink-soft); }
+  .pattern-confidence {
+    font-size: 10.5px; color: var(--ink-faint); margin-top: 5px;
+    display: inline-block; border: 1px solid var(--line); border-radius: 10px; padding: 2px 8px;
+  }
+
+  .flag-item {
+    background: var(--red-dim); border: 1px solid #FCA5A5; border-left: 3px solid var(--red);
+    border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .flag-icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 1px; color: var(--red); }
+  .flag-body { flex: 1; }
+  .flag-quote { font-size: 12.5px; font-style: italic; color: var(--ink); margin-bottom: 5px; }
+  .flag-explain { font-size: 12px; color: var(--ink-soft); }
+
+  .find-item {
+    background: var(--canvas); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px;
+  }
+
+  .disq-item {
+    background: var(--red-dim); border: 1px solid #FCA5A5;
+    border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px;
+  }
+  .disq-condition { font-size: 12.5px; font-weight: 600; color: var(--red); margin-bottom: 4px; }
+  .disq-cost { font-size: 12px; color: var(--ink-soft); }
+
+  .fix-first-card { background: var(--blue-dim); border-radius: var(--radius); padding: 16px 18px; }
+  .fix-row { margin-bottom: 10px; }
+  .fix-row:last-child { margin-bottom: 0; }
+  .fix-label { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.03em; }
+  .fix-value { font-size: 13px; color: var(--ink); margin-top: 2px; }
+
+  .empty-note { font-size: 12.5px; color: var(--ink-faint); font-style: italic; }
+
+  footer { text-align: center; padding: 24px; color: var(--ink-faint); font-size: 11.5px; }
+
+  @media (max-width: 860px) {
+    .reports-table-wrap { overflow-x: scroll; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="brand">
+      <div class="brand-mark">G</div>
+      <div>
+        <div class="brand-name">Groundwork</div>
+        <div class="brand-sub">Platform Risk diagnostic</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#" class="active" id="nav-platform-risk" onclick="showView('input'); return false;">Platform Risk</a>
+      <a href="#" id="nav-past-reports" onclick="showPastReportsPage(); return false;">Past Reports</a>
+    </nav>
+  </div>
+  <button class="primary new-audit-btn" onclick="startNewAudit()">New audit</button>
+</header>
+
+<div class="layout">
+  <main class="content">
+    <div class="stepper" id="stepper">
+      <div class="step" data-step="1" onclick="goToStep(1)">
+        <div class="step-label"><span class="step-num">01</span> Use case</div>
+        <div class="step-bar"></div>
+      </div>
+      <div class="step" data-step="2" onclick="goToStep(2)">
+        <div class="step-label"><span class="step-num">02</span> Report</div>
+        <div class="step-bar"></div>
+      </div>
+      <div class="step" data-step="3" onclick="goToStep(3)">
+        <div class="step-label"><span class="step-num">03</span> Alternatives</div>
+        <div class="step-bar"></div>
+      </div>
+    </div>
+
+    <div id="view-input">
+      <div class="eyebrow">Vendor Diagnostic</div>
+      <h1>Is this AI vendor safe to recommend?</h1>
+      <p class="lede">Enter a vendor and how your client plans to use it. The agent checks its watchlist first, researches live if needed, and grounds every score in your risk framework.</p>
+
+      <div class="card">
+        <div class="field">
+          <label for="vendor">Vendor name <span class="required-badge">Required</span></label>
+          <input type="text" id="vendor" placeholder="e.g. Retool, OpenAI, Notion AI">
+        </div>
+        <div class="field">
+          <label for="usecase">Intended use case <span class="required-badge">Required</span></label>
+          <input type="text" id="usecase" placeholder="e.g. internal fraud dispute tooling">
+        </div>
+        <div class="field">
+          <label for="context">Buyer context <span class="required-badge">Required</span></label>
+          <textarea id="context" placeholder="e.g. fintech company handling customer PII"></textarea>
+        </div>
+        <button class="primary" id="run-btn" onclick="runReport()">Run diagnostic</button>
+        <div class="status-line" id="status-line">
+          <div class="spinner"></div>
+          <span id="status-text">Checking watchlist…</span>
+        </div>
+        <div class="error-box" id="error-box"></div>
+      </div>
+    </div>
+
+    <div id="view-report" style="display:none;">
+
+      <div class="verdict-banner" id="verdict-banner">
+        <div class="verdict-icon" id="verdict-icon"></div>
+        <div class="verdict-body">
+          <div class="verdict-label" id="verdict-source-label">Verdict</div>
+          <div class="verdict-title" id="verdict-title">Pending</div>
+          <div class="verdict-summary" id="verdict-summary">Run a diagnostic to see results.</div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <div class="source-tag" id="source-tag">
+          <div class="source-dot"></div>
+          <span id="source-text">No run yet</span>
+        </div>
+        <div class="action-buttons">
+          <button class="primary alt-btn" id="alternatives-btn" onclick="viewAlternatives()" style="display:none;">See suggested alternatives</button>
+          <button class="secondary" onclick="downloadPDF('view-report', 'risk_report')">Download PDF</button>
+        </div>
+      </div>
+
+      <div class="radar-card">
+        <div class="radar-title">Pattern Scan</div>
+        <div id="radar-chart"></div>
+      </div>
+
+      <div class="dim-grid" id="dim-grid"></div>
+
+      <div class="section" id="disqualifiers-section">
+        <div class="section-title">Disqualifiers</div>
+        <div id="disqualifiers"></div>
+      </div>
+
+      <button class="toggle-full" onclick="toggleFullReport()">
+        <span>View full report</span>
+        <span class="chevron" id="chevron">▾</span>
+      </button>
+
+      <div id="full-report">
+        <div class="section" id="red-flags-section">
+          <div class="section-title">Red flags</div>
+          <div id="red-flags"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Fix this first</div>
+          <div class="fix-first-card" id="fix-first"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Six-dimension scoring</div>
+          <div id="pattern-list"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Reality check</div>
+          <div id="reality-check"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Evidence review</div>
+          <div id="evidence-review"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-alternatives" style="display:none;">
+      <div class="view-header">
+        <button class="linklike" onclick="showView('report')">&larr; Back to report</button>
+        <button class="secondary" onclick="downloadPDF('view-alternatives', 'alternatives_comparison')">Download PDF</button>
+      </div>
+
+      <div class="eyebrow">Suggested Alternatives</div>
+      <h1 id="alt-title" style="font-size:22px;">Comparing alternatives</h1>
+      <p class="lede" id="alt-lede">Scored against the exact same use case and buyer context, so this comparison is apples to apples.</p>
+
+      <div class="card" style="overflow-x:auto; padding:0;">
+        <table class="comparison-table" id="comparison-table"></table>
+      </div>
+
+      <div class="section" style="margin-top:24px;">
+        <div class="section-title">Why these were suggested</div>
+        <div id="alt-reasons"></div>
+      </div>
+    </div>
+
+    <div id="view-reports-list" style="display:none;">
+      <div class="eyebrow">Report Log</div>
+      <h1 style="font-size:22px;">Past Reports</h1>
+      <p class="lede">Every completed diagnostic, newest first. Click a row to reopen it, or export directly.</p>
+
+      <div class="reports-table-wrap">
+        <table class="reports-table">
+          <thead>
+            <tr>
+              <th>Vendor</th>
+              <th>Use case</th>
+              <th>Source</th>
+              <th>Risk</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="reports-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>Platform Risk Research Agent, Groundwork diagnostic suite</footer>
+
+<script>
+  const API_BASE = "http://localhost:8000";
+
+  // Holds the last loaded/created report (report + used_cached_watchlist +
+  // tool_calls_made + alternatives), so switching between the report view
+  // and the alternatives view doesn't need a re-fetch.
+  let currentReportData = null;
+
+  // Which steps are currently reachable by clicking the stepper. Step 1
+  // (the form) is always reachable; 2 unlocks once a report exists; 3
+  // unlocks only if that report actually has alternatives to show.
+  let reachedSteps = { 1: true, 2: false, 3: false };
+
+  const VIEW_TO_STEP = { input: 1, report: 2, alternatives: 3 };
+  const STEP_TO_VIEW = { 1: 'input', 2: 'report', 3: 'alternatives' };
+
+  function showView(name) {
+    document.getElementById('view-input').style.display = name === 'input' ? 'block' : 'none';
+    document.getElementById('view-report').style.display = name === 'report' ? 'block' : 'none';
+    document.getElementById('view-alternatives').style.display = name === 'alternatives' ? 'block' : 'none';
+    document.getElementById('view-reports-list').style.display = name === 'reports-list' ? 'block' : 'none';
+
+    // The stepper only describes the current diagnostic's 3-step flow;
+    // Past Reports is a separate destination, not part of that flow.
+    document.getElementById('stepper').style.display = name === 'reports-list' ? 'none' : 'flex';
+
+    document.getElementById('nav-platform-risk').classList.toggle('active', name !== 'reports-list');
+    document.getElementById('nav-past-reports').classList.toggle('active', name === 'reports-list');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (name !== 'reports-list') updateStepper(VIEW_TO_STEP[name]);
+  }
+
+  function updateStepper(activeStep) {
+    document.querySelectorAll('.step').forEach(el => {
+      const stepNum = parseInt(el.dataset.step, 10);
+      el.classList.toggle('active', stepNum === activeStep);
+      el.classList.toggle('reached', !!reachedSteps[stepNum]);
+    });
+  }
+
+  function goToStep(stepNum) {
+    if (!reachedSteps[stepNum]) return;
+    if (stepNum === 3 && currentReportData) {
+      renderAlternatives(currentReportData);
+    }
+    showView(STEP_TO_VIEW[stepNum]);
+  }
+
+  async function showPastReportsPage() {
+    showView('reports-list');
+    const tbody = document.getElementById('reports-table-body');
+    tbody.innerHTML = '<tr><td colspan="6" class="reports-empty-state">Loading...</td></tr>';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/reports`);
+      if (!res.ok) throw new Error('failed to load');
+      const reports = await res.json();
+
+      if (reports.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="reports-empty-state">No reports yet. Run a diagnostic to see it here.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = reports.map(r => {
+        const date = r.saved_at ? new Date(r.saved_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+        const source = r.used_cached_watchlist ? 'Watchlist' : 'Live';
+        const useCase = r.use_case || '';
+        return `
+          <tr class="reports-row ${r.verdict_tone}" onclick="loadPastReport('${r.id}')">
+            <td class="reports-vendor-cell">${r.vendor_name}</td>
+            <td class="reports-usecase-cell" title="${useCase.replace(/"/g, '&quot;')}">${useCase}</td>
+            <td><span class="reports-source-badge">${source}</span></td>
+            <td>
+              <span class="reports-status-pill ${r.verdict_tone}">
+                <span class="reports-status-dot"></span>${r.verdict}
+              </span>
+            </td>
+            <td class="reports-date-cell">${date}</td>
+            <td class="reports-actions-cell">
+              <button class="reports-action-btn" onclick="event.stopPropagation(); downloadReportPdfFor('${r.id}')">Report PDF</button>
+              <button class="reports-action-btn" ${r.has_alternatives ? '' : 'disabled'} onclick="event.stopPropagation(); downloadAlternativesPdfFor('${r.id}')">Alternatives PDF</button>
+            </td>
+          </tr>`;
+      }).join('');
+    } catch (err) {
+      tbody.innerHTML = '<tr><td colspan="6" class="reports-empty-state">Couldn\'t load past reports. Is the API running?</td></tr>';
+    }
+  }
+
+  async function downloadReportPdfFor(id) {
+    try {
+      const res = await fetch(`${API_BASE}/api/reports/${id}`);
+      if (!res.ok) throw new Error('report not found');
+      const data = await res.json();
+      currentReportData = data;
+      renderReport(data);
+      showView('report');
+      setTimeout(() => downloadPDF('view-report', 'risk_report'), 300);
+    } catch (err) {
+      alert(`Could not export that report: ${err.message}`);
+    }
+  }
+
+  async function downloadAlternativesPdfFor(id) {
+    try {
+      const res = await fetch(`${API_BASE}/api/reports/${id}`);
+      if (!res.ok) throw new Error('report not found');
+      const data = await res.json();
+      if (!data.report.alternatives || data.report.alternatives.length === 0) {
+        alert('This report has no alternatives to export.');
+        return;
+      }
+      currentReportData = data;
+      renderAlternatives(data);
+      showView('alternatives');
+      setTimeout(() => downloadPDF('view-alternatives', 'alternatives_comparison'), 300);
+    } catch (err) {
+      alert(`Could not export alternatives: ${err.message}`);
+    }
+  }
+
+  function startNewAudit() {
+    document.getElementById('vendor').value = '';
+    document.getElementById('usecase').value = '';
+    document.getElementById('context').value = '';
+    document.getElementById('error-box').classList.remove('visible');
+    currentReportData = null;
+    reachedSteps = { 1: true, 2: false, 3: false };
+    showView('input');
+  }
+
+  const DIMENSION_SHORT_LABELS = {
+    "Data Handling Posture": "Data",
+    "Vendor Stability": "Stability",
+    "Incident History": "Incidents",
+    "Community Signal": "Community",
+    "Compliance Posture": "Compliance",
+    "Integration Risk": "Integration",
+  };
+
+  const STATUS_MESSAGES = [
+    "Checking watchlist…",
+    "Grounding in risk framework…",
+    "Scoring six dimensions…",
+    "Finishing report…",
+  ];
+
+  async function runReport() {
+    const vendor = document.getElementById('vendor').value.trim();
+    const usecase = document.getElementById('usecase').value.trim();
+    const context = document.getElementById('context').value.trim();
+
+    const errorBox = document.getElementById('error-box');
+    errorBox.classList.remove('visible');
+
+    if (!vendor || !usecase || !context) {
+      const missing = [];
+      if (!vendor) missing.push('vendor name');
+      if (!usecase) missing.push('intended use case');
+      if (!context) missing.push('buyer context');
+      errorBox.textContent = `Please fill in ${missing.join(', ')} before running a diagnostic.`;
+      errorBox.classList.add('visible');
+      return;
+    }
+
+    const btn = document.getElementById('run-btn');
+    const statusLine = document.getElementById('status-line');
+    const statusText = document.getElementById('status-text');
+    btn.disabled = true;
+    statusLine.classList.add('visible');
+
+    let msgIndex = 0;
+    statusText.textContent = STATUS_MESSAGES[0];
+    const statusInterval = setInterval(() => {
+      msgIndex = Math.min(msgIndex + 1, STATUS_MESSAGES.length - 1);
+      statusText.textContent = STATUS_MESSAGES[msgIndex];
+    }, 3000);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/report`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ vendor_name: vendor, use_case: usecase, buyer_context: context }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ detail: `Request failed (${res.status})` }));
+        throw new Error(errData.detail || `Request failed (${res.status})`);
+      }
+
+      const data = await res.json();
+      currentReportData = data;
+      renderReport(data);
+      showView('report');
+
+    } catch (err) {
+      errorBox.textContent = `Could not run diagnostic: ${err.message}. Is the API running on ${API_BASE}?`;
+      errorBox.classList.add('visible');
+    } finally {
+      clearInterval(statusInterval);
+      btn.disabled = false;
+      statusLine.classList.remove('visible');
+    }
+  }
+
+  async function loadPastReport(id) {
+    try {
+      const res = await fetch(`${API_BASE}/api/reports/${id}`);
+      if (!res.ok) throw new Error('report not found');
+      const data = await res.json();
+
+      document.getElementById('vendor').value = data.vendor_name || '';
+      document.getElementById('usecase').value = data.use_case || '';
+      document.getElementById('context').value = data.buyer_context || '';
+
+      currentReportData = data;
+      renderReport(data);
+      showView('report');
+    } catch (err) {
+      const errorBox = document.getElementById('error-box');
+      errorBox.textContent = `Could not load that report: ${err.message}`;
+      errorBox.classList.add('visible');
+    }
+  }
+
+  function buildRadarChart(patterns) {
+    const size = 260, cx = size / 2, cy = size / 2, R = 88;
+    const n = patterns.length;
+    const angleStep = (Math.PI * 2) / n;
+    const startAngle = -Math.PI / 2;
+
+    function pointAt(i, value) {
+      const angle = startAngle + i * angleStep;
+      return [cx + R * value * Math.cos(angle), cy + R * value * Math.sin(angle)];
+    }
+
+    let gridRings = '';
+    [0.33, 0.66, 1].forEach(ringVal => {
+      const pts = [];
+      for (let i = 0; i < n; i++) pts.push(pointAt(i, ringVal).join(','));
+      gridRings += `<polygon points="${pts.join(' ')}" fill="none" stroke="#E4E4EC" stroke-width="1"/>`;
+    });
+
+    let axisLines = '';
+    for (let i = 0; i < n; i++) {
+      const [x, y] = pointAt(i, 1);
+      axisLines += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E4E4EC" stroke-width="1"/>`;
+    }
+
+    let labelEls = '';
+    for (let i = 0; i < n; i++) {
+      const [x, y] = pointAt(i, 1.24);
+      const label = DIMENSION_SHORT_LABELS[patterns[i].name] || patterns[i].name;
+      labelEls += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-family="Arial" fill="#55556B" font-weight="600">${label}</text>`;
+    }
+
+    const dataPts = [];
+    const dots = [];
+    for (let i = 0; i < n; i++) {
+      const value = patterns[i].score_value / 2;
+      const [x, y] = pointAt(i, value);
+      dataPts.push(`${x},${y}`);
+      dots.push(`<circle cx="${x}" cy="${y}" r="3.5" fill="#E91E63"/>`);
+    }
+    const dataPolygon = `<polygon points="${dataPts.join(' ')}" fill="#E91E63" fill-opacity="0.14" stroke="#E91E63" stroke-width="2"/>`;
+
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size + 24}" width="${size}" height="${size + 24}" style="width:100%; max-width:300px; display:block; margin:0 auto;">
+        <g transform="translate(0,8)">
+          ${gridRings}
+          ${axisLines}
+          <g id="radar-data-group" style="transform-origin:${cx}px ${cy}px; transform:scale(0); transition:transform 0.9s cubic-bezier(0.34,1.56,0.64,1);">
+            ${dataPolygon}
+            ${dots.join('')}
+          </g>
+          ${labelEls}
+        </g>
+      </svg>`;
+  }
+
+  function animateRadar() {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const g = document.getElementById('radar-data-group');
+      if (g) g.style.transform = 'scale(1)';
+    }));
+  }
+
+  // Rasterizes an inline SVG to a PNG data URL using the browser's own
+  // SVG renderer (not html2canvas). html2canvas has notoriously poor
+  // support for raw inline SVG, it was dropping most of the chart's
+  // content. Converting to a plain image first sidesteps that entirely,
+  // since html2canvas reliably handles <img> tags.
+  function svgToPngDataUrl(svgEl) {
+    return new Promise((resolve, reject) => {
+      const rect = svgEl.getBoundingClientRect();
+      const width = Math.max(rect.width, 260);
+      const height = Math.max(rect.height, 284);
+      const scale = 2; // render at 2x for a crisp result in the PDF
+
+      const svgString = new XMLSerializer().serializeToString(svgEl);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+        URL.revokeObjectURL(url);
+        resolve(canvas.toDataURL('image/png'));
+      };
+      img.onerror = (e) => {
+        URL.revokeObjectURL(url);
+        reject(e);
+      };
+      img.src = url;
+    });
+  }
+
+  async function downloadPDF(viewId, filenameSuffix) {
+    const vendor = document.getElementById('vendor').value.trim() || 'vendor';
+    const el = document.getElementById(viewId);
+
+    // Only the report view has a radar chart. Expand "full report" and
+    // rasterize the chart only if this target view actually has one,
+    // the alternatives view is a plain table and doesn't need this step.
+    const fullReport = document.getElementById('full-report');
+    const chevron = document.getElementById('chevron');
+    let wasVisible = true;
+    if (viewId === 'view-report' && fullReport) {
+      wasVisible = fullReport.classList.contains('visible');
+      fullReport.classList.add('visible');
+      chevron.classList.add('open');
+    }
+
+    const radarContainer = document.getElementById('radar-chart');
+    const liveSvg = radarContainer ? radarContainer.querySelector('svg') : null;
+    let placeholderImg = null;
+
+    if (liveSvg && el.contains(radarContainer)) {
+      try {
+        const dataUrl = await svgToPngDataUrl(liveSvg);
+        placeholderImg = document.createElement('img');
+        placeholderImg.src = dataUrl;
+        placeholderImg.style.width = '100%';
+        placeholderImg.style.maxWidth = '300px';
+        placeholderImg.style.display = 'block';
+        placeholderImg.style.margin = '0 auto';
+        liveSvg.style.display = 'none';
+        radarContainer.appendChild(placeholderImg);
+      } catch (e) {
+        console.error('Could not rasterize radar chart for PDF, exporting without it:', e);
+      }
+    }
+
+    const opt = {
+      margin: 10,
+      filename: `${vendor.replace(/\s+/g, '_')}_${filenameSuffix}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    };
+
+    html2pdf().set(opt).from(el).save().then(() => {
+      if (placeholderImg) {
+        placeholderImg.remove();
+        liveSvg.style.display = '';
+      }
+      if (viewId === 'view-report' && fullReport && !wasVisible) {
+        fullReport.classList.remove('visible');
+        chevron.classList.remove('open');
+      }
+    });
+  }
+
+  function scoreClass(score) {
+    if (score === 'Pass') return 'pass';
+    if (score === 'Fail') return 'fail';
+    return 'risk';
+  }
+
+  const VERDICT_ICONS = {
+    clear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+    moderate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+    warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+    risk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>',
+  };
+
+  function renderReport(data) {
+    const report = data.report;
+
+    const banner = document.getElementById('verdict-banner');
+    banner.className = `verdict-banner ${report.verdict_tone}`;
+    document.getElementById('verdict-icon').innerHTML = VERDICT_ICONS[report.verdict_tone] || VERDICT_ICONS.moderate;
+    document.getElementById('verdict-source-label').textContent =
+      data.used_cached_watchlist ? 'Verdict, from watchlist' : 'Verdict, live research';
+    document.getElementById('verdict-title').textContent = report.verdict;
+    document.getElementById('verdict-summary').textContent = report.summary;
+
+    document.getElementById('source-text').textContent = data.used_cached_watchlist
+      ? `${data.tool_calls_made.length} log entr${data.tool_calls_made.length === 1 ? 'y' : 'ies'}, loaded from pre-researched watchlist, no live search needed`
+      : `${data.tool_calls_made.length} tool calls, researched live`;
+
+    document.getElementById('radar-chart').innerHTML = buildRadarChart(report.patterns);
+    animateRadar();
+
+    const dimGrid = document.getElementById('dim-grid');
+    dimGrid.innerHTML = '';
+    report.patterns.forEach(p => {
+      const cls = scoreClass(p.score);
+      dimGrid.innerHTML += `
+        <div class="dim-card ${cls}">
+          <div class="dim-name">${p.name}</div>
+          <div class="dim-score">${p.score}</div>
+          <div class="dim-confidence">${p.confidence}</div>
+        </div>`;
+    });
+
+    const patternList = document.getElementById('pattern-list');
+    patternList.innerHTML = '';
+    report.patterns.forEach(p => {
+      const cls = scoreClass(p.score);
+      patternList.innerHTML += `
+        <div class="pattern-row">
+          <div class="pattern-chip ${cls}">${p.score}</div>
+          <div class="pattern-body">
+            <div class="pattern-name">${p.name}</div>
+            <div class="pattern-reason">${p.reason}</div>
+            <div class="pattern-confidence">${p.confidence}</div>
+          </div>
+        </div>`;
+    });
+
+    const er = report.evidence_review;
+    const erDiv = document.getElementById('evidence-review');
+    if (!er.provided) {
+      erDiv.innerHTML = '<div class="empty-note">Not enough evidence volume to assess repetition and contradiction patterns.</div>';
+    } else {
+      erDiv.innerHTML = ['repetition', 'resolution_pattern', 'volume', 'contradiction']
+        .filter(k => er[k])
+        .map(k => `<div class="find-item"><div class="flag-explain"><b style="text-transform:capitalize">${k.replace('_', ' ')}:</b> ${er[k]}</div></div>`)
+        .join('') || '<div class="empty-note">No notable patterns found.</div>';
+    }
+
+    const rc = report.reality_check;
+    const rcDiv = document.getElementById('reality-check');
+    if (!rc.performed) {
+      rcDiv.innerHTML = '<div class="empty-note">Reality check not performed.</div>';
+    } else {
+      let html = '';
+      rc.findings.forEach(f => {
+        html += `<div class="find-item">
+          <div class="flag-quote">${f.finding}</div>
+          <div class="flag-explain">Source: ${f.url ? `<a href="${f.url}" target="_blank">${f.source}</a>` : f.source}</div>
+        </div>`;
+      });
+      if (rc.contradicts_stated_framing) {
+        html += `<div class="find-item"><div class="flag-explain"><b>Contradicts stated framing:</b> ${rc.contradicts_stated_framing}</div></div>`;
+      }
+      rcDiv.innerHTML = html || '<div class="empty-note">No findings to report.</div>';
+    }
+
+    const disqDiv = document.getElementById('disqualifiers');
+    if (report.disqualifiers.length === 0) {
+      disqDiv.innerHTML = '<div class="empty-note">No disqualifying conditions found for this use case.</div>';
+    } else {
+      disqDiv.innerHTML = report.disqualifiers.map(d => `
+        <div class="disq-item">
+          <div class="disq-condition">${d.condition}</div>
+          <div class="disq-cost">${d.cost}</div>
+        </div>`).join('');
+    }
+
+    const flagsDiv = document.getElementById('red-flags');
+    if (report.red_flags.length === 0) {
+      flagsDiv.innerHTML = '<div class="empty-note">No red flags identified.</div>';
+    } else {
+      const warningIcon = '<svg class="flag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+      flagsDiv.innerHTML = report.red_flags.map(f => `
+        <div class="flag-item">
+          ${warningIcon}
+          <div class="flag-body">
+            <div class="flag-quote">"${f.quote}"</div>
+            <div class="flag-explain">${f.explanation}</div>
+          </div>
+        </div>`).join('');
+    }
+
+    const ff = report.fix_first;
+    document.getElementById('fix-first').innerHTML = `
+      <div class="fix-row"><div class="fix-label">What</div><div class="fix-value">${ff.what}</div></div>
+      <div class="fix-row"><div class="fix-label">With whom</div><div class="fix-value">${ff.with_whom}</div></div>
+      <div class="fix-row"><div class="fix-label">Ask them</div><div class="fix-value">${ff.question}</div></div>
+    `;
+
+    const altBtn = document.getElementById('alternatives-btn');
+    const hasAlternatives = report.alternatives && report.alternatives.length > 0;
+    altBtn.style.display = hasAlternatives ? 'inline-block' : 'none';
+
+    reachedSteps[2] = true;
+    reachedSteps[3] = hasAlternatives;
+
+    document.getElementById('full-report').classList.remove('visible');
+    document.getElementById('chevron').classList.remove('open');
+  }
+
+  function viewAlternatives() {
+    if (!currentReportData || !currentReportData.report.alternatives || currentReportData.report.alternatives.length === 0) {
+      return;
+    }
+    renderAlternatives(currentReportData);
+    showView('alternatives');
+  }
+
+  function renderAlternatives(data) {
+    const report = data.report;
+    const alternatives = report.alternatives;
+    const originalName = data.vendor_name || document.getElementById('vendor').value.trim() || 'Original vendor';
+
+    document.getElementById('alt-title').textContent = `Alternatives to ${originalName}`;
+    document.getElementById('alt-lede').textContent =
+      `${originalName} scored ${report.verdict.toLowerCase()}. Here's how ${alternatives.length === 1 ? 'this alternative' : 'these alternatives'} compare, scored against the exact same use case and buyer context.`;
+
+    // Header row + one summary row (vendor name + verdict pill per column)
+    const columns = [{ vendor_name: originalName, verdict: report.verdict, verdict_tone: report.verdict_tone, patterns: report.patterns, isOriginal: true }, ...alternatives];
+
+    let thead = '<thead><tr><th>Dimension</th>';
+    columns.forEach(col => {
+      thead += `<th class="${col.isOriginal ? 'comp-original-col' : ''}">${col.isOriginal ? 'Rejected: ' : ''}${col.vendor_name}</th>`;
+    });
+    thead += '</tr></thead>';
+
+    let summaryRow = '<tr class="comp-verdict-row"><td><b>Overall verdict</b></td>';
+    columns.forEach(col => {
+      let badge = '';
+      if (!col.isOriginal && col.comparison && col.comparison.length > 0) {
+        const betterCount = col.comparison.filter(d => d.change === 'better').length;
+        const worseCount = col.comparison.filter(d => d.change === 'worse').length;
+        badge = `<div class="comp-net-badge">${betterCount} better, ${worseCount} worse vs ${originalName}</div>`;
+      }
+      summaryRow += `<td class="${col.isOriginal ? 'comp-original-col' : ''}">
+        <div class="comp-vendor-name">${col.vendor_name}</div>
+        <span class="comp-pill ${col.verdict_tone}">${col.verdict}</span>
+        ${badge}
+      </td>`;
+    });
+    summaryRow += '</tr>';
+
+    let dimensionRows = '';
+    const dimensionNames = report.patterns.map(p => p.name);
+    dimensionNames.forEach(dimName => {
+      dimensionRows += `<tr><td>${dimName}</td>`;
+      columns.forEach(col => {
+        const pattern = col.patterns.find(p => p.name === dimName);
+        const scoreClass = pattern ? `comp-score-${pattern.score.toLowerCase()}` : '';
+
+        let diffIndicator = '';
+        if (!col.isOriginal && col.comparison) {
+          const diffEntry = col.comparison.find(d => d.dimension === dimName);
+          if (diffEntry && diffEntry.change === 'better') {
+            diffIndicator = '<span class="comp-diff comp-diff-better" title="Better than ' + originalName + '">&#9650;</span>';
+          } else if (diffEntry && diffEntry.change === 'worse') {
+            diffIndicator = '<span class="comp-diff comp-diff-worse" title="Worse than ' + originalName + '">&#9660;</span>';
+          }
+        }
+
+        dimensionRows += `<td class="${col.isOriginal ? 'comp-original-col' : ''}">
+          <span class="${scoreClass}">${pattern ? pattern.score : 'n/a'}</span>${diffIndicator}
+          <span class="comp-confidence">${pattern ? pattern.confidence : ''}</span>
+        </td>`;
+      });
+      dimensionRows += '</tr>';
+    });
+
+    document.getElementById('comparison-table').innerHTML = thead + `<tbody>${summaryRow}${dimensionRows}</tbody>`;
+
+    const reasonsDiv = document.getElementById('alt-reasons');
+    reasonsDiv.innerHTML = alternatives.map(alt => `
+      <div class="alt-reason-card">
+        <div class="alt-reason-vendor">${alt.vendor_name}</div>
+        <div class="alt-reason-text">${alt.why_suggested}</div>
+      </div>`).join('');
+  }
+
+  function toggleFullReport() {
+    const el = document.getElementById('full-report');
+    const chevron = document.getElementById('chevron');
+    el.classList.toggle('visible');
+    chevron.classList.toggle('open');
+  }
+
+  showView('input');
+</script>
+
+</body>
+</html>
