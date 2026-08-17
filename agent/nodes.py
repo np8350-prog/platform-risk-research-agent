@@ -356,6 +356,11 @@ def _score_dimension(
         "this buyer, not a neutral 'no signal found', and should push the score "
         "toward Risk or Fail rather than Pass, even if general certifications "
         "(SOC2, GDPR, ISO) look fine. "
+        "If the authored framework context includes material from "
+        "'eu_ai_act_nist_rmf.txt', and it's relevant to this vendor's use case, "
+        "explicitly name it in your reason (e.g. 'per EU AI Act high-risk "
+        "classification' or 'per NIST AI RMF Govern function'), so the specific "
+        "framework checked is visible in the report, not just implied. "
         "Do not use em dashes anywhere in your response; use a comma, period, or "
         "parentheses instead."
     )
@@ -742,6 +747,11 @@ def _pick_alternative_vendors(vendor_name: str, use_case: str, buyer_context: st
         "likely category, actually usable substitutes for the stated use case, not "
         "just any vendor. Pick at most 3, at least 1 if anything reasonably fits, "
         "empty array if genuinely nothing in the list fits. "
+        "If the authored framework context includes material from "
+        "'eu_ai_act_nist_rmf.txt', and it's relevant to this vendor's use case, "
+        "explicitly name it in your reason (e.g. 'per EU AI Act high-risk "
+        "classification' or 'per NIST AI RMF Govern function'), so the specific "
+        "framework checked is visible in the report, not just implied. "
         "Do not use em dashes anywhere in your response; use a comma, period, or "
         "parentheses instead."
     )
@@ -906,6 +916,11 @@ def _generate_alternative_reasons(
         "Respond with ONLY a JSON object, no markdown fences, no preamble, mapping each "
         "vendor name (spelled exactly as given) to its explanation string: "
         '{"vendor-name": "explanation"}. '
+        "If the authored framework context includes material from "
+        "'eu_ai_act_nist_rmf.txt', and it's relevant to this vendor's use case, "
+        "explicitly name it in your reason (e.g. 'per EU AI Act high-risk "
+        "classification' or 'per NIST AI RMF Govern function'), so the specific "
+        "framework checked is visible in the report, not just implied. "
         "Do not use em dashes anywhere in your response; use a comma, period, or "
         "parentheses instead."
     )

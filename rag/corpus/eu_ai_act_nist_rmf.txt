@@ -1,0 +1,118 @@
+EU AI ACT AND NIST AI RMF — AI-SPECIFIC COMPLIANCE REFERENCE
+
+This file covers two AI-specific frameworks, separate from general data and
+security compliance (SOC2, GDPR, ISO 27001, HIPAA, PCI, FedRAMP). These
+frameworks govern AI systems as AI systems: what they decide, who they
+affect, and how that risk is classified and managed. Use this material when
+scoring Compliance Posture for a vendor whose product involves automated
+decisions, generative output, or algorithmic scoring of people.
+
+---
+
+EU AI ACT — RISK TIERS
+
+Regulation (EU) 2024/1689, in force since February 2025, phasing in through
+2027. Every AI system placed on the EU market falls into one of four risk
+tiers. The tier determines the compliance burden, not the vendor's own
+description of their product.
+
+Unacceptable risk: banned outright, no compliance pathway exists. Covers
+practices like subliminal manipulation, exploiting vulnerabilities of
+specific groups (age, disability, economic situation), social scoring
+systems, and most real-time biometric identification in public spaces.
+A vendor operating in this category is disqualifying, not just high risk.
+
+High risk: permitted, but under strict conditions. Applies to AI used in
+critical infrastructure, education, employment decisions (hiring, firing,
+performance scoring), access to essential services (credit scoring,
+insurance, benefits), law enforcement, migration, and administration of
+justice. High-risk systems require a conformity assessment, technical
+documentation, EU database registration, and human oversight mechanisms
+before they can be sold or deployed.
+
+Limited risk: permitted, with a transparency requirement. Covers systems
+that interact directly with users, like chatbots or generative content
+tools. The only obligation is disclosure: users must be told they're
+interacting with AI, or that content is AI-generated (this includes
+deepfake labeling).
+
+Minimal risk: permitted, no mandatory obligations. Covers most everyday AI
+applications, such as spam filters or AI features in productivity tools
+that don't touch the categories above.
+
+Classification test for scoring a vendor:
+1. Does it match a prohibited practice under Article 5? If yes, unacceptable
+   risk, disqualifying.
+2. Does it match an Annex III use case (the high-risk list above)? If yes,
+   high risk, requires proof of conformity assessment and oversight
+   mechanisms.
+3. Does it interact with users without disclosing it's AI? If yes, limited
+   risk, requires a transparency check only.
+4. None of the above: minimal risk, no specific EU AI Act obligation.
+
+Penalties for non-compliance scale up to EUR 35 million or 7% of global
+annual turnover, whichever is higher. This is meaningfully steeper than
+GDPR penalties, worth flagging when a vendor's use case lands in the
+high-risk tier.
+
+---
+
+NIST AI RMF — FOUR FUNCTIONS
+
+Published January 2023 by the US National Institute of Standards and
+Technology. Voluntary, not certifiable, referenced by nist.gov/itl/
+ai-risk-management-framework. Unlike SOC2 or ISO 27001, there's no audit
+or certificate to check for. What to look for instead is whether a vendor
+can describe their practices in terms of these four functions, which
+signals real process rather than a marketing claim.
+
+Govern: cross-cutting function that runs through the other three. Covers
+whether the organization has a risk-aware culture, clear ownership of AI
+risk decisions, and policies that assign accountability. A vendor with no
+answer to "who owns AI risk internally" fails this function regardless of
+what else they claim.
+
+Map: understanding the AI system in its actual context, not just its
+technical function. Covers identifying who's affected by the system,
+what the system is meant to do, and where the potential harms or
+blind spots are. This is where a vendor should be able to name specific
+use cases their product is not appropriate for.
+
+Measure: assessing and benchmarking identified risks with actual metrics,
+not just intentions. Covers testing for reliability, bias, safety, and
+security, and tracking these over time rather than as a one-time check
+before launch.
+
+Manage: allocating resources to treat the risks that Map and Measure
+identified, and responding when something goes wrong. Covers incident
+response, ongoing monitoring, and whether the vendor updates their
+practices when new risks surface post-launch.
+
+Compliance signal to look for: a vendor mentioning NIST AI RMF alignment
+without being able to speak to any of the four functions specifically is a
+weaker signal than a vendor with no NIST mention who can clearly describe
+their governance, context-mapping, measurement, and incident response
+practices in their own words. The framework is the vocabulary, not the
+proof.
+
+Note: some US states now reference NIST AI RMF directly. Colorado's AI Act
+treats NIST AI RMF alignment (or ISO/IEC 42001 certification) as an
+affirmative defense in liability cases. This raises the practical stakes
+of NIST alignment beyond "nice to have" for vendors selling into regulated
+US markets.
+
+---
+
+HOW THIS MAPS TO COMPLIANCE POSTURE SCORING
+
+Use EU AI Act tier classification when the vendor's product makes decisions
+about people (hiring, credit, benefits, safety) or generates content shown
+to end users. A vendor that can't say which tier they fall into is itself
+a signal, not just missing data.
+
+Use NIST AI RMF function coverage as a secondary signal, especially for
+US-based or US-market vendors. Treat a vendor's own claim of "NIST aligned"
+as self-reported evidence, same confidence tagging rule as any other
+uncorroborated compliance claim. Independent confirmation (audit,
+certification, documented incident response) is what moves it from
+"limited evidence" to "strong evidence."
