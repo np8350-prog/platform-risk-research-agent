@@ -9,3 +9,5 @@ requests
 pydantic
 tavily-python
 pinecone
+fastapi
+uvicorn
