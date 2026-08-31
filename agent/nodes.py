@@ -29,7 +29,7 @@ from functools import partial
 from openai import OpenAI
 
 from agent.state import GraphState, PLATFORM_RISK_DIMENSIONS, PlatformRiskReport
-from rag.retrieval import retrieve_framework_context
+from rag.retrieval import retrieve_framework_context, retrieve_incident_matches
 from tools.web_search import web_search
 from tools.compliance_search import compliance_search
 from tools.firmographic import firmographic_search
@@ -318,7 +318,44 @@ def framework_retrieval_node(state: GraphState) -> dict:
     )
     context = retrieve_framework_context(query, top_k=4)
     return {"framework_context": context}
+def incident_retrieval_node(state: GraphState) -> dict:
+    """
+    Retrieves real precedents from the AI Incident Database, matched by
+    semantic similarity to this vendor's use case. Runs alongside
+    framework_retrieval_node, same input shape, same failure philosophy:
+    an outage here degrades to an empty list, never crashes the graph.
 
+    Feeds two places: the Incident History dimension's research_notes (so
+    the LLM scoring that dimension sees real precedent, not just web
+    search), and the report's own incident_matches field (real evidence
+    attached to the report, with its own similarity-based confidence,
+    separate from the dimension's LLM-judged confidence).
+    """
+    query = (
+        f"AI system used for: {state['use_case']}. "
+        f"Vendor: {state['vendor_name']}. Context: {state['buyer_context']}."
+    )
+    matches = retrieve_incident_matches(query, top_k=2)
+
+    if not matches:
+        return {"incident_matches": []}
+
+    # Feed matches into Incident History's research notes, tagged the same
+    # way live_research_node and watchlist_check_node tag their notes, so
+    # _find_notes_for_dimension picks them up automatically, no changes
+    # needed to synthesis_node.
+    note_lines = [f"[INCIDENT DATABASE: Incident History] {len(matches)} real precedent(s) found:"]
+    for m in matches:
+        note_lines.append(
+            f"- {m['text']} (sector: {m['sector']}, year: {m['year']}, "
+            f"similarity: {m['similarity_score']}, confidence: {m['confidence']})"
+        )
+    note = "\n".join(note_lines)
+
+    return {
+        "incident_matches": matches,
+        "research_notes": [note],
+    }
 
 # ---- Synthesis: turns research_notes + framework_context into scored patterns ----
 
@@ -537,6 +574,7 @@ def synthesis_node(state: GraphState) -> dict:
             "with_whom": "Not yet implemented",
             "question": "Not yet implemented",
         },
+        "incident_matches": state.get("incident_matches", []),
     }
 
     # Validate against the real schema before handing it back. If this

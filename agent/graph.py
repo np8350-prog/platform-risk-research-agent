@@ -27,6 +27,7 @@ from agent.nodes import (
     watchlist_check_node,
     live_research_node,
     framework_retrieval_node,
+    incident_retrieval_node,
     synthesis_node,
     finalize_report_node,
     recommendation_node,
@@ -46,6 +47,7 @@ def build_graph():
     graph.add_node("watchlist_check", watchlist_check_node)
     graph.add_node("live_research", live_research_node)
     graph.add_node("framework_retrieval", framework_retrieval_node)
+    graph.add_node("incident_retrieval", incident_retrieval_node)
     graph.add_node("synthesis", synthesis_node)
     graph.add_node("finalize_report", finalize_report_node)
     graph.add_node("recommendation", recommendation_node)
@@ -62,8 +64,8 @@ def build_graph():
     )
 
     graph.add_edge("live_research", "framework_retrieval")
-    graph.add_edge("framework_retrieval", "synthesis")
-    graph.add_edge("synthesis", "finalize_report")
+    graph.add_edge("framework_retrieval", "incident_retrieval")
+    graph.add_edge("incident_retrieval", "synthesis")
     graph.add_edge("finalize_report", "recommendation")
     graph.add_edge("recommendation", END)
 

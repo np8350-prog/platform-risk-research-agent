@@ -27,6 +27,7 @@ class GraphState(TypedDict):
 
     # ---- Set once retrieval (RAG) has run ----
     framework_context: str    # relevant excerpts from your book / ControlGap
+    incident_matches: list[dict]  # real precedents from the AI Incident Database
 
     # ---- Set by watchlist_check_node, read by the graph's routing edge ----
     # True only on a fresh watchlist hit. Lets the graph skip straight to
@@ -84,6 +85,19 @@ class RedFlag(BaseModel):
     explanation: str
 
 
+class IncidentMatch(BaseModel):
+    """One real precedent from the AI Incident Database, matched by
+    semantic similarity to this vendor/use case. confidence here is
+    computed deterministically from the similarity score, never guessed
+    by an LLM, this is separate from the Incident History dimension's
+    own LLM-judged confidence."""
+    text: str
+    sector: str
+    harm_domain: str
+    year: str
+    similarity_score: float
+    confidence: Literal["strong evidence", "limited evidence", "inferred"]
+
 class FixFirst(BaseModel):
     what: str
     with_whom: str
@@ -127,6 +141,10 @@ class PlatformRiskReport(BaseModel):
     patterns: list[PatternResult]   # exactly 6, same rule as Groundwork
     red_flags: list[RedFlag] = Field(default_factory=list)
     fix_first: FixFirst
+    # Real precedents from the AI Incident Database, matched to this
+    # vendor/use case. Separate from patterns; this is evidence attached
+    # to the report, not a 7th scored dimension.
+    incident_matches: list[IncidentMatch] = Field(default_factory=list)
     # Only populated when the verdict is bad enough to warrant alternatives
     # (Elevated risk or worse, or any disqualifier present). Empty list for
     # a clean report; nothing else about the report format changes.

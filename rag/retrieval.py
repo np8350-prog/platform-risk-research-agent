@@ -182,3 +182,134 @@ def retrieve_framework_context(query: str, top_k: int = 4) -> str:
     except Exception as e:
         print(f"retrieve_framework_context failed, continuing without framework grounding: {e}")
         return ""
+
+INCIDENT_NAMESPACE = "incident-corpus"
+INCIDENT_CSV_PATH = "rag/corpus_incidents/aiid_dashboard_source.csv"
+
+
+def _row_to_incident_text(row: dict) -> str:
+    """Builds one compact text block per incident row, combining the fields
+    that actually carry matchable signal: what happened, what sector, what
+    kind of harm. Keeps it short since these are short factual records, not
+    long-form prose like the book corpus."""
+    parts = [
+        row.get("title", "").strip(),
+        f"Sector: {row.get('Sector of Deployment', '').strip()}" if row.get("Sector of Deployment") else "",
+        f"Harm domain: {row.get('Harm Domain', '').strip()}" if row.get("Harm Domain") else "",
+        f"Risk domain: {row.get('Risk Domain', '').strip()}" if row.get("Risk Domain") else "",
+        f"AI harm level: {row.get('AI Harm Level', '').strip()}" if row.get("AI Harm Level") else "",
+    ]
+    return ". ".join(p for p in parts if p)
+
+
+def ingest_incident_corpus(csv_path: str = INCIDENT_CSV_PATH, batch_size: int = 100) -> int:
+    """
+    Reads the AI Incident Database CSV, builds one text block per incident,
+    embeds in batches, and upserts into the incident-corpus namespace inside
+    the same platform-risk-corpus index. Run once, or whenever the CSV is
+    refreshed, not on every graph run, same pattern as ingest_corpus.
+    """
+    import csv as csv_module
+
+    ensure_index_exists()
+    pc = _get_pinecone()
+    index = pc.Index(INDEX_NAME)
+
+    rows = []
+    with open(csv_path, "r", encoding="utf-8") as f:
+        reader = csv_module.DictReader(f)
+        for row in reader:
+            text = _row_to_incident_text(row)
+            if text:
+                rows.append({
+                    "id": row.get("Incident ID", ""),
+                    "text": text,
+                    "sector": row.get("Primary Sector", "") or row.get("Sector of Deployment", ""),
+                    "harm_domain": row.get("Harm Domain", ""),
+                    "year": row.get("Chart Year", "") or row.get("year", ""),
+                })
+
+    if not rows:
+        print(f"No usable rows found in {csv_path} — nothing to ingest.")
+        return 0
+
+    total_upserted = 0
+    for i in range(0, len(rows), batch_size):
+        batch = rows[i:i + batch_size]
+        embeddings = _embed_batch([r["text"] for r in batch])
+        vectors = [
+            {
+                "id": f"incident-{r['id']}",
+                "values": embedding,
+                "metadata": {
+                    "text": r["text"],
+                    "sector": r["sector"],
+                    "harm_domain": r["harm_domain"],
+                    "year": r["year"],
+                },
+            }
+            for r, embedding in zip(batch, embeddings)
+        ]
+        index.upsert(vectors=vectors, namespace=INCIDENT_NAMESPACE)
+        total_upserted += len(vectors)
+        print(f"Ingested batch {i // batch_size + 1}: {len(vectors)} incidents (total so far: {total_upserted})")
+
+    print(f"Finished. Ingested {total_upserted} incidents into namespace '{INCIDENT_NAMESPACE}'.")
+    return total_upserted
+
+
+def _similarity_to_confidence(score: float) -> str:
+    """Converts Pinecone's raw cosine similarity score into a plain
+    confidence label. Thresholds are deliberately conservative, since a
+    weak semantic match should never be labeled as strong evidence just
+    because it was the closest thing found."""
+    if score >= 0.80:
+        return "strong evidence"
+    if score >= 0.65:
+        return "limited evidence"
+    return "inferred"
+
+
+def retrieve_incident_matches(query: str, top_k: int = 2) -> list[dict]:
+    """
+    Embeds `query` and retrieves the top_k most relevant real incidents
+    from the AI Incident Database corpus. Returns structured matches, each
+    with its own similarity-based confidence, separate from any later
+    LLM-judged confidence on the dimension itself.
+
+    Never raises. An outage here should degrade gracefully, incident_matches
+    comes back as an empty list, synthesis proceeds without it, same
+    failure philosophy as retrieve_framework_context.
+    """
+    try:
+        query_embedding = _embed_batch([query])[0]
+
+        pc = _get_pinecone()
+        index = pc.Index(INDEX_NAME)
+        results = index.query(
+            vector=query_embedding,
+            top_k=top_k,
+            include_metadata=True,
+            namespace=INCIDENT_NAMESPACE,
+        )
+
+        matches = []
+        for match in results.get("matches", []):
+            metadata = match.get("metadata", {})
+            text = metadata.get("text", "")
+            if not text:
+                continue
+            matches.append({
+                "text": text,
+                "sector": metadata.get("sector", ""),
+                "harm_domain": metadata.get("harm_domain", ""),
+                "year": metadata.get("year", ""),
+                "similarity_score": round(match.get("score", 0.0), 3),
+                "confidence": _similarity_to_confidence(match.get("score", 0.0)),
+            })
+
+        return matches
+
+    except Exception as e:
+        print(f"retrieve_incident_matches failed, continuing without incident grounding: {e}")
+        return []
