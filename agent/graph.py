@@ -66,6 +66,7 @@ def build_graph():
     graph.add_edge("live_research", "framework_retrieval")
     graph.add_edge("framework_retrieval", "incident_retrieval")
     graph.add_edge("incident_retrieval", "synthesis")
+    graph.add_edge("synthesis", "finalize_report")
     graph.add_edge("finalize_report", "recommendation")
     graph.add_edge("recommendation", END)
 
