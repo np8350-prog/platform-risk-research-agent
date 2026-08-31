@@ -22,7 +22,9 @@ import json
 import os
 import re
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from functools import partial
 
 from openai import OpenAI
 
@@ -206,13 +208,21 @@ def live_research_node(state: GraphState) -> dict:
         that actually matters for that buyer, since the fixed compliance
         marker list above doesn't cover any of these.
 
+    None of these ~13 Tavily calls depend on another's results, so they run
+    concurrently in a thread pool rather than one after another. This is
+    I/O-bound network waiting, not CPU work, and every client in this
+    codebase (Tavily, OpenAI) is already synchronous, so threads are the
+    fit here, not a rewrite to asyncio. Wall time is now roughly the
+    slowest single call instead of the sum of all of them, this loop was
+    the single biggest contributor to runs blowing past Railway's 300s
+    request limit.
+
     Never raises. Each tool already returns [] on failure instead of
     throwing, so a dead search provider degrades to "no signal found" on
-    that dimension rather than crashing the graph.
+    that dimension rather than crashing the graph, and that's still true
+    per-call now that they run in parallel.
     """
     vendor = state["vendor_name"]
-    tool_log = []
-    notes = []
 
     def _format_results(results: list[dict], dimension_name: str, context_note: str = "") -> str:
         note_suffix = f"\n[CONTEXT NOTE: {context_note}]" if context_note else ""
@@ -224,40 +234,66 @@ def live_research_node(state: GraphState) -> dict:
             lines.append(f"- {r.get('title', '(no title)')}: {snippet} ({r.get('url', '')})")
         return "\n".join(lines) + note_suffix
 
-    # --- Vendor Stability, via the specialized firmographic tool ---
-    stability_results = firmographic_search(vendor)
-    tool_log.append(f"firmographic_search('{vendor}'): {len(stability_results)} results")
-    notes.append(_format_results(stability_results, "Vendor Stability"))
+    # Each task returns (tool_log_entries, notes_entries) so results can be
+    # flattened back into the two flat lists synthesis_node expects, in the
+    # same fixed order they were submitted (executor.map preserves order
+    # regardless of which call actually finishes first).
 
-    # --- Compliance Posture, via the specialized compliance tool ---
-    compliance_results = compliance_search(vendor)
-    tool_log.append(f"compliance_search('{vendor}'): {len(compliance_results)} results")
-    notes.append(_format_results(compliance_results, "Compliance Posture"))
+    def _run_firmographic() -> tuple[list[str], list[str]]:
+        results = firmographic_search(vendor)
+        return (
+            [f"firmographic_search('{vendor}'): {len(results)} results"],
+            [_format_results(results, "Vendor Stability")],
+        )
 
-    # --- Remaining four dimensions: one targeted web_search each ---
+    def _run_compliance() -> tuple[list[str], list[str]]:
+        results = compliance_search(vendor)
+        return (
+            [f"compliance_search('{vendor}'): {len(results)} results"],
+            [_format_results(results, "Compliance Posture")],
+        )
+
     targeted_queries = {
         "Incident History": f"{vendor} data breach OR outage OR lawsuit OR security incident",
         "Community Signal": f"{vendor} reviews G2 OR Reddit OR Hacker News complaints",
         "Data Handling Posture": f"{vendor} data privacy policy customer data retention",
         "Integration Risk": f"{vendor} API integration data export vendor lock-in",
     }
-    for dimension_name, query in targeted_queries.items():
-        results = web_search(query, max_results=4)
-        tool_log.append(f"web_search('{query}'): {len(results)} results")
-        notes.append(_format_results(results, dimension_name))
 
-    # --- Context-triggered searches, only when the buyer context calls for them ---
+    def _run_targeted(dimension_name: str, query: str) -> tuple[list[str], list[str]]:
+        results = web_search(query, max_results=4)
+        return (
+            [f"web_search('{query}'): {len(results)} results"],
+            [_format_results(results, dimension_name)],
+        )
+
     sensitivities = _detect_context_sensitivities(
         state.get("buyer_context", ""), state.get("use_case", "")
     )
-    for sensitivity in sensitivities:
+
+    def _run_sensitivity(sensitivity: dict) -> tuple[list[str], list[str]]:
         query = f"{vendor} {sensitivity['query_suffix']}"
         results = web_search(query, max_results=4)
-        tool_log.append(f"web_search('{query}') [context-triggered]: {len(results)} results")
         # Feeds both Compliance Posture and Data Handling Posture, since a
         # sensitivity like this genuinely touches both.
-        notes.append(_format_results(results, "Compliance Posture", sensitivity["context_note"]))
-        notes.append(_format_results(results, "Data Handling Posture", sensitivity["context_note"]))
+        return (
+            [f"web_search('{query}') [context-triggered]: {len(results)} results"],
+            [
+                _format_results(results, "Compliance Posture", sensitivity["context_note"]),
+                _format_results(results, "Data Handling Posture", sensitivity["context_note"]),
+            ],
+        )
+
+    tasks = [_run_firmographic, _run_compliance]
+    tasks += [partial(_run_targeted, name, query) for name, query in targeted_queries.items()]
+    tasks += [partial(_run_sensitivity, sensitivity) for sensitivity in sensitivities]
+
+    tool_log: list[str] = []
+    notes: list[str] = []
+    with ThreadPoolExecutor(max_workers=len(tasks)) as executor:
+        for log_entries, note_entries in executor.map(lambda task: task(), tasks):
+            tool_log.extend(log_entries)
+            notes.extend(note_entries)
 
     return {
         "research_notes": notes,
@@ -452,6 +488,12 @@ def synthesis_node(state: GraphState) -> dict:
     shape either way) into a scored PlatformRiskReport. One LLM call per
     dimension, each grounded in the retrieved framework_context.
 
+    The six dimensions don't depend on each other's scores, so the six
+    calls run concurrently in a thread pool instead of one after another.
+    executor.map preserves the order it was given PLATFORM_RISK_DIMENSIONS
+    in, so `patterns` still comes out in the fixed order the report schema
+    requires, only the internal timing changes.
+
     evidence_review, reality_check, disqualifiers, red_flags, and fix_first
     are filled in with honest placeholders here; they get real content in
     finalize_report_node, which runs next and looks across all six scored
@@ -460,8 +502,7 @@ def synthesis_node(state: GraphState) -> dict:
     research_notes = state.get("research_notes", [])
     framework_context = state.get("framework_context", "")
 
-    patterns = []
-    for dimension_name in PLATFORM_RISK_DIMENSIONS:
+    def _score(dimension_name: str) -> dict:
         dimension_notes = _find_notes_for_dimension(research_notes, dimension_name)
         scored = _score_dimension(
             vendor_name=state["vendor_name"],
@@ -471,7 +512,10 @@ def synthesis_node(state: GraphState) -> dict:
             dimension_notes=dimension_notes,
             framework_context=framework_context,
         )
-        patterns.append({"name": dimension_name, **scored})
+        return {"name": dimension_name, **scored}
+
+    with ThreadPoolExecutor(max_workers=len(PLATFORM_RISK_DIMENSIONS)) as executor:
+        patterns = list(executor.map(_score, PLATFORM_RISK_DIMENSIONS))
 
     verdict, verdict_tone = _compute_verdict(patterns)
 
@@ -997,8 +1041,15 @@ def recommendation_node(state: GraphState) -> dict:
         return {}
 
     framework_context = state.get("framework_context", "")
-    scored_alternatives = []
-    for pick in picks:
+
+    # Up to 3 picks, each an independent _score_alternative call (itself
+    # still scoring its 6 dimensions sequentially internally, that part is
+    # unchanged), so the picks run concurrently rather than one after
+    # another. _score_alternative already returns None on any failure
+    # (missing/unreadable watchlist file) rather than raising, so a filter
+    # after collecting results reproduces the original "just skip it"
+    # behavior, same as the sequential loop's `if scored:` check.
+    def _score(pick: dict) -> dict | None:
         scored = _score_alternative(
             slug=pick["slug"],
             use_case=state["use_case"],
@@ -1007,7 +1058,10 @@ def recommendation_node(state: GraphState) -> dict:
         )
         if scored:
             scored["comparison"] = _compute_pattern_diff(report["patterns"], scored["patterns"])
-            scored_alternatives.append(scored)
+        return scored
+
+    with ThreadPoolExecutor(max_workers=len(picks)) as executor:
+        scored_alternatives = [s for s in executor.map(_score, picks) if s]
 
     if not scored_alternatives:
         return {}
