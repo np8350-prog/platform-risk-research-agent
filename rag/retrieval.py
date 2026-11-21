@@ -14,6 +14,8 @@ from pinecone import Pinecone, ServerlessSpec
 from openai import OpenAI, RateLimitError
 from dotenv import load_dotenv
 
+from agent.gateway import GATEWAY_ROUTING
+
 load_dotenv()
 
 EMBEDDING_MODEL = "openai/text-embedding-3-small"
@@ -102,7 +104,7 @@ def _embed_batch(texts: list[str], max_retries: int = 4) -> list[list[float]]:
     openai_client = _get_openai()
     for attempt in range(max_retries):
         try:
-            response = openai_client.embeddings.create(model=EMBEDDING_MODEL, input=texts)
+            response = openai_client.embeddings.create(model=EMBEDDING_MODEL, input=texts, extra_body=GATEWAY_ROUTING)
             return [item.embedding for item in response.data]
         except RateLimitError:
             if attempt == max_retries - 1:
