@@ -3,15 +3,20 @@ API layer so the UI can trigger the agent, persist its reports, and
 reload them later.
 
 Endpoints:
-  POST /api/report          run the agent, save the result to reports/
-  GET  /api/reports         list saved reports (metadata only, newest first)
-  GET  /api/reports/{id}    fetch one saved report in full
+  POST /api/report          run the agent and return the result
+  GET  /api/reports         list locally saved reports (local dev only)
+  GET  /api/reports/{id}    fetch one locally saved report (local dev only)
   GET  /api/health          liveness check
 
-Every completed report gets written to reports/{id}.json. This is the
-same reports/ folder the project structure already set aside for sample
-reports — the UI just keeps it filled automatically instead of someone
-saving files there by hand.
+Groundwork (the production caller) stores its own copy of every report in
+Vercel Blob with 12-month retention and never reads reports/. So by
+default nothing is written here. Set SAVE_LOCAL_REPORTS=true on a local
+machine to keep the old behaviour for the standalone ui/index.html
+(Past Reports and PDF export); files older than 12 months are deleted on
+startup and on every save. It is ignored on Railway.
+
+LangSmith/LangChain tracing is off unless ENABLE_LANGSMITH_TRACING=true is
+set on a local machine. On Railway it is always off, whatever else is set.
 
 Run with:
     uvicorn backend.app:app --reload --port 8000
@@ -21,8 +26,20 @@ Then open ui/index.html in a browser (it calls this on localhost:8000).
 
 import json
 import os
+import time
 import uuid
 from datetime import datetime
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+ON_RAILWAY = bool(os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RAILWAY_PROJECT_ID"))
+
+# Must run before LangGraph/LangChain are imported: they read these at import.
+if ON_RAILWAY or os.getenv("ENABLE_LANGSMITH_TRACING") != "true":
+    for _key in ("LANGSMITH_TRACING", "LANGCHAIN_TRACING_V2", "LANGCHAIN_TRACING"):
+        os.environ[_key] = "false"
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,6 +62,26 @@ app.add_middleware(
 _graph = build_graph()
 
 REPORTS_DIR = "reports"
+SAVE_LOCAL_REPORTS = not ON_RAILWAY and os.getenv("SAVE_LOCAL_REPORTS") == "true"
+RETENTION_SECONDS = 365 * 24 * 60 * 60  # 12 months
+
+
+def _purge_old_reports() -> None:
+    """Deletes saved report files older than 12 months. Only .json files:
+    the sample PDFs in reports/ are not user data."""
+    if not os.path.isdir(REPORTS_DIR):
+        return
+    cutoff = time.time() - RETENTION_SECONDS
+    for fname in os.listdir(REPORTS_DIR):
+        path = os.path.join(REPORTS_DIR, fname)
+        if fname.endswith(".json") and os.path.getmtime(path) < cutoff:
+            try:
+                os.remove(path)
+            except OSError as e:
+                print(f"Could not delete expired report {fname}: {e}")
+
+
+_purge_old_reports()
 
 
 class ReportRequest(BaseModel):
@@ -107,7 +144,12 @@ def create_report(req: ReportRequest):
         "tool_calls_made": result.get("tool_calls_made", []),
     }
 
+    if not SAVE_LOCAL_REPORTS:
+        payload["saved"] = False
+        return payload
+
     try:
+        _purge_old_reports()
         report_id = _save_report(vendor_name, use_case, buyer_context, payload)
         payload["saved"] = True
         payload["report"]["id"] = report_id

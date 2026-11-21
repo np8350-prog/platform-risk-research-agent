@@ -361,6 +361,23 @@ def incident_retrieval_node(state: GraphState) -> dict:
 
 DEEPSEEK_MODEL = "deepseek/deepseek-v4-flash"
 
+# GDPR routing. Without this the Vercel AI Gateway may send a DeepSeek
+# request to any provider that serves the model, including DeepSeek's own
+# servers in China. Pinned to Azure only ("only" disables fallback to any
+# other provider; a request fails rather than leaving Azure), with
+# zero-data-retention routing on. Azure serves deepseek-v4-flash on the
+# Gateway with ZDR and no-training (checked against the Gateway's
+# /v1/models/deepseek/deepseek-v4-flash/endpoints on 2026-11-21).
+GATEWAY_ROUTING = {
+    "providerOptions": {
+        "gateway": {
+            "order": ["azure"],
+            "only": ["azure"],
+            "zeroDataRetention": True,
+        }
+    }
+}
+
 _llm: OpenAI | None = None
 
 
@@ -456,6 +473,7 @@ def _score_dimension(
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0,
+            extra_body=GATEWAY_ROUTING,
         )
         raw = response.choices[0].message.content.strip()
         # Models sometimes wrap JSON in markdown fences despite instructions; strip if present.
@@ -739,6 +757,7 @@ def finalize_report_node(state: GraphState) -> dict:
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0,
+            extra_body=GATEWAY_ROUTING,
         )
         raw = response.choices[0].message.content.strip()
         raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
@@ -854,6 +873,7 @@ def _pick_alternative_vendors(vendor_name: str, use_case: str, buyer_context: st
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0,
+            extra_body=GATEWAY_ROUTING,
         )
         raw = response.choices[0].message.content.strip()
         raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
@@ -1031,6 +1051,7 @@ def _generate_alternative_reasons(
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0,
+            extra_body=GATEWAY_ROUTING,
         )
         raw = response.choices[0].message.content.strip()
         raw = re.sub(r"^```(json)?|```$", "", raw.strip(), flags=re.MULTILINE).strip()
