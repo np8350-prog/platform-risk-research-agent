@@ -28,6 +28,7 @@ from functools import partial
 
 from openai import OpenAI
 
+from agent.gateway import GATEWAY_ROUTING
 from agent.state import GraphState, PLATFORM_RISK_DIMENSIONS, PlatformRiskReport
 from rag.retrieval import retrieve_framework_context, retrieve_incident_matches
 from tools.web_search import web_search
@@ -361,22 +362,6 @@ def incident_retrieval_node(state: GraphState) -> dict:
 
 DEEPSEEK_MODEL = "deepseek/deepseek-v4-flash"
 
-# GDPR routing. Without this the Vercel AI Gateway may send a DeepSeek
-# request to any provider that serves the model, including DeepSeek's own
-# servers in China. Pinned to Azure only ("only" disables fallback to any
-# other provider; a request fails rather than leaving Azure), with
-# zero-data-retention routing on. Azure serves deepseek-v4-flash on the
-# Gateway with ZDR and no-training (checked against the Gateway's
-# /v1/models/deepseek/deepseek-v4-flash/endpoints on 2026-11-21).
-GATEWAY_ROUTING = {
-    "providerOptions": {
-        "gateway": {
-            "order": ["azure"],
-            "only": ["azure"],
-            "zeroDataRetention": True,
-        }
-    }
-}
 
 _llm: OpenAI | None = None
 
